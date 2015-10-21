@@ -4,12 +4,17 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
+
 public class Group implements Parcelable {
     int mId;
     String mGText;
     String mGDetail;
 
     public Group(Cursor cursor){
+        setmId(cursor.getInt(cursor.getColumnIndex(QuesSQLiteHelper.GROUP_TABLE_ID)));
+        setmGDetail(cursor.getString(cursor.getColumnIndex(QuesSQLiteHelper.GROUP_TABLE_DETAIL)));
+        setmGText(cursor.getString(cursor.getColumnIndex(QuesSQLiteHelper.GROUP_TABLE_TEXT)));
     }
 
     public void setmId(int id) { mId = id;}
