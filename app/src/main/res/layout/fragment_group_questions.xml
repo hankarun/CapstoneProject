@@ -1,20 +1,46 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hankarun.patienthistory.fragment.GroupQuestionsFragment">
+    tools:context="com.hankarun.patienthistory.fragment.GroupQuestionsFragment"
+    android:paddingBottom="15dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:id="@+id/userTextview"
-        android:text="@string/hello_blank_fragment"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:background="@color/colorPrimary"/>
 
-    <ListView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="550dp"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/userTextview"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        android:elevation="5dp"
+        android:minWidth="550dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView android:layout_width="wrap_content" android:layout_height="64dp"
+            android:id="@+id/userTextview"
+            android:text="@string/hello_blank_fragment"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:textSize="24sp"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/userTextview"
+            android:background="@android:color/black"/>
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView"
+            android:layout_below="@+id/userTextview"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp" />
+    </RelativeLayout>
 
 </RelativeLayout>

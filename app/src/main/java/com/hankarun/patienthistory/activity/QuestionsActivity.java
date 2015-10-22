@@ -15,8 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.hankarun.patienthistory.FinishFragment;
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.fragment.GroupQuestionsFragment;
+import com.hankarun.patienthistory.fragment.UserEntryFragment;
 import com.hankarun.patienthistory.helper.DataContentProvider;
 import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
 import com.hankarun.patienthistory.model.Group;
@@ -29,8 +31,6 @@ public class QuestionsActivity extends AppCompatActivity implements
 
     ViewPager viewPager;
     ArrayList<Group> mGroups;
-    FloatingActionButton right;
-    FloatingActionButton left;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,38 +50,11 @@ public class QuestionsActivity extends AppCompatActivity implements
             setup();
         }
 
-        right = (FloatingActionButton) findViewById(R.id.fab);
-        right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("View Pager ", viewPager.getCurrentItem() + " - " + viewPager.getAdapter().getCount());
-                if (viewPager.getCurrentItem() < viewPager.getAdapter().getCount() - 1) {
-                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                    left.show();
-                }
-                if(viewPager.getCurrentItem() == viewPager.getAdapter().getCount()-2)
-                    right.hide();
-            }
-        });
-
-        left = (FloatingActionButton) findViewById(R.id.fab2);
-        left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("View Pager ", viewPager.getCurrentItem() + " - " + viewPager.getAdapter().getCount());
-                if (viewPager.getCurrentItem() > 0) {
-                    right.show();
-                    viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-                }
-                if(viewPager.getCurrentItem() == 0)
-                    left.hide();
-
-            }
-        });
     }
 
     private void setup(){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new UserEntryFragment(), "");
         for(Group g:mGroups){
             GroupQuestionsFragment fragment = new GroupQuestionsFragment();
             Bundle bundle = new Bundle();
@@ -89,6 +62,7 @@ public class QuestionsActivity extends AppCompatActivity implements
             fragment.setArguments(bundle);
             adapter.addFrag(fragment, g.getmGText());
         }
+        adapter.addFrag(new FinishFragment(), "");
         viewPager.setAdapter(adapter);
     }
 

@@ -40,6 +40,17 @@ public class DataContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         mQuestionDatabase = new QuesSQLiteHelper(getContext());
+        try {
+            mQuestionDatabase.onCreate();
+        } catch (IOException ioe) {
+            throw new Error("Unable to create database");
+        }
+
+        try {
+            mQuestionDatabase.openDataBase();
+        }catch(SQLException sqle){
+
+        }
         return false;
     }
 

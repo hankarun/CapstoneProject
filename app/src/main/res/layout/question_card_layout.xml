@@ -1,49 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:text="New Text"
-        android:id="@+id/questionCount"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/questionNumberText"
+        android:gravity="center_vertical"
+        android:layout_weight="0"
+        android:layout_marginLeft="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:text="New Text"
-        android:id="@+id/textView6"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/questionCount"
-        android:layout_toEndOf="@+id/questionCount" />
+        android:id="@+id/questionText"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="5dp" />
 
     <RadioGroup
-        android:id="@+id/radioSex"
+        android:id="@+id/radioYesNo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:orientation="horizontal">
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:layout_weight="0"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="5dp">
 
         <RadioButton
-            android:id="@+id/radioMale"
+            android:id="@+id/radioYes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Evet"
-            android:checked="true" />
+            android:text="Evet" />
 
         <RadioButton
-            android:id="@+id/radioFemale"
+            android:id="@+id/radioNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hayır" />
 
     </RadioGroup>
 
-
-</RelativeLayout>
+</LinearLayout>

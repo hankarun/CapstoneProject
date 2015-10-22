@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="com.hankarun.patienthistory.FinishFragment">
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/view" />
+
+    <RelativeLayout
+        android:layout_width="550dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        android:elevation="5dp"
+        android:minWidth="550dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:id="@+id/relativeLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp">
+
+        <TextView android:layout_width="match_parent" android:layout_height="88dp"
+            android:id="@+id/tebriklerText"
+            android:text="Tebrikler."
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical"
+            android:textSize="28sp"
+            android:layout_centerInParent="true"
+            android:textAlignment="center" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tebriklerText"
+            android:background="@android:color/black"
+            android:id="@+id/blackBar"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView2"
+            android:layout_below="@+id/blackBar"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Anketi bitirmek ister misiniz?"
+                    android:id="@+id/textView6"
+                    android:textSize="22sp"
+                    android:layout_marginTop="70dp"
+                    android:layout_centerHorizontal="true" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Evet"
+                    android:id="@+id/button"
+                    android:layout_below="@+id/textView6"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="67dp" />
+            </RelativeLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

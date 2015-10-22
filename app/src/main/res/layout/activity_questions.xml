@@ -7,8 +7,8 @@
     tools:context="com.hankarun.patienthistory.activity.QuestionsActivity">
 
     <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
-        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
-
+        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -24,18 +24,17 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_margin="@dimen/activity_horizontal_margin"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
+    <!--<android.support.design.widget.FloatingActionButton android:id="@+id/fab"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="end" android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_chevron_right_white_48dp" />
 
     <android.support.design.widget.FloatingActionButton android:id="@+id/fab2"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start" android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="start" android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_chevron_left_white_48dp"
-        />
+        />-->
 
 </android.support.design.widget.CoordinatorLayout>

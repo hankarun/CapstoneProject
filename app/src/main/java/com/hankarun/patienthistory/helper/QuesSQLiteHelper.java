@@ -103,17 +103,7 @@ public class QuesSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        try {
-            onCreate();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
 
-        try {
-            openDataBase();
-        }catch(SQLException sqle){
-
-        }
     }
 
 
