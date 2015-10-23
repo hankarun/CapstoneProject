@@ -88,7 +88,7 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
                 QuesSQLiteHelper.QUESTION_TABLE_TEXT,
                 QuesSQLiteHelper.QUESTION_TABLE_TYPE,
                 QuesSQLiteHelper.QUESTION_TABLE_GROUPID};
-        Uri uri = Uri.parse(DataContentProvider.CONTENT_URI2 + "/" + id);
+        Uri uri = Uri.parse(DataContentProvider.CONTENT_URI_GROUPS + "/" + id);
         CursorLoader cursorLoader = new CursorLoader(getActivity(),
                 uri, projection, null, null, null);
         return cursorLoader;

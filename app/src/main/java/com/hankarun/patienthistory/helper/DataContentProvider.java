@@ -17,28 +17,42 @@ public class DataContentProvider extends ContentProvider {
     private static final String PROVIDER_NAME = "com.hankarun.patienthistory";
 
     private QuesSQLiteHelper mQuestionDatabase;
+    private PatientSQLiteHelper mPatientAnswerDatabase;
 
-    public static final Uri CONTENT_URI1 =
+
+    public static final Uri CONTENT_URI_QUESTIONS =
             Uri.parse("content://"+ PROVIDER_NAME + "/questions");
-    public static final Uri CONTENT_URI2 =
+    public static final Uri CONTENT_URI_GROUPS =
             Uri.parse("content://"+ PROVIDER_NAME + "/groups");
+    public static final Uri CONTENT_URI_PATIENT =
+            Uri.parse("content://"+ PROVIDER_NAME + "/patient");
 
     private static final int QUESTION = 10;
     private static final int QUESTION_ID = 11;
     private static final int GROUP = 20;
     private static final int GROUP_ID = 22;
+    private static final int PATIENTS = 30;
+    private static final int PATIENT_ID = 33;
+    private static final int ANSWERS = 40;
+    private static final int ANSWERS_ID = 44;
 
     private static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER_NAME, "questions", QUESTION);
-        uriMatcher.addURI(PROVIDER_NAME, "questions/#", QUESTION_ID);
-        uriMatcher.addURI(PROVIDER_NAME, "groups", GROUP);
-        uriMatcher.addURI(PROVIDER_NAME, "groups/#", GROUP_ID);
+        uriMatcher.addURI(PROVIDER_NAME, "questions", QUESTION); // Return all questions.
+        uriMatcher.addURI(PROVIDER_NAME, "questions/#", QUESTION_ID); // Return spesific question.
+        uriMatcher.addURI(PROVIDER_NAME, "groups", GROUP); //Retrun all groups.
+        uriMatcher.addURI(PROVIDER_NAME, "groups/#", GROUP_ID); //Return questions depending group id.
+        uriMatcher.addURI(PROVIDER_NAME, "patients/", PATIENTS); // Return all patients.
+        uriMatcher.addURI(PROVIDER_NAME, "patient/#", PATIENT_ID); //Return patient by id
+        uriMatcher.addURI(PROVIDER_NAME, "answers/", ANSWERS); //Return or put answers?
+        uriMatcher.addURI(PROVIDER_NAME, "answer/#", ANSWERS_ID); //ID is for patient return answers for a patient.
     }
 
     @Override
     public boolean onCreate() {
+        mPatientAnswerDatabase = new PatientSQLiteHelper(getContext());
+
         mQuestionDatabase = new QuesSQLiteHelper(getContext());
         try {
             mQuestionDatabase.onCreate();
@@ -78,6 +92,10 @@ public class DataContentProvider extends ContentProvider {
                 queryBuilder.setTables(QuesSQLiteHelper.TABLE_QUESTIONS);
                 queryBuilder.appendWhere(QuesSQLiteHelper.QUESTION_TABLE_GROUPID + "=" + uri.getLastPathSegment());
                 //Group id ye göre soruları gönder. uri.getLastPathSegment()
+                break;
+            case PATIENTS:
+                break;
+            case ANSWERS_ID:
                 break;
         }
 

@@ -78,7 +78,7 @@ public class QuestionsActivity extends AppCompatActivity implements
                 QuesSQLiteHelper.GROUP_TABLE_TEXT,
                 QuesSQLiteHelper.GROUP_TABLE_DETAIL};
         CursorLoader cursorLoader = new CursorLoader(this,
-                DataContentProvider.CONTENT_URI2, projection, null, null, null);
+                DataContentProvider.CONTENT_URI_GROUPS, projection, null, null, null);
         return cursorLoader;
     }
 
