@@ -27,10 +27,11 @@ public class PatientSQLiteHelper extends SQLiteOpenHelper {
     public static final String PATIENT_DOCTOR_DATE = "ddate";
     public static final String PATIENT_DOCTOR_PROBLEMS = "dproblems";
 
-    public static final String ANSWER_TEXT = "atext";
+    public static final String ANSWER = "answer";
     public static final String ANSWER_PATIENT_ID = "pid";
     public static final String ANSWER_DETAIL = "adetail";
     public static final String ANSWER_DATE = "adate";
+    public static final String ANSWER_QUESTION_ID = "qid";
 
 
 
@@ -53,17 +54,15 @@ public class PatientSQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_CREATE_ANSWERS = "create table "
             + TABLE_ANSWERS + "(" + COLUMN_ID
             + " integer primary key autoincrement, "
-            + ANSWER_PATIENT_ID + " intenger, "
-            + ANSWER_TEXT + " text, "
+            + ANSWER_PATIENT_ID + " integer, "
+            + ANSWER + " boolean, "
             + ANSWER_DETAIL + " text, "
-            + ANSWER_DATE + " date"
+            + ANSWER_DATE + " date, "
+            + ANSWER_QUESTION_ID + " integer"
             + ");";
-
-    private Context mContext;
 
     public PatientSQLiteHelper(Context context) {
         super(context, DB_NAME, null, DATABASE_VERSION);
-        mContext = context;
     }
 
     @Override

@@ -37,6 +37,12 @@ public class Patient implements Parcelable{
     public void setmProblems(String problems){ mProblems = problems;}
 
 
+    public void addAnswer(Answer answer){ mAnswers.add(answer);}
+    public ArrayList<Answer> getmAnswers(){ return mAnswers;}
+
+    public Patient(){
+
+    }
 
     public Patient(Cursor cursor){
 

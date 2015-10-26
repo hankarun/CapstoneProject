@@ -73,7 +73,6 @@ public class DataContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
-        Log.d("uri ", uriMatcher.match(uri)+"");
         switch (uriMatcher.match(uri)){
             case QUESTION:
                 //all questions

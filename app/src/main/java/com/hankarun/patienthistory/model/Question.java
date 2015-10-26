@@ -11,23 +11,27 @@ public class Question implements Parcelable{
     private String mQuestion;
     private int mType;
     private int mGroupId;
+    private boolean mAnswer;
 
     public Question(Cursor cursor){
         setmId(cursor.getInt(cursor.getColumnIndex(QuesSQLiteHelper.QUESTION_TABLE_ID)));
         setmQuestion(cursor.getString(cursor.getColumnIndex(QuesSQLiteHelper.QUESTION_TABLE_TEXT)));
         setmType(cursor.getInt(cursor.getColumnIndex(QuesSQLiteHelper.QUESTION_TABLE_TYPE)));
         setmGroupId(cursor.getInt(cursor.getColumnIndex(QuesSQLiteHelper.QUESTION_TABLE_GROUPID)));
+        mAnswer = false;
     }
 
     public void setmId(int id){ mId = id;}
     public void setmQuestion(String question) { mQuestion = question;}
     public void setmType(int type) { mType = type;}
     public void setmGroupId(int groupId) { mGroupId = groupId;}
+    public void setmAnswer(boolean answer) { mAnswer = answer;}
 
     public int getmId() { return mId;}
     public String getmQuestion() { return mQuestion;}
     public int getmType() { return mType;}
     public int getmGroupId() { return mGroupId;}
+    public boolean getmAnswer() { return mAnswer;}
 
     public String toString(){
         return "Id = " + mId + " q = " + mQuestion + " t = " + mType + " gid = " + mGroupId;
@@ -35,12 +39,15 @@ public class Question implements Parcelable{
 
     //Parcable
     public Question(Parcel parcel){
+        mId = parcel.readInt();
+        mType = parcel.readInt();
+        mGroupId = parcel.readInt();
+        int te = parcel.readInt();
+        if(te==1)
+            mAnswer = true;
+        else
+            mAnswer = false;
         mQuestion = parcel.readString();
-        int[] info = new int[2];
-        parcel.readIntArray(info);
-        mId = info[0];
-        mType = info[1];
-        mGroupId = info[2];
     }
 
     @Override
@@ -50,7 +57,10 @@ public class Question implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeIntArray(new int[] {mId, mType, mGroupId});
+        dest.writeInt(mId);
+        dest.writeInt(mType);
+        dest.writeInt(mGroupId);
+        dest.writeInt(mAnswer ? 1: 0);
         dest.writeString(mQuestion);
     }
 

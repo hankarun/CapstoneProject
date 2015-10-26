@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -15,31 +16,42 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.hankarun.patienthistory.FinishFragment;
+import com.hankarun.patienthistory.fragment.FinishFragment;
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.fragment.GroupQuestionsFragment;
 import com.hankarun.patienthistory.fragment.UserEntryFragment;
 import com.hankarun.patienthistory.helper.DataContentProvider;
 import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
+import com.hankarun.patienthistory.model.Answer;
 import com.hankarun.patienthistory.model.Group;
+import com.hankarun.patienthistory.model.Patient;
+import com.hankarun.patienthistory.model.Question;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionsActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor> {
 
-    ViewPager viewPager;
-    ArrayList<Group> mGroups;
+public class QuestionsActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
+
+    private ViewPager viewPager;
+    private ArrayList<Group> mGroups;
+    private int currentpage = 0;
+    private FloatingActionButton left;
+    private FloatingActionButton right;
+
+    public Patient mPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_questions);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mGroups = new ArrayList<>();
+        mPatient = new Patient();
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -50,24 +62,73 @@ public class QuestionsActivity extends AppCompatActivity implements
             setup();
         }
 
+        left = (FloatingActionButton) findViewById(R.id.left);
+        right = (FloatingActionButton) findViewById(R.id.right);
+
+        left.setOnClickListener(this);
+        right.setOnClickListener(this);
+
     }
 
+    private UserEntryFragment uFragment;
+    private ArrayList<GroupQuestionsFragment> mQuList;
+
     private void setup(){
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new UserEntryFragment(), "");
+        uFragment = new UserEntryFragment();
+        final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(uFragment, "user");
         for(Group g:mGroups){
             GroupQuestionsFragment fragment = new GroupQuestionsFragment();
             Bundle bundle = new Bundle();
             bundle.putParcelable("group",g);
             fragment.setArguments(bundle);
-            adapter.addFrag(fragment, g.getmGText());
+            mQuList.add(fragment);
+            adapter.addFrag(fragment, "group");
         }
-        adapter.addFrag(new FinishFragment(), "");
+        adapter.addFrag(new FinishFragment(), "end");
         viewPager.setAdapter(adapter);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position==0)
+                    left.hide();
+                else
+                    left.show();
+                if(position==adapter.getCount()-1)
+                    right.hide();
+                else
+                    right.show();
+                currentpage = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void loadGroups() {
         getSupportLoaderManager().initLoader(0, null, this);
+    }
+
+    public void getInfo(){
+        for(GroupQuestionsFragment f:mQuList){
+            ArrayList<Question> q = f.getmQuestionsList();
+            //Get answers and add to the user
+            for(Question question:q){
+                Answer a = new Answer(question);
+                //User id and other fields.
+                mPatient.addAnswer(a);
+            }
+        }
+        Log.d(uFragment.getName(), " is name");
+        finish();
     }
 
 
@@ -98,8 +159,20 @@ public class QuestionsActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.left:
+                viewPager.setCurrentItem(currentpage-1);
+                break;
+            case R.id.right:
+                viewPager.setCurrentItem(currentpage+1);
+                break;
+        }
+    }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+
+    class ViewPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
         public ViewPagerAdapter(FragmentManager manager) {
