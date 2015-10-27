@@ -1,8 +1,11 @@
 package com.hankarun.patienthistory.model;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.hankarun.patienthistory.helper.PatientSQLiteHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +26,19 @@ public class Patient implements Parcelable{
 
     private ArrayList<Answer> mAnswers;
 
+    public int getmId() { return mId;}
+    public String getmName() { return mName;}
+    public String getmSurname() { return mSurname;}
+    public Date getmBirthDate() { return mBirthDate;}
+    public String getmAddress() { return mAddress;}
+    public String getmEmail() { return mEmail;}
+    public String getmTelephone1() { return mTelephone1;}
+    public String getmTelephone2() { return mTelephone2;}
+    public String getmDoctorName() { return mDoctorName;}
+    public String getmDoctorNumber() { return mDoctorNumber;}
+    public Date getmDoctorDate() { return mDoctorDate;}
+    public String mProblems() { return mProblems;}
+
     public void setmId(int id){ mId = id;}
     public void setmName(String name){ mName = name;}
     public void setmSurname(String surname){ mSurname = surname;}
@@ -41,7 +57,7 @@ public class Patient implements Parcelable{
     public ArrayList<Answer> getmAnswers(){ return mAnswers;}
 
     public Patient(){
-
+        mAnswers = new ArrayList<>();
     }
 
     public Patient(Cursor cursor){
@@ -50,6 +66,15 @@ public class Patient implements Parcelable{
 
     public Patient(Parcel parcel){
 
+    }
+
+    public ContentValues toContentValues(){
+        ContentValues values = new ContentValues();
+
+        values.put(PatientSQLiteHelper.PATIENT_NAME, mName);
+        values.put(PatientSQLiteHelper.PATIENT_SURNAME, mSurname);
+
+        return values;
     }
 
     @Override

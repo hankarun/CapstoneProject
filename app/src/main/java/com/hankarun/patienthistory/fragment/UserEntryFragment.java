@@ -15,6 +15,7 @@ import com.hankarun.patienthistory.model.Patient;
 
 public class UserEntryFragment extends Fragment {
     private EditText nameTxt;
+    private EditText surnameTxt;
 
     public UserEntryFragment() {
 
@@ -27,13 +28,16 @@ public class UserEntryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_user_entry, container, false);
-
         nameTxt = (EditText) rootView.findViewById(R.id.input_name);
+        surnameTxt = (EditText) rootView.findViewById(R.id.input_surname);
         return rootView;
     }
 
-    public String getName(){
-        return nameTxt.getText().toString();
+    public Patient getPatient(){
+        Patient patient = new Patient();
+        patient.setmName(nameTxt.getText().toString());
+        patient.setmSurname(surnameTxt.getText().toString());
+        return patient;
     }
 
 

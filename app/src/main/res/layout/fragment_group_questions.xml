@@ -5,26 +5,27 @@
         tools:context="com.hankarun.patienthistory.fragment.GroupQuestionsFragment">
         <View
             android:layout_width="fill_parent"
-            android:layout_height="300dp"
+            android:layout_height="100dp"
             android:background="@color/colorPrimary"/>
 
         <RelativeLayout
             android:layout_width="700dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@android:color/white"
+            android:background="@color/colorPrimary"
             android:elevation="5dp"
             android:minWidth="550dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:layout_centerHorizontal="true">
 
-            <TextView android:layout_width="wrap_content" android:layout_height="64dp"
+            <TextView android:layout_width="match_parent" android:layout_height="90dp"
                 android:id="@+id/userTextview"
                 android:text="@string/hello_blank_fragment"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:gravity="center_vertical"
+                android:background="@android:color/white"
                 android:textSize="24sp"/>
 
             <View
@@ -39,8 +40,9 @@
                 android:id="@+id/questionRecyclerView"
                 android:layout_below="@+id/userTextview"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="5dp"
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp" />
         </RelativeLayout>
 
     </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.hankarun.patienthistory.activity;
 
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -21,6 +23,7 @@ import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.fragment.GroupQuestionsFragment;
 import com.hankarun.patienthistory.fragment.UserEntryFragment;
 import com.hankarun.patienthistory.helper.DataContentProvider;
+import com.hankarun.patienthistory.helper.PatientSQLiteHelper;
 import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
 import com.hankarun.patienthistory.model.Answer;
 import com.hankarun.patienthistory.model.Group;
@@ -75,6 +78,7 @@ public class QuestionsActivity extends AppCompatActivity implements
 
     private void setup(){
         uFragment = new UserEntryFragment();
+        mQuList = new ArrayList<>();
         final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(uFragment, "user");
         for(Group g:mGroups){
@@ -95,11 +99,11 @@ public class QuestionsActivity extends AppCompatActivity implements
 
             @Override
             public void onPageSelected(int position) {
-                if(position==0)
+                if (position == 0)
                     left.hide();
                 else
                     left.show();
-                if(position==adapter.getCount()-1)
+                if (position == adapter.getCount() - 1)
                     right.hide();
                 else
                     right.show();
@@ -116,21 +120,6 @@ public class QuestionsActivity extends AppCompatActivity implements
     private void loadGroups() {
         getSupportLoaderManager().initLoader(0, null, this);
     }
-
-    public void getInfo(){
-        for(GroupQuestionsFragment f:mQuList){
-            ArrayList<Question> q = f.getmQuestionsList();
-            //Get answers and add to the user
-            for(Question question:q){
-                Answer a = new Answer(question);
-                //User id and other fields.
-                mPatient.addAnswer(a);
-            }
-        }
-        Log.d(uFragment.getName(), " is name");
-        finish();
-    }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -200,5 +189,33 @@ public class QuestionsActivity extends AppCompatActivity implements
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList("key", mGroups);
         super.onSaveInstanceState(outState);
+    }
+
+    public Uri createPatient(Patient patient) {
+        ContentValues values = patient.toContentValues();
+
+        Log.d("name - surname", patient.getmName() + " " + patient.getmSurname());
+
+        return getContentResolver().insert(DataContentProvider.CONTENT_URI_PATIENT, values);
+    }
+
+    //Collect data from fragments. Create user get id from uri add answers based on patient.
+    public void getInfo(){
+        Patient p = uFragment.getPatient();
+
+        //Patient id provided. Add them to answers.
+        Log.d("patient ","created " + createPatient(p).getLastPathSegment());
+
+        for(GroupQuestionsFragment f:mQuList){
+            ArrayList<Question> q = f.getmQuestionsList();
+            //Get answers and add to the user
+            for(Question question:q){
+                Answer a = new Answer(question);
+                //User id and other fields.
+                mPatient.addAnswer(a);
+            }
+        }
+
+        finish();
     }
 }

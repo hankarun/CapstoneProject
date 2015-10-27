@@ -25,7 +25,7 @@ public class DataContentProvider extends ContentProvider {
     public static final Uri CONTENT_URI_GROUPS =
             Uri.parse("content://"+ PROVIDER_NAME + "/groups");
     public static final Uri CONTENT_URI_PATIENT =
-            Uri.parse("content://"+ PROVIDER_NAME + "/patient");
+            Uri.parse("content://"+ PROVIDER_NAME + "/patients");
 
     private static final int QUESTION = 10;
     private static final int QUESTION_ID = 11;
@@ -115,7 +115,20 @@ public class DataContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        return null;
+        //Insert new userç
+        int uriType = uriMatcher.match(uri);
+        SQLiteDatabase sqlDB = mPatientAnswerDatabase.getWritableDatabase();
+        int rowsDeleted = 0;
+        long id = 0;
+        switch (uriType) {
+            case PATIENTS:
+                id = sqlDB.insert(PatientSQLiteHelper.TABLE_PATIENTS, null, values);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return Uri.parse(PROVIDER_NAME + "patient/" + id);
     }
 
     @Override
