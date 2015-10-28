@@ -26,6 +26,8 @@ public class DataContentProvider extends ContentProvider {
             Uri.parse("content://"+ PROVIDER_NAME + "/groups");
     public static final Uri CONTENT_URI_PATIENT =
             Uri.parse("content://"+ PROVIDER_NAME + "/patients");
+    public static final Uri CONTENT_URI_ANSWERS =
+            Uri.parse("content://"+ PROVIDER_NAME + "/answers");
 
     private static final int QUESTION = 10;
     private static final int QUESTION_ID = 11;
@@ -44,9 +46,9 @@ public class DataContentProvider extends ContentProvider {
         uriMatcher.addURI(PROVIDER_NAME, "groups", GROUP); //Retrun all groups.
         uriMatcher.addURI(PROVIDER_NAME, "groups/#", GROUP_ID); //Return questions depending group id.
         uriMatcher.addURI(PROVIDER_NAME, "patients/", PATIENTS); // Return all patients.
-        uriMatcher.addURI(PROVIDER_NAME, "patient/#", PATIENT_ID); //Return patient by id
+        uriMatcher.addURI(PROVIDER_NAME, "patients/#", PATIENT_ID); //Return patient by id
         uriMatcher.addURI(PROVIDER_NAME, "answers/", ANSWERS); //Return or put answers?
-        uriMatcher.addURI(PROVIDER_NAME, "answer/#", ANSWERS_ID); //ID is for patient return answers for a patient.
+        uriMatcher.addURI(PROVIDER_NAME, "answers/#", ANSWERS_ID); //ID is for patient return answers for a patient.
     }
 
     @Override
@@ -93,8 +95,11 @@ public class DataContentProvider extends ContentProvider {
                 //Group id ye göre soruları gönder. uri.getLastPathSegment()
                 break;
             case PATIENTS:
+                queryBuilder.setTables(PatientSQLiteHelper.TABLE_PATIENTS);
                 break;
             case ANSWERS_ID:
+                queryBuilder.setTables(PatientSQLiteHelper.TABLE_ANSWERS);
+                queryBuilder.appendWhere(PatientSQLiteHelper.ANSWER_PATIENT_ID + "=" + uri.getLastPathSegment());
                 break;
         }
 
@@ -115,20 +120,24 @@ public class DataContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        //Insert new userç
         int uriType = uriMatcher.match(uri);
         SQLiteDatabase sqlDB = mPatientAnswerDatabase.getWritableDatabase();
-        int rowsDeleted = 0;
         long id = 0;
+        Uri uri1;
         switch (uriType) {
             case PATIENTS:
                 id = sqlDB.insert(PatientSQLiteHelper.TABLE_PATIENTS, null, values);
+                uri1 = Uri.parse(PROVIDER_NAME + "patient/" + id);
+                break;
+            case ANSWERS:
+                id = sqlDB.insert(PatientSQLiteHelper.TABLE_ANSWERS, null, values);
+                uri1 = Uri.parse(PROVIDER_NAME + "answer/" + id);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
         getContext().getContentResolver().notifyChange(uri, null);
-        return Uri.parse(PROVIDER_NAME + "patient/" + id);
+        return uri1;
     }
 
     @Override

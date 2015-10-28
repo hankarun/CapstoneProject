@@ -37,7 +37,7 @@ public class Patient implements Parcelable{
     public String getmDoctorName() { return mDoctorName;}
     public String getmDoctorNumber() { return mDoctorNumber;}
     public Date getmDoctorDate() { return mDoctorDate;}
-    public String mProblems() { return mProblems;}
+    public String getmProblems() { return mProblems;}
 
     public void setmId(int id){ mId = id;}
     public void setmName(String name){ mName = name;}
@@ -54,25 +54,57 @@ public class Patient implements Parcelable{
 
 
     public void addAnswer(Answer answer){ mAnswers.add(answer);}
-    public ArrayList<Answer> getmAnswers(){ return mAnswers;}
 
     public Patient(){
         mAnswers = new ArrayList<>();
     }
 
     public Patient(Cursor cursor){
+        setmId(cursor.getInt(cursor.getColumnIndex(PatientSQLiteHelper.COLUMN_ID)));
+        setmName(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_NAME)));
+        setmSurname(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_SURNAME)));
 
+        //setmBirthDate(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_BIRTHDATE)));
+
+        setmAddress(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_ADDRESS)));
+        setmEmail(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_EMAIL)));
+        setmTelephone1(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_TEL1)));
+        setmTelephone2(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_TEL2)));
+        setmDoctorName(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_DOCTOR_NAME)));
+        setmDoctorNumber(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_DOCTOR_NUMBER)));
+
+        //setmDoctorDate(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_SURNAME)));
+
+        setmProblems(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_DOCTOR_PROBLEMS)));
     }
 
     public Patient(Parcel parcel){
-
+        //TODO: Add date values
+        setmId(parcel.readInt());
+        setmName(parcel.readString());
+        setmSurname(parcel.readString());
+        setmAddress(parcel.readString());
+        setmEmail(parcel.readString());
+        setmTelephone1(parcel.readString());
+        setmTelephone2(parcel.readString());
+        setmDoctorName(parcel.readString());
+        setmDoctorNumber(parcel.readString());
+        setmProblems(parcel.readString());
     }
 
     public ContentValues toContentValues(){
         ContentValues values = new ContentValues();
-
+        //TODO: Add date values
         values.put(PatientSQLiteHelper.PATIENT_NAME, mName);
         values.put(PatientSQLiteHelper.PATIENT_SURNAME, mSurname);
+
+        values.put(PatientSQLiteHelper.PATIENT_ADDRESS, mAddress);
+        values.put(PatientSQLiteHelper.PATIENT_EMAIL, mEmail);
+        values.put(PatientSQLiteHelper.PATIENT_TEL1, mTelephone1);
+        values.put(PatientSQLiteHelper.PATIENT_TEL2, mTelephone2);
+        values.put(PatientSQLiteHelper.PATIENT_DOCTOR_NAME, mDoctorName);
+        values.put(PatientSQLiteHelper.PATIENT_DOCTOR_NUMBER, mDoctorNumber);
+        values.put(PatientSQLiteHelper.PATIENT_DOCTOR_PROBLEMS, mProblems);
 
         return values;
     }
@@ -84,6 +116,17 @@ public class Patient implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        //TODO: Add date values
+        dest.writeInt(getmId());
+        dest.writeString(getmName());
+        dest.writeString(getmSurname());
+        dest.writeString(getmAddress());
+        dest.writeString(getmEmail());
+        dest.writeString(getmTelephone1());
+        dest.writeString(getmTelephone2());
+        dest.writeString(getmDoctorName());
+        dest.writeString(getmDoctorNumber());
+        dest.writeString(getmProblems());
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

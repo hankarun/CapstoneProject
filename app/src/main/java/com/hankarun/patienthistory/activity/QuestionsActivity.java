@@ -160,7 +160,6 @@ public class QuestionsActivity extends AppCompatActivity implements
         }
     }
 
-
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -191,12 +190,14 @@ public class QuestionsActivity extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
     }
 
-    public Uri createPatient(Patient patient) {
+    public Uri writePatientToDatabase(Patient patient) {
         ContentValues values = patient.toContentValues();
-
-        Log.d("name - surname", patient.getmName() + " " + patient.getmSurname());
-
         return getContentResolver().insert(DataContentProvider.CONTENT_URI_PATIENT, values);
+    }
+
+    public Uri writeAnswerToDatabase(Answer answer){
+        ContentValues values = answer.toContentValues();
+        return getContentResolver().insert(DataContentProvider.CONTENT_URI_ANSWERS,values);
     }
 
     //Collect data from fragments. Create user get id from uri add answers based on patient.
@@ -204,15 +205,19 @@ public class QuestionsActivity extends AppCompatActivity implements
         Patient p = uFragment.getPatient();
 
         //Patient id provided. Add them to answers.
-        Log.d("patient ","created " + createPatient(p).getLastPathSegment());
+        Log.d("patient ","created " + writePatientToDatabase(p).getLastPathSegment());
+
+        p.setmId(Integer.parseInt(writePatientToDatabase(p).getLastPathSegment()));
 
         for(GroupQuestionsFragment f:mQuList){
             ArrayList<Question> q = f.getmQuestionsList();
             //Get answers and add to the user
             for(Question question:q){
                 Answer a = new Answer(question);
+                a.setmUserId(p.getmId());
+
+                writeAnswerToDatabase(a);
                 //User id and other fields.
-                mPatient.addAnswer(a);
             }
         }
 

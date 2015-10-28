@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.helper.DataContentProvider;
+import com.hankarun.patienthistory.helper.MyAdapter;
 import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
 import com.hankarun.patienthistory.model.Answer;
 import com.hankarun.patienthistory.model.Group;
@@ -40,7 +41,6 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
     private MyAdapter adapter;
 
     public GroupQuestionsFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -126,91 +126,5 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
         mQuestionsList.clear();
     }
 
-    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-        private ArrayList<Question> mQuestions;
 
-        public MyAdapter(ArrayList<Question> myDataset) {
-            mQuestions = myDataset;
-        }
-
-        public ArrayList<Question> getmQuestions() { return mQuestions;}
-
-        @Override
-        public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_card_layout, parent, false);
-            ViewHolder vh = new ViewHolder(v);
-            return vh;
-        }
-
-        @Override
-        public void onBindViewHolder(final MyAdapter.ViewHolder holder, final int position) {
-            final Question oneQuestion = mQuestions.get(position);
-
-            holder.mQuestionNumber.setText(position + 1 + "");
-            holder.mQuestionText.setText(oneQuestion.getmQuestion());
-
-            holder.mCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    switch (holder.mYesNoGroup.getCheckedRadioButtonId()){
-                        case R.id.radioYes:
-                            holder.mNo.setChecked(true);
-                            mQuestions.get(position).setmAnswer(false);
-                            break;
-                        case R.id.radioNo:
-                            mQuestions.get(position).setmAnswer(true);
-                            holder.mYes.setChecked(true);
-                            break;
-                    }
-                }
-            });
-
-            if(oneQuestion.getmAnswer())
-                holder.mYes.setChecked(true);
-            else
-                holder.mNo.setChecked(true);
-
-            holder.mYesNoGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    switch (checkedId){
-                        case R.id.radioYes:
-                            mQuestions.get(position).setmAnswer(true);
-                            break;
-                        case R.id.radioNo:
-                            mQuestions.get(position).setmAnswer(false);
-                            break;
-                    }
-                }
-            });
-
-
-
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return mQuestions.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public TextView mQuestionNumber;
-            public TextView mQuestionText;
-            public RadioGroup mYesNoGroup;
-            public RadioButton mYes;
-            public RadioButton mNo;
-            public CardView mCardView;
-
-            public ViewHolder(View v) {
-                super(v);
-                mQuestionNumber = (TextView) v.findViewById(R.id.questionNumberText);
-                mQuestionText = (TextView) v.findViewById(R.id.questionText);
-                mYesNoGroup = (RadioGroup) v.findViewById(R.id.radioYesNo);
-                mYes = (RadioButton) v.findViewById(R.id.radioYes);
-                mNo = (RadioButton) v.findViewById(R.id.radioNo);
-                mCardView = (CardView) v.findViewById(R.id.cardView);
-            }
-        }
-    }
 }
