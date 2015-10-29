@@ -1,0 +1,24 @@
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:weightSum="3"
+    android:baselineAligned="false"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_below="@id/appbar_layout">
+    <fragment
+        android:id="@+id/adminFragment"
+        android:name="com.hankarun.patienthistory.fragment.AdminActivityFragment"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        tools:layout="@layout/fragment_admin"
+        android:layout_weight="1"/>
+
+    <fragment
+        android:id="@+id/patientListFragment"
+        android:name="com.hankarun.patienthistory.fragment.PatientListFragment"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        tools:layout="@layout/fragment_patient_list"
+        android:layout_weight="2"/>
+</LinearLayout>

@@ -29,10 +29,28 @@
             android:label="@string/title_activity_questions"
             android:parentActivityName=".activity.GreetingActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.hankarun.patienthistory.activity.GreetingActivity" />
+        </activity>
+        <activity
+            android:name=".activity.AdminActivity"
+            android:label="@string/title_activity_admin"
+            android:parentActivityName=".activity.GreetingActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.hankarun.patienthistory.activity.GreetingActivity" />
+        </activity>
+        <activity
+            android:name=".activity.PatientListActivity"
+            android:label="@string/title_activity_patient_list"
+            android:parentActivityName=".activity.AdminActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.hankarun.patienthistory.activity.AdminActivity" />
         </activity>
     </application>
 

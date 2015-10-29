@@ -16,32 +16,39 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:weightSum="4"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="New Text"
-            android:id="@+id/questionNumberText"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_weight="0.2"
-            android:layout_marginTop="0dp"
-            />
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="New Text"
-            android:id="@+id/questionText"
-            android:layout_weight="2.8"
-            android:gravity="center_vertical" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="New Text"
+                android:id="@+id/questionNumberText"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_weight="0.2"
+                android:layout_marginTop="0dp"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="New Text"
+                android:id="@+id/questionText"
+                android:layout_weight="3.8"
+                android:gravity="center_vertical" />
+        </LinearLayout>
 
         <RadioGroup
             android:id="@+id/radioYesNo"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_weight="1"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical|center_horizontal">
 
             <RadioButton
                 android:id="@+id/radioYes"
