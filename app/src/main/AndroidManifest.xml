@@ -44,13 +44,22 @@
                 android:value="com.hankarun.patienthistory.activity.GreetingActivity" />
         </activity>
         <activity
-            android:name=".activity.PatientListActivity"
+            android:name=".activity.AdminSecondActivity"
             android:label="@string/title_activity_patient_list"
             android:parentActivityName=".activity.AdminActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.hankarun.patienthistory.activity.AdminActivity" />
+        </activity>
+        <activity
+            android:name=".activity.DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".activity.AdminSecondActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.hankarun.patienthistory.activity.AdminSecondActivity" />
         </activity>
     </application>
 

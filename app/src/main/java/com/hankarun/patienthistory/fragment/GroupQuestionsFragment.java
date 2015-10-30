@@ -9,25 +9,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.helper.DataContentProvider;
-import com.hankarun.patienthistory.helper.MyAdapter;
+import com.hankarun.patienthistory.helper.QuestionAdapter;
 import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
-import com.hankarun.patienthistory.model.Answer;
 import com.hankarun.patienthistory.model.Group;
 import com.hankarun.patienthistory.model.Question;
 
@@ -38,7 +30,7 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
     private Group mGroup;
     private RecyclerView mRecyclerView;
     private ArrayList<Question> mQuestionsList;
-    private MyAdapter adapter;
+    private QuestionAdapter adapter;
 
     public GroupQuestionsFragment() {
     }
@@ -61,7 +53,7 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mQuestionsList = new ArrayList<>();
-        adapter = new MyAdapter(mQuestionsList);
+        adapter = new QuestionAdapter(mQuestionsList);
         mRecyclerView.setAdapter(adapter);
 
         if (savedInstanceState != null && !savedInstanceState.isEmpty() ) {

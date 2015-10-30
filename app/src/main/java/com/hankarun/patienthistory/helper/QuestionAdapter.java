@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -15,24 +16,24 @@ import com.hankarun.patienthistory.model.Question;
 import java.util.ArrayList;
 
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> {
     private ArrayList<Question> mQuestions;
 
-    public MyAdapter(ArrayList<Question> myDataset) {
+    public QuestionAdapter(ArrayList<Question> myDataset) {
         mQuestions = myDataset;
     }
 
     public ArrayList<Question> getmQuestions() { return mQuestions;}
 
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public QuestionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_card_layout, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(final MyAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final QuestionAdapter.ViewHolder holder, final int position) {
 
         holder.mQuestionNumber.setText(position + 1 + "");
         holder.mQuestionText.setText(mQuestions.get(position).getmQuestion());
@@ -87,7 +88,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public RadioGroup mYesNoGroup;
         public RadioButton mYes;
         public RadioButton mNo;
-        public CardView mCardView;
+        public LinearLayout mCardView;
 
         public ViewHolder(View v) {
             super(v);
@@ -96,7 +97,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             mYesNoGroup = (RadioGroup) v.findViewById(R.id.radioYesNo);
             mYes = (RadioButton) v.findViewById(R.id.radioYes);
             mNo = (RadioButton) v.findViewById(R.id.radioNo);
-            mCardView = (CardView) v.findViewById(R.id.cardView);
+            mCardView = (LinearLayout) v.findViewById(R.id.cardView);
         }
     }
 }
