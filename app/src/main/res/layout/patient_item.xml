@@ -18,7 +18,9 @@
             android:layout_width="80dp"
             android:layout_height="100dp"
             android:id="@+id/imageView"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/blank_user"
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -26,29 +28,26 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:layout_margin="3dp">
+            android:layout_marginLeft="15dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView8" />
+                android:id="@+id/patientNameText" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView9" />
+                android:id="@+id/patientSurnameText" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView10" />
+                android:id="@+id/patientBirthDateText" />
 
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Single" />
+                android:id="@+id/patientEmailText" />
         </LinearLayout>
 
         <LinearLayout
@@ -56,32 +55,19 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:layout_margin="3dp">
+            android:gravity="left"
+            android:layout_marginLeft="15dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView11" />
+                android:id="@+id/patientNumberText" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView12" />
+                android:id="@+id/patientNumber2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView13" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView14" />
         </LinearLayout>
     </LinearLayout>
         <View

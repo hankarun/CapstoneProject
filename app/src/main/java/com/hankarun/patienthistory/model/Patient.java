@@ -14,7 +14,7 @@ public class Patient implements Parcelable{
     private int mId;
     private String mName;
     private String mSurname;
-    private Date mBirthDate;
+    private String mBirthDate;
     private String mAddress;
     private String mEmail;
     private String mTelephone1;
@@ -24,12 +24,10 @@ public class Patient implements Parcelable{
     private Date mDoctorDate;
     private String mProblems;
 
-    private ArrayList<Answer> mAnswers;
-
     public int getmId() { return mId;}
     public String getmName() { return mName;}
     public String getmSurname() { return mSurname;}
-    public Date getmBirthDate() { return mBirthDate;}
+    public String getmBirthDate() { return mBirthDate;}
     public String getmAddress() { return mAddress;}
     public String getmEmail() { return mEmail;}
     public String getmTelephone1() { return mTelephone1;}
@@ -42,7 +40,7 @@ public class Patient implements Parcelable{
     public void setmId(int id){ mId = id;}
     public void setmName(String name){ mName = name;}
     public void setmSurname(String surname){ mSurname = surname;}
-    public void setmBirthDate(Date birthdate){ mBirthDate = birthdate;}
+    public void setmBirthDate(String birthdate){ mBirthDate = birthdate;}
     public void setmAddress(String address){ mAddress = address;}
     public void setmEmail(String email){ mEmail = email;}
     public void setmTelephone1(String telephone){ mTelephone1 = telephone;}
@@ -53,19 +51,16 @@ public class Patient implements Parcelable{
     public void setmProblems(String problems){ mProblems = problems;}
 
 
-    public void addAnswer(Answer answer){ mAnswers.add(answer);}
 
     public Patient(){
-        mAnswers = new ArrayList<>();
+
     }
 
     public Patient(Cursor cursor){
         setmId(cursor.getInt(cursor.getColumnIndex(PatientSQLiteHelper.COLUMN_ID)));
         setmName(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_NAME)));
         setmSurname(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_SURNAME)));
-
-        //setmBirthDate(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_BIRTHDATE)));
-
+        setmBirthDate(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_BDATE)));
         setmAddress(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_ADDRESS)));
         setmEmail(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_EMAIL)));
         setmTelephone1(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_TEL1)));
@@ -84,6 +79,7 @@ public class Patient implements Parcelable{
         setmName(parcel.readString());
         setmSurname(parcel.readString());
         setmAddress(parcel.readString());
+        setmBirthDate(parcel.readString());
         setmEmail(parcel.readString());
         setmTelephone1(parcel.readString());
         setmTelephone2(parcel.readString());
@@ -97,8 +93,8 @@ public class Patient implements Parcelable{
         //TODO: Add date values
         values.put(PatientSQLiteHelper.PATIENT_NAME, mName);
         values.put(PatientSQLiteHelper.PATIENT_SURNAME, mSurname);
-
         values.put(PatientSQLiteHelper.PATIENT_ADDRESS, mAddress);
+        values.put(PatientSQLiteHelper.PATIENT_BDATE,mBirthDate);
         values.put(PatientSQLiteHelper.PATIENT_EMAIL, mEmail);
         values.put(PatientSQLiteHelper.PATIENT_TEL1, mTelephone1);
         values.put(PatientSQLiteHelper.PATIENT_TEL2, mTelephone2);
@@ -121,6 +117,7 @@ public class Patient implements Parcelable{
         dest.writeString(getmName());
         dest.writeString(getmSurname());
         dest.writeString(getmAddress());
+        dest.writeString(getmBirthDate());
         dest.writeString(getmEmail());
         dest.writeString(getmTelephone1());
         dest.writeString(getmTelephone2());

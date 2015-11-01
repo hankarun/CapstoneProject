@@ -1,6 +1,7 @@
 package com.hankarun.patienthistory.fragment;
 
 
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,8 +10,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,7 @@ import com.hankarun.patienthistory.helper.QuestionAdapter;
 import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
 import com.hankarun.patienthistory.model.Group;
 import com.hankarun.patienthistory.model.Question;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.ArrayList;
 
@@ -32,8 +36,12 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
     private ArrayList<Question> mQuestionsList;
     private QuestionAdapter adapter;
 
+    private static final String TAG = "GroupQuestionsFragment";
+
     public GroupQuestionsFragment() {
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,10 +55,18 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
         TextView t = (TextView) rootView.findViewById(R.id.userTextview);
         t.setText(mGroup.getmGText());
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.questionRecyclerView);
-        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
 
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.questionRecyclerView);
+
+        Configuration config = getActivity().getResources().getConfiguration();
+
+        if((config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)== Configuration.SCREENLAYOUT_SIZE_XLARGE
+                && config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            mRecyclerView.setHasFixedSize(true);
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        }else{
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
 
         mQuestionsList = new ArrayList<>();
         adapter = new QuestionAdapter(mQuestionsList);

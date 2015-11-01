@@ -32,6 +32,7 @@ public class PatientSQLiteHelper extends SQLiteOpenHelper {
     public static final String ANSWER_DETAIL = "adetail";
     public static final String ANSWER_DATE = "adate";
     public static final String ANSWER_QUESTION_ID = "qid";
+    public static final String ANSWER_QUESTION = "question";
 
 
 
@@ -40,14 +41,14 @@ public class PatientSQLiteHelper extends SQLiteOpenHelper {
             + " integer primary key autoincrement, "
             + PATIENT_NAME + " text, "
             + PATIENT_SURNAME + " text, "
-            + PATIENT_BDATE + " date, "
+            + PATIENT_BDATE + " text, "
             + PATIENT_EMAIL + " text, "
             + PATIENT_ADDRESS + " text, "
             + PATIENT_TEL1 + " text, "
             + PATIENT_TEL2 + " text, "
             + PATIENT_DOCTOR_NAME + " text, "
             + PATIENT_DOCTOR_NUMBER + " text, "
-            + PATIENT_DOCTOR_DATE + " date, "
+            + PATIENT_DOCTOR_DATE + " text, "
             + PATIENT_DOCTOR_PROBLEMS + " text"
             +");";
 
@@ -55,10 +56,11 @@ public class PatientSQLiteHelper extends SQLiteOpenHelper {
             + TABLE_ANSWERS + "(" + COLUMN_ID
             + " integer primary key autoincrement, "
             + ANSWER_PATIENT_ID + " integer, "
-            + ANSWER + " boolean, "
+            + ANSWER + " text, "
             + ANSWER_DETAIL + " text, "
-            + ANSWER_DATE + " date, "
-            + ANSWER_QUESTION_ID + " integer"
+            + ANSWER_DATE + " text, "
+            + ANSWER_QUESTION_ID + " integer, "
+            + ANSWER_QUESTION + " text"
             + ");";
 
     public PatientSQLiteHelper(Context context) {

@@ -29,8 +29,10 @@ import com.hankarun.patienthistory.model.Answer;
 import com.hankarun.patienthistory.model.Group;
 import com.hankarun.patienthistory.model.Patient;
 import com.hankarun.patienthistory.model.Question;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -81,13 +83,15 @@ public class QuestionsActivity extends AppCompatActivity implements
         mQuList = new ArrayList<>();
         final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(uFragment, "user");
+        int x = 1;
         for(Group g:mGroups){
             GroupQuestionsFragment fragment = new GroupQuestionsFragment();
             Bundle bundle = new Bundle();
             bundle.putParcelable("group",g);
             fragment.setArguments(bundle);
             mQuList.add(fragment);
-            adapter.addFrag(fragment, "group");
+            adapter.addFrag(fragment, x+"");
+            x = x + 1;
         }
         adapter.addFrag(new FinishFragment(), "end");
         viewPager.setAdapter(adapter);
@@ -160,8 +164,13 @@ public class QuestionsActivity extends AppCompatActivity implements
         }
     }
 
-    class ViewPagerAdapter extends FragmentStatePagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
+    @Override
+    public void onBackPressed() {
+        viewPager.setCurrentItem(currentpage-1);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        public final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
@@ -195,32 +204,36 @@ public class QuestionsActivity extends AppCompatActivity implements
         return getContentResolver().insert(DataContentProvider.CONTENT_URI_PATIENT, values);
     }
 
-    public Uri writeAnswerToDatabase(Answer answer){
-        ContentValues values = answer.toContentValues();
-        return getContentResolver().insert(DataContentProvider.CONTENT_URI_ANSWERS,values);
+    public int writeAnswerToDatabase(ArrayList<ContentValues> contentValues){
+        ContentValues values[] = new ContentValues[contentValues.size()];
+        contentValues.toArray(values);
+        return getContentResolver().bulkInsert(DataContentProvider.CONTENT_URI_ANSWERS, values);
     }
 
     //Collect data from fragments. Create user get id from uri add answers based on patient.
     public void getInfo(){
         Patient p = uFragment.getPatient();
 
-        //Patient id provided. Add them to answers.
-        Log.d("patient ","created " + writePatientToDatabase(p).getLastPathSegment());
-
         p.setmId(Integer.parseInt(writePatientToDatabase(p).getLastPathSegment()));
 
+        ArrayList<ContentValues> contentValues = new ArrayList<>();
+
+        Log.d("size ",mQuList.size()+"");
         for(GroupQuestionsFragment f:mQuList){
             ArrayList<Question> q = f.getmQuestionsList();
+            Date date = new Date();
             //Get answers and add to the user
             for(Question question:q){
                 Answer a = new Answer(question);
                 a.setmUserId(p.getmId());
+                a.setmDate(date.getTime() + "");
+                contentValues.add(a.toContentValues());
 
-                writeAnswerToDatabase(a);
-                //User id and other fields.
             }
         }
+        writeAnswerToDatabase(contentValues);
 
         finish();
     }
+
 }

@@ -17,6 +17,7 @@ public class Answer implements Parcelable{
     private Boolean mAnswer;
     private String mDetail;
     private String mDate;
+    private String mQuestion;
 
     public void setmId(int id) { mId = id;}
     public void setmAnswer(Boolean answer) { mAnswer = answer;}
@@ -24,6 +25,7 @@ public class Answer implements Parcelable{
     public void setmQuestionId(int questionId) { mQuestionId = questionId;}
     public void setmDetail(String detail){ mDetail = detail;}
     public void setmDate(String date){ mDate = date;}
+    public void setmQuestion(String question){ mQuestion = question;}
 
     public int getmId(){ return mId;}
     public int getmUserId(){ return mUserId;}
@@ -31,32 +33,38 @@ public class Answer implements Parcelable{
     public Boolean getmAnswer() { return mAnswer;}
     public String getmDetail(){ return mDetail;}
     public String getmDate(){ return mDate;}
+    public String getmQuestion(){ return mQuestion;}
 
 
-    public Answer(int questionId){
-        mQuestionId = questionId;
+    public Answer(String question){
+        mQuestion = question;
         mAnswer = false;
     }
 
     public Answer(Question question){
         mAnswer = question.getmAnswer();
-        mQuestionId = question.getmId();
+        mQuestion = question.getmQuestion();
     }
 
     public Answer(Cursor cursor){
-        //TODO: Cursor to Answer implementation
         setmId(cursor.getInt(cursor.getColumnIndex(PatientSQLiteHelper.COLUMN_ID)));
-
+        setmUserId(cursor.getInt(cursor.getColumnIndex(PatientSQLiteHelper.ANSWER_PATIENT_ID)));
+        setmQuestionId(cursor.getInt(cursor.getColumnIndex(PatientSQLiteHelper.ANSWER_QUESTION_ID)));
+        setmAnswer((cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.ANSWER)).equals("1")));
+        setmDetail(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.ANSWER_DETAIL)));
+        setmDate(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.ANSWER_DATE)));
+        setmQuestion(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.ANSWER_QUESTION)));
     }
 
     public ContentValues toContentValues() {
         ContentValues values = new ContentValues();
         //values.put(PatientSQLiteHelper.COLUMN_ID, getmId());
-        values.put(PatientSQLiteHelper.ANSWER, getmAnswer());
+        values.put(PatientSQLiteHelper.ANSWER, getmAnswer()?"1":"0");
         values.put(PatientSQLiteHelper.ANSWER_DETAIL, getmDetail());
         values.put(PatientSQLiteHelper.ANSWER_PATIENT_ID, getmQuestionId());
         values.put(PatientSQLiteHelper.ANSWER_DATE, getmDate());
         values.put(PatientSQLiteHelper.ANSWER_PATIENT_ID, getmUserId());
+        values.put(PatientSQLiteHelper.ANSWER_QUESTION, getmQuestion());
         return values;
     }
 
@@ -68,6 +76,8 @@ public class Answer implements Parcelable{
         setmUserId(parcel.readInt());
         setmQuestionId(parcel.readInt());
         setmDetail(parcel.readString());
+        setmDate(parcel.readString());
+        setmQuestion(parcel.readString());
     }
 
 
@@ -83,7 +93,8 @@ public class Answer implements Parcelable{
         dest.writeInt(getmUserId());
         dest.writeInt(getmQuestionId());
         dest.writeString(getmDetail());
-        //TODO Add date objects.
+        dest.writeString(getmDate());
+        dest.writeString(getmQuestion());
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

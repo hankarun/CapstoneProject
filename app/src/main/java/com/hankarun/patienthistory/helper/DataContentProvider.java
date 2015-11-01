@@ -74,8 +74,8 @@ public class DataContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-
-        switch (uriMatcher.match(uri)){
+        SQLiteDatabase db = null;
+        switch (uriMatcher.match(uri)) {
             case QUESTION:
                 //all questions
                 queryBuilder.setTables(QuesSQLiteHelper.TABLE_QUESTIONS);
@@ -84,26 +84,33 @@ public class DataContentProvider extends ContentProvider {
                 //O soruyu getir. uri.getLastPathSegment()
                 queryBuilder.setTables(QuesSQLiteHelper.TABLE_QUESTIONS);
                 queryBuilder.appendWhere(QuesSQLiteHelper.QUESTION_TABLE_ID + "=" + uri.getLastPathSegment());
+                db = mQuestionDatabase.getWritableDatabase();
                 break;
             case GROUP:
                 //Tüm grupları gönder
                 queryBuilder.setTables(QuesSQLiteHelper.TABLE_GROUPS);
+                db = mQuestionDatabase.getWritableDatabase();
                 break;
             case GROUP_ID:
                 queryBuilder.setTables(QuesSQLiteHelper.TABLE_QUESTIONS);
                 queryBuilder.appendWhere(QuesSQLiteHelper.QUESTION_TABLE_GROUPID + "=" + uri.getLastPathSegment());
+                db = mQuestionDatabase.getWritableDatabase();
                 //Group id ye göre soruları gönder. uri.getLastPathSegment()
                 break;
             case PATIENTS:
                 queryBuilder.setTables(PatientSQLiteHelper.TABLE_PATIENTS);
+                db = mPatientAnswerDatabase.getWritableDatabase();
                 break;
             case ANSWERS_ID:
                 queryBuilder.setTables(PatientSQLiteHelper.TABLE_ANSWERS);
                 queryBuilder.appendWhere(PatientSQLiteHelper.ANSWER_PATIENT_ID + "=" + uri.getLastPathSegment());
+                db = mPatientAnswerDatabase.getWritableDatabase();
                 break;
+            default:
+                db = mPatientAnswerDatabase.getWritableDatabase();
         }
 
-        SQLiteDatabase db = mQuestionDatabase.getWritableDatabase();
+
         Cursor cursor = queryBuilder.query(db, projection, selection,
                 selectionArgs, null, null, sortOrder);
 
@@ -122,6 +129,7 @@ public class DataContentProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         int uriType = uriMatcher.match(uri);
         SQLiteDatabase sqlDB = mPatientAnswerDatabase.getWritableDatabase();
+
         long id = 0;
         Uri uri1;
         switch (uriType) {
