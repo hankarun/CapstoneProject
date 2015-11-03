@@ -12,7 +12,7 @@ import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.fragment.PatientDetailFragment;
 import com.hankarun.patienthistory.model.Patient;
 
-public class DetailActivity extends AppCompatActivity {
+public class PatientDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

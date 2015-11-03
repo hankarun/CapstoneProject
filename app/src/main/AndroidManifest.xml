@@ -54,7 +54,7 @@
                 android:value="com.hankarun.patienthistory.activity.AdminActivity" />
         </activity>
         <activity
-            android:name=".activity.DetailActivity"
+            android:name=".activity.PatientDetailActivity"
             android:label="@string/title_activity_detail"
             android:parentActivityName=".activity.AdminSecondActivity"
             android:theme="@style/AppTheme.NoActionBar" >

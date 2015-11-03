@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,22 +15,20 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.hankarun.patienthistory.fragment.FinishFragment;
 import com.hankarun.patienthistory.R;
+import com.hankarun.patienthistory.fragment.FinishFragment;
 import com.hankarun.patienthistory.fragment.GroupQuestionsFragment;
 import com.hankarun.patienthistory.fragment.UserEntryFragment;
 import com.hankarun.patienthistory.helper.DataContentProvider;
-import com.hankarun.patienthistory.helper.PatientSQLiteHelper;
 import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
 import com.hankarun.patienthistory.model.Answer;
 import com.hankarun.patienthistory.model.Group;
 import com.hankarun.patienthistory.model.Patient;
 import com.hankarun.patienthistory.model.Question;
-import com.squareup.leakcanary.LeakCanary;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,6 +60,7 @@ public class QuestionsActivity extends AppCompatActivity implements
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         if(savedInstanceState == null || !savedInstanceState.containsKey("key")) {
+            Log.d("returned","Activity");
             loadGroups();
         }else{
             mGroups = savedInstanceState.getParcelableArrayList("key");
@@ -95,6 +95,7 @@ public class QuestionsActivity extends AppCompatActivity implements
         }
         adapter.addFrag(new FinishFragment(), "end");
         viewPager.setAdapter(adapter);
+
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -169,7 +170,7 @@ public class QuestionsActivity extends AppCompatActivity implements
         viewPager.setCurrentItem(currentpage-1);
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+    class ViewPagerAdapter extends FragmentStatePagerAdapter {
         public final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
         public ViewPagerAdapter(FragmentManager manager) {
@@ -191,10 +192,21 @@ public class QuestionsActivity extends AppCompatActivity implements
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            //super.destroyItem(container, position, object);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        Log.d("saved","activity");
         outState.putParcelableArrayList("key", mGroups);
         super.onSaveInstanceState(outState);
     }

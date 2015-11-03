@@ -9,6 +9,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?selectableItemBackground"
+    android:transitionName="profile"
     android:id="@+id/cardView"
     android:orientation="vertical"
     app:cardElevation="5dp">

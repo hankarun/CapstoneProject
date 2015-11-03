@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hankarun.patienthistory.R;
-import com.hankarun.patienthistory.activity.DetailActivity;
+import com.hankarun.patienthistory.activity.PatientDetailActivity;
 import com.hankarun.patienthistory.fragment.PatientDetailFragment;
 import com.hankarun.patienthistory.model.Patient;
 
@@ -37,7 +37,8 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.patient_item, parent, false);
         ViewHolder vh = new ViewHolder(v);
-        return vh;    }
+        return vh;
+    }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
@@ -54,31 +55,10 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.ViewHold
         holder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View test = mActivity.findViewById(R.id.container_body);
-                if(test == null) {
-                    Intent intent = new Intent(mActivity, DetailActivity.class);
-                    //intent.putExtra(DetailActivity.EXTRA_CONTACT, contact);
-                    intent.putExtra("patient",patient);
-                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(mActivity, holder.mLinearLayout, "profile");
-                    mActivity.startActivity(intent, options.toBundle());
-                }else{
-                    Fragment fragment = null;
-                    Class fragmentClass = PatientDetailFragment.class;
-                    try {
-                        fragment = (Fragment) fragmentClass.newInstance();
-                    } catch (Exception e) {
-                        Log.d("eror", e.toString());
-                    }
-
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("patient",patient);
-                    fragment.setArguments(bundle);
-
-                    FragmentManager fragmentManager = ((AppCompatActivity)mActivity).getSupportFragmentManager();
-
-                    fragmentManager.beginTransaction().replace(R.id.container_body, fragment).commit();
-
-                }
+                Intent intent = new Intent(mActivity, PatientDetailActivity.class);
+                intent.putExtra("patient",patient);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(mActivity, holder.mLinearLayout, "profile");
+                mActivity.startActivity(intent, options.toBundle());
             }
         });
     }

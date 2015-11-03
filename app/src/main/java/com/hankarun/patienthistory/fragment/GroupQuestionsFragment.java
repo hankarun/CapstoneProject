@@ -74,8 +74,10 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
 
         if (savedInstanceState != null && !savedInstanceState.isEmpty() ) {
             mGroup = savedInstanceState.getParcelable("group");
+
             Parcelable[] question = savedInstanceState.getParcelableArray("questions");
             for (Parcelable aQuestion : question) mQuestionsList.add((Question) aQuestion);
+            Log.d("returned", "fragment " + mQuestionsList.size());
             adapter.notifyDataSetChanged();
         } else {
             populateList();
@@ -90,6 +92,7 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        Log.d("saved","fragment " + mQuestionsList.size());
         outState.putParcelable("group", mGroup);
         Question[] q = new Question[mQuestionsList.size()];
         for(int x = 0; x < mQuestionsList.size();x++)

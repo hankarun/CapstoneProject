@@ -9,6 +9,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?selectableItemBackground"
+    android:transitionName="profile"
     android:id="@+id/cardView"
     app:cardElevation="5dp">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
