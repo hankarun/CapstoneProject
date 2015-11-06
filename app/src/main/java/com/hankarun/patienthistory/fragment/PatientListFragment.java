@@ -91,4 +91,6 @@ public class PatientListFragment extends Fragment implements LoaderManager.Loade
     public void onLoaderReset(Loader<Cursor> loader) {
         mPatientList.clear();
     }
+
+    //TODO Add state saving.
 }

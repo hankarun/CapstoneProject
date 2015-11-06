@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ public class UserEntryFragment extends Fragment {
     private EditText tel1Text;
     private EditText tel2Text;
     private EditText addressText;
+
 
     public UserEntryFragment() {
     }
@@ -49,6 +52,21 @@ public class UserEntryFragment extends Fragment {
         tel1Text = (EditText) rootView.findViewById(R.id.input_tel1);
         tel2Text = (EditText) rootView.findViewById(R.id.input_tel2);
         addressText = (EditText) rootView.findViewById(R.id.input_adress);
+
+        AutoCompleteTextView patientCity = (AutoCompleteTextView) rootView.findViewById(R.id.city_input);
+        AutoCompleteTextView patientTown = (AutoCompleteTextView) rootView.findViewById(R.id.town_input);
+        AutoCompleteTextView doctorCity = (AutoCompleteTextView) rootView.findViewById(R.id.doccity_input);
+        AutoCompleteTextView doctorTown = (AutoCompleteTextView) rootView.findViewById(R.id.doctown_input);
+
+        String[] iller = getResources().getStringArray(R.array.iller);
+        String[] ilceler = getResources().getStringArray(R.array.ilce);
+        ArrayAdapter<String> ilceAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,ilceler);
+        ArrayAdapter<String> illerAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,iller);
+
+        patientCity.setAdapter(illerAdapter);
+        doctorCity.setAdapter(illerAdapter);
+        patientTown.setAdapter(ilceAdapter);
+        doctorTown.setAdapter(ilceAdapter);
 
         if(savedInstanceState != null){
             patient = savedInstanceState.getParcelable("patient");

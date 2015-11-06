@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.fragment.FinishFragment;
@@ -167,6 +168,12 @@ public class QuestionsActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
+        if(currentpage==0){
+            //TODO Çıkmak istediğini soru dialog ile sor.
+            Toast.makeText(getApplicationContext(),"Do you want to quit?",Toast.LENGTH_SHORT).show();
+            finish();
+
+        }
         viewPager.setCurrentItem(currentpage-1);
     }
 
