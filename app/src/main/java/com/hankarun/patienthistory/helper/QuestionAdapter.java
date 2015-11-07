@@ -35,7 +35,15 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     @Override
     public void onBindViewHolder(final QuestionAdapter.ViewHolder holder, final int position) {
 
-        holder.mQuestionNumber.setText(position + 1 + "");
+        /*int total = mQuestions.size();
+
+        if(position%2==0){
+            holder.mQuestionNumber.setText(position + 1 + "");
+        }
+        else{
+            holder.mQuestionNumber.setText(position + 1 + "");
+        }*/
+
         holder.mQuestionText.setText(mQuestions.get(position).getmQuestion());
 
         holder.mCardView.setOnClickListener(new View.OnClickListener() {

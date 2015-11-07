@@ -15,9 +15,6 @@ import android.widget.ListView;
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.activity.AdminSecondActivity;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class AdminActivityFragment extends Fragment {
 
     public AdminActivityFragment() {
@@ -75,7 +72,7 @@ public class AdminActivityFragment extends Fragment {
                 break;
             case 1:
                 //Open groups activity or fragment
-                fragmentClass = GroupEditFragment.class;
+                fragmentClass = GroupListFragment.class;
                 fragmentName = "groups";
                 break;
             case 2:

@@ -3,6 +3,7 @@ package com.hankarun.patienthistory.fragment;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
@@ -54,6 +55,7 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_patient_detail, container, false);
+
 
         nameTextView = (TextView) v.findViewById(R.id.patientNameText);
         surnameTextView = (TextView) v.findViewById(R.id.patientSurnameText);

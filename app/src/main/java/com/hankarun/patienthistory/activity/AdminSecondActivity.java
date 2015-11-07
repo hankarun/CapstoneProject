@@ -2,17 +2,14 @@ package com.hankarun.patienthistory.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 
 import com.hankarun.patienthistory.R;
-import com.hankarun.patienthistory.fragment.GroupEditFragment;
+import com.hankarun.patienthistory.fragment.GroupListFragment;
 import com.hankarun.patienthistory.fragment.PatientListFragment;
 
 public class AdminSecondActivity extends AppCompatActivity {
@@ -44,7 +41,7 @@ public class AdminSecondActivity extends AppCompatActivity {
                 break;
             case 1:
                 //Open groups activity or fragment
-                fragmentClass = GroupEditFragment.class;
+                fragmentClass = GroupListFragment.class;
                 fragmentName = "groups";
                 break;
             case 2:
