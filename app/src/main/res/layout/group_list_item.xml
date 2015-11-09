@@ -16,7 +16,7 @@
             android:text="New Text"
             android:id="@+id/groupNameView"
             android:layout_gravity="center"
-            android:gravity="center_vertical|center_horizontal"
+            android:gravity="center_vertical"
             android:layout_weight="1.9" />
 
         <ImageView
@@ -25,7 +25,8 @@
             android:id="@+id/groupReorderImage"
             android:src="@drawable/ic_reorder_green_400_24dp"
             android:layout_weight="0.1"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:visibility="gone" />
     </LinearLayout>
 
     <View

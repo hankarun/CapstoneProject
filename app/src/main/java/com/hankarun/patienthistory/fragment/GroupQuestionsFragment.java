@@ -110,10 +110,11 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
-                QuesSQLiteHelper.QUESTION_TABLE_ID,
+                QuesSQLiteHelper.TABLE_QUESTIONS+"."+QuesSQLiteHelper.QUESTION_TABLE_ID,
                 QuesSQLiteHelper.QUESTION_TABLE_TEXT,
                 QuesSQLiteHelper.QUESTION_TABLE_TYPE,
-                QuesSQLiteHelper.QUESTION_TABLE_GROUPID};
+                QuesSQLiteHelper.QUESTION_TABLE_GROUPID,
+                QuesSQLiteHelper.GROUP_TABLE_TEXT};
         Uri uri = Uri.parse(DataContentProvider.CONTENT_URI_GROUPS + "/" + id);
         CursorLoader cursorLoader = new CursorLoader(getActivity(),
                 uri, projection, null, null, null);

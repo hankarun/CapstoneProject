@@ -83,7 +83,7 @@ public class PatientListFragment extends Fragment implements LoaderManager.Loade
                 mPatientList.add(new Patient(cursor));
             }while(cursor.moveToNext());
         }
-        cursor.close();
+        //cursor.close();
         adapter.notifyDataSetChanged();
     }
 

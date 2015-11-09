@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hankarun.patienthistory.fragment.QuestionsListFragment">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="Sorular"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/groupSpinner"
+        android:layout_below="@+id/textView"
+        android:layout_toEndOf="@+id/textView2"
+        android:layout_marginLeft="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gruplar :"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/groupSpinner"
+        android:gravity="center_vertical" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/questionListRecycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView2"
+        android:scrollbars="vertical"
+        android:layout_margin="12dp" />
+
+</RelativeLayout>

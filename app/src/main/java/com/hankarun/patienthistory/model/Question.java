@@ -13,6 +13,10 @@ public class Question implements Parcelable{
     private int mGroupId;
     private boolean mAnswer;
 
+    public Question(){
+
+    }
+
     public Question(Cursor cursor){
         setmId(cursor.getInt(cursor.getColumnIndex(QuesSQLiteHelper.QUESTION_TABLE_ID)));
         setmQuestion(cursor.getString(cursor.getColumnIndex(QuesSQLiteHelper.QUESTION_TABLE_TEXT)));
@@ -34,7 +38,7 @@ public class Question implements Parcelable{
     public boolean getmAnswer() { return mAnswer;}
 
     public String toString(){
-        return "Id = " + mId + " q = " + mQuestion + " t = " + mType + " gid = " + mGroupId;
+        return mQuestion;
     }
 
     //Parcable
@@ -43,10 +47,7 @@ public class Question implements Parcelable{
         mType = parcel.readInt();
         mGroupId = parcel.readInt();
         int te = parcel.readInt();
-        if(te==1)
-            mAnswer = true;
-        else
-            mAnswer = false;
+        mAnswer = te == 1;
         mQuestion = parcel.readString();
     }
 

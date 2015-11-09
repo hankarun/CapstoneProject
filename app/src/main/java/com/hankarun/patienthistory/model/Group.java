@@ -26,7 +26,7 @@ public class Group implements Parcelable {
     public String getmGDetail() { return mGDetail;}
 
     public String toString(){
-        return "Id = " + mId+"  g = "+ mGText+ " d = " + mGDetail;
+        return mGText;
     }
 
     //Parcable implementation

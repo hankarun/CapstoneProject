@@ -77,6 +77,8 @@ public class AdminActivityFragment extends Fragment {
                 break;
             case 2:
                 //Open questions activity or fragment
+                fragmentClass = QuestionsListFragment.class;
+                fragmentName = "questions";
                 break;
             case 3:
                 //Open settings activity or fragment

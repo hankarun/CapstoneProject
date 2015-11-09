@@ -3,7 +3,9 @@ package com.hankarun.patienthistory.fragment;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -13,11 +15,15 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import com.hankarun.patienthistory.R;
+import com.hankarun.patienthistory.helper.AdapterDataUpdateInterface;
 import com.hankarun.patienthistory.helper.DataContentProvider;
-import com.hankarun.patienthistory.helper.GroupListAdapter;
-import com.hankarun.patienthistory.helper.PatientAdapter;
+import com.hankarun.patienthistory.helper.DialogInterface;
+import com.hankarun.patienthistory.helper.GroupEditDialog;
+import com.hankarun.patienthistory.helper.ObjectListAdapter;
 import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
 import com.hankarun.patienthistory.helper.listdraghelper.OnStartDragListener;
 import com.hankarun.patienthistory.helper.listdraghelper.SimpleItemTouchHelperCallback;
@@ -26,10 +32,11 @@ import com.hankarun.patienthistory.model.Group;
 import java.util.ArrayList;
 
 
-public class GroupListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,OnStartDragListener {
+public class GroupListFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor>,OnStartDragListener,AdapterDataUpdateInterface,DialogInterface {
     private RecyclerView mRecyclerView;
-    private ArrayList<Group> mGroups;
-    private GroupListAdapter mAdapter;
+    private ArrayList<Object> mGroups;
+    private ObjectListAdapter mAdapter;
     private ItemTouchHelper mItemTouchHelper;
 
 
@@ -49,7 +56,7 @@ public class GroupListFragment extends Fragment implements LoaderManager.LoaderC
 
         mGroups = new ArrayList<>();
 
-        mAdapter = new GroupListAdapter(getActivity(), mGroups, this,rootView);
+        mAdapter = new ObjectListAdapter(getActivity(), mGroups, this ,this,rootView);
         mRecyclerView.setAdapter(mAdapter);
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
@@ -85,7 +92,7 @@ public class GroupListFragment extends Fragment implements LoaderManager.LoaderC
                 mGroups.add(new Group(data));
             }while(data.moveToNext());
         }
-        data.close();
+        //data.close();
         mAdapter.notifyDataSetChanged();
     }
 
@@ -97,5 +104,36 @@ public class GroupListFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         mItemTouchHelper.startDrag(viewHolder);
+    }
+
+    @Override
+    public void updateDataBase(int type, Object object) {
+        Group group = (Group) object;
+        switch (type){
+            case ObjectListAdapter.UPDATE_OBJECT:
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+                GroupEditDialog newFragment = GroupEditDialog.newInstance(group);
+                newFragment.setListener(this);
+                newFragment.show(ft, "dialog");
+                break;
+            case ObjectListAdapter.DELETE_OBJECT:
+                //TODO delete
+                break;
+            case ObjectListAdapter.ADD_OBJECT:
+                //TODO add group.
+                break;
+        }
+    }
+
+    @Override
+    public void dialogCompleted(Object group) {
+        Group gRoup = (Group) group;
+        //TODO update database
+        Toast.makeText(getContext(),gRoup.getmGText(), Toast.LENGTH_SHORT).show();
     }
 }

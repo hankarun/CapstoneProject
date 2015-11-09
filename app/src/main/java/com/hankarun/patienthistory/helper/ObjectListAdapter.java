@@ -17,19 +17,26 @@ import android.widget.Toast;
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.helper.listdraghelper.ItemTouchHelperAdapter;
 import com.hankarun.patienthistory.helper.listdraghelper.OnStartDragListener;
-import com.hankarun.patienthistory.model.Group;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.ViewHolder> implements ItemTouchHelperAdapter {
-    private ArrayList<Group> mGroups;
+public class ObjectListAdapter extends RecyclerView.Adapter<ObjectListAdapter.ViewHolder> implements ItemTouchHelperAdapter {
+    public static final int UPDATE_OBJECT = 0;
+    public static final int DELETE_OBJECT = 1;
+    public static final int ADD_OBJECT = 2;
+
+
+    private ArrayList<Object> mGroups;
     private Context mContext;
     private final OnStartDragListener mDragStartListener;
+    private final AdapterDataUpdateInterface mAdapterUpdate;
     private final View rootView;
 
 
-    public GroupListAdapter(Context context, ArrayList<Group> groups, OnStartDragListener dragListener, View view){
+    public ObjectListAdapter(Context context, ArrayList<Object> groups,
+                             OnStartDragListener dragListener, AdapterDataUpdateInterface adapterDataUpdateInterface , View view){
+        mAdapterUpdate = adapterDataUpdateInterface;
         mGroups = groups;
         mContext = context;
         mDragStartListener = dragListener;
@@ -44,11 +51,11 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.groupName.setText(mGroups.get(position).getmGText());
+        holder.groupName.setText(mGroups.get(position).toString());
         holder.groupItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, mGroups.get(position).getmGText(), Toast.LENGTH_SHORT).show();
+                mAdapterUpdate.updateDataBase(UPDATE_OBJECT,mGroups.get(position));
             }
         });
 
@@ -80,20 +87,25 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.View
                 Collections.swap(mGroups, i, i - 1);
             }
         }
+        mAdapterUpdate.updateDataBase(UPDATE_OBJECT,mGroups.get(toPosition));
         notifyItemMoved(fromPosition, toPosition);
     }
 
     @Override
     public void onItemDismiss(final int position) {
-        final Group group = mGroups.get(position);
+        final Object group = mGroups.get(position);
         mGroups.remove(position);
-        notifyDataSetChanged();
+        mAdapterUpdate.updateDataBase(DELETE_OBJECT, mGroups.get(position));
+        notifyItemRemoved(position);
+        //notifyDataSetChanged();
         Snackbar.make(rootView, "Group silindi", Snackbar.LENGTH_LONG)
                 .setAction("Geri Al", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mGroups.add(position,group);
-                        notifyDataSetChanged();
+                        mGroups.add(position, group);
+                        mAdapterUpdate.updateDataBase(ADD_OBJECT,mGroups.get(position));
+                        notifyItemInserted(position);
+                        //notifyDataSetChanged();
                     }
                 })
                 .setActionTextColor(Color.RED)

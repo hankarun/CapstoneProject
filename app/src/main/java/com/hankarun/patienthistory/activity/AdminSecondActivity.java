@@ -11,6 +11,7 @@ import android.util.Log;
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.fragment.GroupListFragment;
 import com.hankarun.patienthistory.fragment.PatientListFragment;
+import com.hankarun.patienthistory.fragment.QuestionsListFragment;
 
 public class AdminSecondActivity extends AppCompatActivity {
 
@@ -46,6 +47,8 @@ public class AdminSecondActivity extends AppCompatActivity {
                 break;
             case 2:
                 //Open questions activity or fragment
+                fragmentClass = QuestionsListFragment.class;
+                fragmentName = "questions";
                 break;
             case 3:
                 //Open settings activity or fragment

@@ -24,6 +24,8 @@ public class DataContentProvider extends ContentProvider {
             Uri.parse("content://"+ PROVIDER_NAME + "/questions");
     public static final Uri CONTENT_URI_GROUPS =
             Uri.parse("content://"+ PROVIDER_NAME + "/groups");
+    public static final Uri CONTENT_URI_GROUPS_ALL =
+            Uri.parse("content://"+ PROVIDER_NAME + "/allgroups");
     public static final Uri CONTENT_URI_PATIENT =
             Uri.parse("content://"+ PROVIDER_NAME + "/patients");
     public static final Uri CONTENT_URI_ANSWERS =
@@ -33,6 +35,7 @@ public class DataContentProvider extends ContentProvider {
     private static final int QUESTION_ID = 11;
     private static final int GROUP = 20;
     private static final int GROUP_ID = 22;
+    private static final int GROUP_WITH_QUESTIONS = 23;
     private static final int PATIENTS = 30;
     private static final int PATIENT_ID = 33;
     private static final int ANSWERS = 40;
@@ -45,6 +48,7 @@ public class DataContentProvider extends ContentProvider {
         uriMatcher.addURI(PROVIDER_NAME, "questions/#", QUESTION_ID); // Return spesific question.
         uriMatcher.addURI(PROVIDER_NAME, "groups", GROUP); //Retrun all groups.
         uriMatcher.addURI(PROVIDER_NAME, "groups/#", GROUP_ID); //Return questions depending group id.
+        uriMatcher.addURI(PROVIDER_NAME, "allgroups", GROUP_WITH_QUESTIONS); //Return groups with all questions.
         uriMatcher.addURI(PROVIDER_NAME, "patients/", PATIENTS); // Return all patients.
         uriMatcher.addURI(PROVIDER_NAME, "patients/#", PATIENT_ID); //Return patient by id
         uriMatcher.addURI(PROVIDER_NAME, "answers/", ANSWERS); //Return or put answers?
@@ -78,7 +82,8 @@ public class DataContentProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case QUESTION:
                 //all questions
-                queryBuilder.setTables(QuesSQLiteHelper.TABLE_QUESTIONS);
+                queryBuilder.setTables(QuesSQLiteHelper.TABLE_QUESTIONS+ " LEFT OUTER JOIN " + QuesSQLiteHelper.TABLE_GROUPS + " ON " +
+                        QuesSQLiteHelper.QUESTION_TABLE_GROUPID + " = " + QuesSQLiteHelper.GROUP_TABLE_ID);
                 break;
             case QUESTION_ID:
                 //O soruyu getir. uri.getLastPathSegment()
@@ -92,10 +97,18 @@ public class DataContentProvider extends ContentProvider {
                 db = mQuestionDatabase.getWritableDatabase();
                 break;
             case GROUP_ID:
-                queryBuilder.setTables(QuesSQLiteHelper.TABLE_QUESTIONS);
+                queryBuilder.setTables(QuesSQLiteHelper.TABLE_QUESTIONS+ " LEFT OUTER JOIN " + QuesSQLiteHelper.TABLE_GROUPS + " ON " +
+                        QuesSQLiteHelper.QUESTION_TABLE_GROUPID + " = " + QuesSQLiteHelper.TABLE_GROUPS+"."+QuesSQLiteHelper.GROUP_TABLE_ID);
                 queryBuilder.appendWhere(QuesSQLiteHelper.QUESTION_TABLE_GROUPID + "=" + uri.getLastPathSegment());
                 db = mQuestionDatabase.getWritableDatabase();
                 //Group id ye göre soruları gönder. uri.getLastPathSegment()
+                break;
+            case GROUP_WITH_QUESTIONS:
+                queryBuilder.setTables(QuesSQLiteHelper.TABLE_GROUPS + " LEFT OUTER JOIN " + QuesSQLiteHelper.TABLE_QUESTIONS + " ON " +
+                        QuesSQLiteHelper.TABLE_GROUPS + "." +QuesSQLiteHelper.GROUP_TABLE_ID + " = " + QuesSQLiteHelper.TABLE_QUESTIONS + "." + QuesSQLiteHelper.QUESTION_TABLE_GROUPID);
+                sortOrder = QuesSQLiteHelper.TABLE_GROUPS + "." +QuesSQLiteHelper.GROUP_TABLE_ID + ", "
+                        + QuesSQLiteHelper.TABLE_QUESTIONS + "." + QuesSQLiteHelper.QUESTION_TABLE_ID + " ASC";
+                db = mQuestionDatabase.getWritableDatabase();
                 break;
             case PATIENTS:
                 queryBuilder.setTables(PatientSQLiteHelper.TABLE_PATIENTS);
