@@ -1,7 +1,9 @@
 package com.hankarun.patienthistory.fragment;
 
 
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -12,7 +14,11 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
@@ -28,13 +34,13 @@ import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
 import com.hankarun.patienthistory.helper.listdraghelper.OnStartDragListener;
 import com.hankarun.patienthistory.helper.listdraghelper.SimpleItemTouchHelperCallback;
 import com.hankarun.patienthistory.model.Group;
+import com.hankarun.patienthistory.model.Question;
 
 import java.util.ArrayList;
 
 
 public class GroupListFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>,OnStartDragListener,AdapterDataUpdateInterface,DialogInterface {
-    private RecyclerView mRecyclerView;
     private ArrayList<Object> mGroups;
     private ObjectListAdapter mAdapter;
     private ItemTouchHelper mItemTouchHelper;
@@ -49,7 +55,7 @@ public class GroupListFragment extends Fragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_group_list, container, false);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.groupListRecyclerView);
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.groupListRecyclerView);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
 
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -68,10 +74,32 @@ public class GroupListFragment extends Fragment
         return rootView;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_add, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_add) {
+            openDialog(new Group());
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     public void populateList() {
-        Bundle b = new Bundle();
-        b.putString("test", "test");
-        getLoaderManager().initLoader(0, b, this);
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -80,9 +108,7 @@ public class GroupListFragment extends Fragment
                 QuesSQLiteHelper.GROUP_TABLE_ID,
                 QuesSQLiteHelper.GROUP_TABLE_TEXT,
                 QuesSQLiteHelper.GROUP_TABLE_DETAIL};
-        CursorLoader cursorLoader = new CursorLoader(getActivity(),
-                DataContentProvider.CONTENT_URI_GROUPS, projection, null, null, null);
-        return cursorLoader;
+        return new CursorLoader(getActivity(), DataContentProvider.CONTENT_URI_GROUPS, projection, null, null, null);
     }
 
     @Override
@@ -106,20 +132,13 @@ public class GroupListFragment extends Fragment
         mItemTouchHelper.startDrag(viewHolder);
     }
 
+    //This is the interface return from adapter. For onclick and order
     @Override
     public void updateDataBase(int type, Object object) {
         Group group = (Group) object;
         switch (type){
             case ObjectListAdapter.UPDATE_OBJECT:
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-                if (prev != null) {
-                    ft.remove(prev);
-                }
-                ft.addToBackStack(null);
-                GroupEditDialog newFragment = GroupEditDialog.newInstance(group);
-                newFragment.setListener(this);
-                newFragment.show(ft, "dialog");
+                openDialog(group);
                 break;
             case ObjectListAdapter.DELETE_OBJECT:
                 //TODO delete
@@ -130,10 +149,33 @@ public class GroupListFragment extends Fragment
         }
     }
 
+    private void openDialog(Group group){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        GroupEditDialog newFragment = GroupEditDialog.newInstance(group);
+        newFragment.setListener(this);
+        newFragment.show(ft, "dialog");
+    }
+
+    //This is the interface return from dialog.
     @Override
     public void dialogCompleted(Object group) {
         Group gRoup = (Group) group;
-        //TODO update database
-        Toast.makeText(getContext(),gRoup.getmGText(), Toast.LENGTH_SHORT).show();
+        if(gRoup.getmId()!=0) {
+            //TODO update database
+            Uri todoUri = Uri.parse(DataContentProvider.CONTENT_URI_GROUPS + "/" + gRoup.getmId());
+            Log.d("uri", todoUri.toString());
+            getActivity().getContentResolver().update(todoUri, ((Group) group).getContentValues(), null, null);
+            mGroups.clear();
+            populateList();
+        } else {
+            getActivity().getContentResolver().insert(DataContentProvider.CONTENT_URI_GROUPS, ((Group) group).getContentValues());
+            mGroups.clear();
+        }
+        //TODO Insert database
     }
 }

@@ -66,6 +66,7 @@ public class QuestionEditDialog extends DialogFragment implements View.OnClickLi
 
         mGroupsSpinner.setAdapter(adapter);
 
+
         mGroupsSpinner.setSelection(mQuestion.getmGroupId()-1);
 
         mSaveButton.setOnClickListener(this);

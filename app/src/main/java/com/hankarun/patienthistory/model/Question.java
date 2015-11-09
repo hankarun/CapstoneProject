@@ -1,5 +1,6 @@
 package com.hankarun.patienthistory.model;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -49,6 +50,16 @@ public class Question implements Parcelable{
         int te = parcel.readInt();
         mAnswer = te == 1;
         mQuestion = parcel.readString();
+    }
+
+    public ContentValues getContentValues(){
+        ContentValues values = new ContentValues();
+        if(getmId()!=0)
+            values.put(QuesSQLiteHelper.QUESTION_TABLE_ID,getmId());
+        values.put(QuesSQLiteHelper.QUESTION_TABLE_TEXT, getmQuestion());
+        values.put(QuesSQLiteHelper.QUESTION_TABLE_GROUPID, getmGroupId());
+        values.put(QuesSQLiteHelper.QUESTION_TABLE_TYPE, getmType());
+        return values;
     }
 
     @Override

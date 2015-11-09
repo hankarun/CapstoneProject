@@ -141,17 +141,29 @@ public class DataContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         int uriType = uriMatcher.match(uri);
-        SQLiteDatabase sqlDB = mPatientAnswerDatabase.getWritableDatabase();
+        SQLiteDatabase sqlDB;
 
         long id = 0;
         Uri uri1;
         switch (uriType) {
             case PATIENTS:
+                sqlDB = mPatientAnswerDatabase.getWritableDatabase();
                 id = sqlDB.insert(PatientSQLiteHelper.TABLE_PATIENTS, null, values);
                 uri1 = Uri.parse(PROVIDER_NAME + "patient/" + id);
                 break;
             case ANSWERS:
+                sqlDB = mPatientAnswerDatabase.getWritableDatabase();
                 id = sqlDB.insert(PatientSQLiteHelper.TABLE_ANSWERS, null, values);
+                uri1 = Uri.parse(PROVIDER_NAME + "answer/" + id);
+                break;
+            case GROUP:
+                sqlDB = mQuestionDatabase.getWritableDatabase();
+                id = sqlDB.insert(QuesSQLiteHelper.TABLE_GROUPS, null, values);
+                uri1 = Uri.parse(PROVIDER_NAME + "group/" + id);
+                break;
+            case QUESTION:
+                sqlDB = mQuestionDatabase.getWritableDatabase();
+                id = sqlDB.insert(QuesSQLiteHelper.TABLE_QUESTIONS, null, values);
                 uri1 = Uri.parse(PROVIDER_NAME + "answer/" + id);
                 break;
             default:
@@ -168,6 +180,28 @@ public class DataContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        int uriType = uriMatcher.match(uri);
+        SQLiteDatabase sqlDB;
+
+        int id = 0;
+        Uri uri1;
+        switch (uriType) {
+            case GROUP_ID:
+                Log.d("data",uri.getLastPathSegment());
+                sqlDB = mQuestionDatabase.getWritableDatabase();
+                id = sqlDB.update(QuesSQLiteHelper.TABLE_GROUPS,
+                        values,
+                        QuesSQLiteHelper.GROUP_TABLE_ID + "=" + uri.getLastPathSegment(),
+                        selectionArgs);
+                break;
+            case QUESTION_ID:
+                sqlDB = mQuestionDatabase.getWritableDatabase();
+                id = sqlDB.update(QuesSQLiteHelper.TABLE_QUESTIONS,
+                        values,
+                        QuesSQLiteHelper.QUESTION_TABLE_ID + "=" + uri.getLastPathSegment(),
+                        selectionArgs);
+                break;
+        }
+        return id;
     }
 }

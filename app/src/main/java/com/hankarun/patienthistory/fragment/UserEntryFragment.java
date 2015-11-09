@@ -3,6 +3,7 @@ package com.hankarun.patienthistory.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,8 +50,14 @@ public class UserEntryFragment extends Fragment {
         surnameTxt = (EditText) rootView.findViewById(R.id.input_surname);
         birtText = (EditText) rootView.findViewById(R.id.input_bdate);
         emailText = (EditText) rootView.findViewById(R.id.input_email);
+
         tel1Text = (EditText) rootView.findViewById(R.id.input_tel1);
+        tel1Text.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
         tel2Text = (EditText) rootView.findViewById(R.id.input_tel2);
+        tel2Text.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
+
         addressText = (EditText) rootView.findViewById(R.id.input_adress);
 
         AutoCompleteTextView patientCity = (AutoCompleteTextView) rootView.findViewById(R.id.city_input);

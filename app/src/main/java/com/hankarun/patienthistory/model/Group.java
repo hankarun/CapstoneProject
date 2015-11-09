@@ -1,5 +1,6 @@
 package com.hankarun.patienthistory.model;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,6 +17,8 @@ public class Group implements Parcelable {
         setmGDetail(cursor.getString(cursor.getColumnIndex(QuesSQLiteHelper.GROUP_TABLE_DETAIL)));
         setmGText(cursor.getString(cursor.getColumnIndex(QuesSQLiteHelper.GROUP_TABLE_TEXT)));
     }
+
+    public Group(){}
 
     public void setmId(int id) { mId = id;}
     public void setmGText(String gtext) { mGText = gtext;}
@@ -37,6 +40,15 @@ public class Group implements Parcelable {
         parcel.readStringArray(info);
         mGText = info[0];
         mGDetail = info[1];
+    }
+
+    public ContentValues getContentValues(){
+        ContentValues values = new ContentValues();
+        if(getmId()!=0)
+            values.put(QuesSQLiteHelper.GROUP_TABLE_ID,getmId());
+        values.put(QuesSQLiteHelper.GROUP_TABLE_TEXT, getmGText());
+        values.put(QuesSQLiteHelper.GROUP_TABLE_DETAIL, getmGDetail());
+        return values;
     }
 
     @Override
