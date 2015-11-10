@@ -12,7 +12,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.helper.AdapterDataUpdateInterface;
@@ -134,6 +132,8 @@ public class QuestionsListFragment extends Fragment
     private void loadGroups() {
         mGroups = new ArrayList<>();
         mQuestionsByGroup = new ArrayList<>();
+        mGroups.clear();
+        mQuestionsByGroup.clear();
         getLoaderManager().initLoader(0, null, this);
     }
 

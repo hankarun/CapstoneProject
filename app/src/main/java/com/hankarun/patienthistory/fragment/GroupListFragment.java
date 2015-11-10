@@ -168,13 +168,16 @@ public class GroupListFragment extends Fragment
         if(gRoup.getmId()!=0) {
             //TODO update database
             Uri todoUri = Uri.parse(DataContentProvider.CONTENT_URI_GROUPS + "/" + gRoup.getmId());
-            Log.d("uri", todoUri.toString());
             getActivity().getContentResolver().update(todoUri, ((Group) group).getContentValues(), null, null);
             mGroups.clear();
+            mAdapter.notifyDataSetChanged();
             populateList();
         } else {
             getActivity().getContentResolver().insert(DataContentProvider.CONTENT_URI_GROUPS, ((Group) group).getContentValues());
             mGroups.clear();
+            mAdapter.notifyDataSetChanged();
+            populateList();
+
         }
         //TODO Insert database
     }

@@ -45,7 +45,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -143,6 +143,106 @@
                         android:hint="Adres"
                         android:inputType="text" />
                 </android.support.design.widget.TextInputLayout>
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/addressInput"
+                    android:id="@+id/addLayout"
+                    android:weightSum="2">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:id="@+id/townInput"
+                        android:layout_weight="1">
+                        <AutoCompleteTextView android:id="@+id/town_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Town"
+                            android:inputType="text" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:id="@+id/cityInput"
+                        android:layout_weight="1">
+                        <AutoCompleteTextView android:id="@+id/city_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="City"
+                            android:inputType="text" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:id="@+id/doctorNameInput"
+                    android:layout_below="@id/addLayout"
+                    >
+                    <EditText android:id="@+id/doctor_name_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Doctorunuzn Adı"
+                        android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/doctorNameInput"
+                    android:id="@+id/doctel">
+                    <EditText android:id="@+id/doc_tel_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Doktorunuzun Telefon Numarası"
+                        android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/doctel"
+                    android:id="@+id/docdate">
+                    <EditText android:id="@+id/doc_date_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Son tarihi girin"
+                        android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/docdate"
+                    android:id="@+id/problem">
+                    <EditText android:id="@+id/problem_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Sikayetiniz?"
+                        android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
+
+
+
+
             </RelativeLayout>
         </ScrollView>
 

@@ -20,6 +20,8 @@ public class PatientSQLiteHelper extends SQLiteOpenHelper {
     public static final String PATIENT_BDATE = "bdate";
     public static final String PATIENT_EMAIL = "email";
     public static final String PATIENT_ADDRESS = "address";
+    public static final String PATIENT_CITY = "city";
+    public static final String PATIENT_TOWN = "town";
     public static final String PATIENT_TEL1 = "tel1";
     public static final String PATIENT_TEL2 = "tel2";
     public static final String PATIENT_DOCTOR_NAME = "dname";
@@ -44,6 +46,8 @@ public class PatientSQLiteHelper extends SQLiteOpenHelper {
             + PATIENT_BDATE + " text, "
             + PATIENT_EMAIL + " text, "
             + PATIENT_ADDRESS + " text, "
+            + PATIENT_CITY + " text,"
+            + PATIENT_TOWN + " text,"
             + PATIENT_TEL1 + " text, "
             + PATIENT_TEL2 + " text, "
             + PATIENT_DOCTOR_NAME + " text, "

@@ -187,7 +187,6 @@ public class DataContentProvider extends ContentProvider {
         Uri uri1;
         switch (uriType) {
             case GROUP_ID:
-                Log.d("data",uri.getLastPathSegment());
                 sqlDB = mQuestionDatabase.getWritableDatabase();
                 id = sqlDB.update(QuesSQLiteHelper.TABLE_GROUPS,
                         values,

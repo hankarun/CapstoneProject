@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +50,9 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.ViewHold
         holder.birthTextView.setText(patient.getmBirthDate());
         holder.emailTextView.setText(patient.getmEmail());
         holder.phoneNumberTextView.setText(patient.getmTelephone1());
+        holder.phoneNumberTextView.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         holder.phoneNumber2TextView.setText(patient.getmTelephone2());
+        holder.phoneNumber2TextView.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
 
         holder.mLinearLayout.setOnClickListener(new View.OnClickListener() {

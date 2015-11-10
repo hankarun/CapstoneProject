@@ -67,6 +67,8 @@ public class PatientListFragment extends Fragment implements LoaderManager.Loade
                 PatientSQLiteHelper.PATIENT_TEL1,
                 PatientSQLiteHelper.PATIENT_TEL2,
                 PatientSQLiteHelper.PATIENT_ADDRESS,
+                PatientSQLiteHelper.PATIENT_CITY,
+                PatientSQLiteHelper.PATIENT_TOWN,
                 PatientSQLiteHelper.PATIENT_EMAIL,
                 PatientSQLiteHelper.PATIENT_DOCTOR_NAME,
                 PatientSQLiteHelper.PATIENT_DOCTOR_NUMBER,

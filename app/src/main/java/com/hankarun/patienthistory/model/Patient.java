@@ -16,12 +16,14 @@ public class Patient implements Parcelable{
     private String mSurname;
     private String mBirthDate;
     private String mAddress;
+    private String mCity;
+    private String mTown;
     private String mEmail;
     private String mTelephone1;
     private String mTelephone2;
     private String mDoctorName;
     private String mDoctorNumber;
-    private Date mDoctorDate;
+    private String mDoctorDate;
     private String mProblems;
 
     public int getmId() { return mId;}
@@ -34,8 +36,10 @@ public class Patient implements Parcelable{
     public String getmTelephone2() { return mTelephone2;}
     public String getmDoctorName() { return mDoctorName;}
     public String getmDoctorNumber() { return mDoctorNumber;}
-    public Date getmDoctorDate() { return mDoctorDate;}
+    public String getmDoctorDate() { return mDoctorDate;}
     public String getmProblems() { return mProblems;}
+    public String getmCity() { return mCity;}
+    public String getmTown() { return mTown;}
 
     public void setmId(int id){ mId = id;}
     public void setmName(String name){ mName = name;}
@@ -47,8 +51,10 @@ public class Patient implements Parcelable{
     public void setmTelephone2(String telephone){ mTelephone2 = telephone;}
     public void setmDoctorName(String name){ mDoctorName = name;}
     public void setmDoctorNumber(String number){ mDoctorNumber = number;}
-    public void setmDoctorDate(Date date){ mDoctorDate = date;}
+    public void setmDoctorDate(String date){ mDoctorDate = date;}
     public void setmProblems(String problems){ mProblems = problems;}
+    public void setmCity(String city){ mCity = city;}
+    public void setmTown(String town){ mTown = town;}
 
 
 
@@ -62,14 +68,14 @@ public class Patient implements Parcelable{
         setmSurname(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_SURNAME)));
         setmBirthDate(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_BDATE)));
         setmAddress(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_ADDRESS)));
+        setmTown(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_TOWN)));
+        setmCity(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_CITY)));
         setmEmail(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_EMAIL)));
         setmTelephone1(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_TEL1)));
         setmTelephone2(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_TEL2)));
         setmDoctorName(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_DOCTOR_NAME)));
         setmDoctorNumber(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_DOCTOR_NUMBER)));
-
-        //setmDoctorDate(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_SURNAME)));
-
+        setmDoctorDate(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_SURNAME)));
         setmProblems(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.PATIENT_DOCTOR_PROBLEMS)));
     }
 
@@ -79,6 +85,8 @@ public class Patient implements Parcelable{
         setmName(parcel.readString());
         setmSurname(parcel.readString());
         setmAddress(parcel.readString());
+        setmTown(parcel.readString());
+        setmCity(parcel.readString());
         setmBirthDate(parcel.readString());
         setmEmail(parcel.readString());
         setmTelephone1(parcel.readString());
@@ -94,6 +102,8 @@ public class Patient implements Parcelable{
         values.put(PatientSQLiteHelper.PATIENT_NAME, mName);
         values.put(PatientSQLiteHelper.PATIENT_SURNAME, mSurname);
         values.put(PatientSQLiteHelper.PATIENT_ADDRESS, mAddress);
+        values.put(PatientSQLiteHelper.PATIENT_TOWN,mTown);
+        values.put(PatientSQLiteHelper.PATIENT_CITY,mCity);
         values.put(PatientSQLiteHelper.PATIENT_BDATE,mBirthDate);
         values.put(PatientSQLiteHelper.PATIENT_EMAIL, mEmail);
         values.put(PatientSQLiteHelper.PATIENT_TEL1, mTelephone1);
@@ -117,6 +127,8 @@ public class Patient implements Parcelable{
         dest.writeString(getmName());
         dest.writeString(getmSurname());
         dest.writeString(getmAddress());
+        dest.writeString(getmTown());
+        dest.writeString(getmCity());
         dest.writeString(getmBirthDate());
         dest.writeString(getmEmail());
         dest.writeString(getmTelephone1());
