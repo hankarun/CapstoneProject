@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 public class PatientListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private ArrayList<Patient> mPatientList;
-    private RecyclerView mRecyclerView;
     private PatientAdapter adapter;
 
     public PatientListFragment() {
@@ -37,7 +36,7 @@ public class PatientListFragment extends Fragment implements LoaderManager.Loade
 
         View rootView = inflater.inflate(R.layout.fragment_patient_list, container, false);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.patientListRecyclerView);
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.patientListRecyclerView);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
 
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -52,9 +51,7 @@ public class PatientListFragment extends Fragment implements LoaderManager.Loade
     }
 
     public void populateList() {
-        Bundle b = new Bundle();
-        b.putString("test", "test");
-        getLoaderManager().initLoader(0, b, this);
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override

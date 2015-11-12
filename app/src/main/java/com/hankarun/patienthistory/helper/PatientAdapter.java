@@ -45,14 +45,21 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Patient patient = mPatientList.get(position);
 
-        holder.nameTextView.setText(patient.getmName());
-        holder.surnameTextView.setText(patient.getmSurname());
+        String twmp = patient.getmName()+" "+patient.getmSurname();
+        holder.nameTextView.setText(twmp);
         holder.birthTextView.setText(patient.getmBirthDate());
         holder.emailTextView.setText(patient.getmEmail());
         holder.phoneNumberTextView.setText(patient.getmTelephone1());
         holder.phoneNumberTextView.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         holder.phoneNumber2TextView.setText(patient.getmTelephone2());
         holder.phoneNumber2TextView.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
+        String temp = patient.getmAddress()+" " + patient.getmTown() + " - " + patient.getmCity();
+        holder.addressTextView.setText(temp);
+        holder.doctorNameTextView.setText(patient.getmDoctorName());
+        holder.doctorTelTextView.setText(patient.getmDoctorNumber());
+        holder.doctorDateTextView.setText(patient.getmDoctorDate());
+        holder.problemTextView.setText(patient.getmProblems());
 
 
         holder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
@@ -74,22 +81,30 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout mLinearLayout;
         public TextView nameTextView;
-        public TextView surnameTextView;
         public TextView birthTextView;
         public TextView emailTextView;
+        public TextView addressTextView;
         public TextView phoneNumberTextView;
         public TextView phoneNumber2TextView;
+        public TextView doctorNameTextView;
+        public TextView doctorTelTextView;
+        public TextView doctorDateTextView;
+        public TextView problemTextView;
 
 
         public ViewHolder(View v) {
             super(v);
             mLinearLayout = (LinearLayout) v.findViewById(R.id.patientItem);
-            nameTextView = (TextView) v.findViewById(R.id.patientNameText);
-            surnameTextView = (TextView) v.findViewById(R.id.patientSurnameText);
+            nameTextView = (TextView) v.findViewById(R.id.patientNameSurnameText);
             birthTextView = (TextView) v.findViewById(R.id.patientBirthDateText);
             emailTextView = (TextView) v.findViewById(R.id.patientEmailText);
-            phoneNumberTextView = (TextView) v.findViewById(R.id.patientNumberText);
-            phoneNumber2TextView = (TextView) v.findViewById(R.id.patientNumber2);
+            addressTextView = (TextView) v.findViewById(R.id.patientAddress);
+            phoneNumberTextView = (TextView) v.findViewById(R.id.patientTel1Text);
+            phoneNumber2TextView = (TextView) v.findViewById(R.id.patientTel2Text);
+            doctorNameTextView = (TextView) v.findViewById(R.id.patientDoctorName);
+            doctorTelTextView = (TextView) v.findViewById(R.id.patientDoctorTel);
+            doctorDateTextView = (TextView) v.findViewById(R.id.patientDoctorDate);
+            problemTextView = (TextView) v.findViewById(R.id.patientProblem);
         }
     }
 }

@@ -46,7 +46,6 @@ public class UserEntryFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Log.d("userFragment", "resumed");
         super.onResume();
     }
 

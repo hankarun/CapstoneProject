@@ -20,6 +20,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.hankarun.patienthistory.AnaliticsApplication;
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.fragment.FinishFragment;
 import com.hankarun.patienthistory.fragment.GroupQuestionsFragment;
@@ -32,6 +39,7 @@ import com.hankarun.patienthistory.model.Patient;
 import com.hankarun.patienthistory.model.Question;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +52,9 @@ public class QuestionsActivity extends AppCompatActivity implements
     private int currentpage = 0;
     private FloatingActionButton left;
     private FloatingActionButton right;
+
+    private InterstitialAd mInterstitialAd;
+    private int start,stop;
 
     public Patient mPatient;
 
@@ -74,6 +85,30 @@ public class QuestionsActivity extends AppCompatActivity implements
         left.setOnClickListener(this);
         right.setOnClickListener(this);
 
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+                finish();
+            }
+        });
+
+        requestNewInterstitial();
+
+
+        Calendar c = Calendar.getInstance();
+        start = c.get(Calendar.MILLISECOND);
+    }
+
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        mInterstitialAd.loadAd(adRequest);
     }
 
     private UserEntryFragment uFragment;
@@ -230,19 +265,19 @@ public class QuestionsActivity extends AppCompatActivity implements
     }
 
     //Collect data from fragments. Create user get id from uri add answers based on patient.
-    public void getInfo(){
+    public void getInfo() {
         Patient p = uFragment.getPatient();
 
         p.setmId(Integer.parseInt(writePatientToDatabase(p).getLastPathSegment()));
 
         ArrayList<ContentValues> contentValues = new ArrayList<>();
 
-        Log.d("size ",mQuList.size()+"");
-        for(GroupQuestionsFragment f:mQuList){
+        Log.d("size ", mQuList.size() + "");
+        for (GroupQuestionsFragment f : mQuList) {
             ArrayList<Question> q = f.getmQuestionsList();
             Date date = new Date();
             //Get answers and add to the user
-            for(Question question:q){
+            for (Question question : q) {
                 Answer a = new Answer(question);
                 a.setmUserId(p.getmId());
                 a.setmDate(date.getTime() + "");
@@ -252,7 +287,27 @@ public class QuestionsActivity extends AppCompatActivity implements
         }
         writeAnswerToDatabase(contentValues);
 
-        finish();
-    }
+        Calendar c = Calendar.getInstance();
+        stop = c.get(Calendar.MILLISECOND);
 
+        //Send completion time to the google Analytics
+        AnaliticsApplication application = (AnaliticsApplication) getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
+                .setCategory("Question")
+                .setAction("Pass")
+                .setLabel("")
+                .setValue(stop-start);
+        mTracker.setScreenName("Question Screen");
+        //mTracker.setScreenName("Image~" + name);
+        //mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.send(builder.build());
+
+
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            finish();
+        }
+    }
 }

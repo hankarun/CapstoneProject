@@ -1,48 +1,43 @@
 package com.hankarun.patienthistory.fragment;
 
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.helper.DataContentProvider;
 import com.hankarun.patienthistory.helper.PatientDetailAdapter;
 import com.hankarun.patienthistory.helper.PatientSQLiteHelper;
-import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
 import com.hankarun.patienthistory.model.Answer;
 import com.hankarun.patienthistory.model.Patient;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class PatientDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     private TextView nameTextView;
-    private TextView surnameTextView;
     private TextView birthTextView;
     private TextView emailTextView;
+    private TextView addressTextView;
     private TextView phoneNumberTextView;
     private TextView phoneNumber2TextView;
+    private TextView doctorNameTextView;
+    private TextView doctorTelTextView;
+    private TextView doctorDateTextView;
+    private TextView problemTextView;
 
     private ArrayList<Answer> mAnswerList;
     private PatientDetailAdapter adapter;
@@ -57,13 +52,16 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
         View v = inflater.inflate(R.layout.fragment_patient_detail, container, false);
 
 
-        nameTextView = (TextView) v.findViewById(R.id.patientNameText);
-        surnameTextView = (TextView) v.findViewById(R.id.patientSurnameText);
+        nameTextView = (TextView) v.findViewById(R.id.patientNameSurnameText);
         birthTextView = (TextView) v.findViewById(R.id.patientBirthDateText);
         emailTextView = (TextView) v.findViewById(R.id.patientEmailText);
-        phoneNumberTextView = (TextView) v.findViewById(R.id.patientNumberText);
-        phoneNumber2TextView = (TextView) v.findViewById(R.id.patientNumber2);
-
+        addressTextView = (TextView) v.findViewById(R.id.patientAddress);
+        phoneNumberTextView = (TextView) v.findViewById(R.id.patientTel1Text);
+        phoneNumber2TextView = (TextView) v.findViewById(R.id.patientTel2Text);
+        doctorNameTextView = (TextView) v.findViewById(R.id.patientDoctorName);
+        doctorTelTextView = (TextView) v.findViewById(R.id.patientDoctorTel);
+        doctorDateTextView = (TextView) v.findViewById(R.id.patientDoctorDate);
+        problemTextView = (TextView) v.findViewById(R.id.patientProblem);
         RecyclerView mRecyclerView = (RecyclerView) v.findViewById(R.id.answersRecyclerView);
 
         Configuration config = getActivity().getResources().getConfiguration();
@@ -93,12 +91,22 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
     }
 
     public void populateList(Patient patient){
-        nameTextView.setText(patient.getmName());
-        surnameTextView.setText(patient.getmSurname());
+        String twmp = patient.getmName()+" "+patient.getmSurname();
+        nameTextView.setText(twmp);
         birthTextView.setText(patient.getmBirthDate());
         emailTextView.setText(patient.getmEmail());
         phoneNumberTextView.setText(patient.getmTelephone1());
+        phoneNumberTextView.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         phoneNumber2TextView.setText(patient.getmTelephone2());
+        phoneNumber2TextView.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
+        String temp = patient.getmAddress()+" " + patient.getmTown() + " - " + patient.getmCity();
+        addressTextView.setText(temp);
+        doctorNameTextView.setText(patient.getmDoctorName());
+        doctorTelTextView.setText(patient.getmDoctorNumber());
+        doctorDateTextView.setText(patient.getmDoctorDate());
+        problemTextView.setText(patient.getmProblems());
+        
         getLoaderManager().initLoader(patient.getmId(), null, this);
     }
 
@@ -113,9 +121,8 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
                 PatientSQLiteHelper.ANSWER_PATIENT_ID,
                 PatientSQLiteHelper.ANSWER_QUESTION};
         Uri uri = Uri.parse(DataContentProvider.CONTENT_URI_ANSWERS + "/" + id);
-        CursorLoader cursorLoader = new CursorLoader(getActivity(),
-                uri, projection, null, null, null);
-        return cursorLoader;    }
+        return new CursorLoader(getActivity(),
+                uri, projection, null, null, null);    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -125,13 +132,13 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
                 mAnswerList.add(new Answer(data));
             }while(data.moveToNext());
         }
-        data.close();
+        //data.close();
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        mAnswerList.clear();
     }
 
 }

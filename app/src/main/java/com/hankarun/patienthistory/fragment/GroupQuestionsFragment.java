@@ -25,7 +25,6 @@ import com.hankarun.patienthistory.helper.QuestionAdapter;
 import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
 import com.hankarun.patienthistory.model.Group;
 import com.hankarun.patienthistory.model.Question;
-import com.squareup.leakcanary.LeakCanary;
 
 import java.util.ArrayList;
 

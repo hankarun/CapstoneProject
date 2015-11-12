@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="New Text"
+                android:text=""
                 android:id="@+id/questionNumberText"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="0.2"
