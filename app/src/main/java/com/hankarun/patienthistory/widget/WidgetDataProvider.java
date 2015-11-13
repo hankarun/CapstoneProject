@@ -1,17 +1,18 @@
-package com.hankarun.patienthistory;
+package com.hankarun.patienthistory.widget;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.model.Patient;
 
 import java.util.ArrayList;
 
-/**
- * Created by hankarun on 12.11.15.
- */
 public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
     Context mContext = null;
     ArrayList<Patient> entities = new ArrayList<>();
@@ -42,15 +43,22 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     @Override
     public RemoteViews getViewAt(int position) {
-        /*RemoteViews mView = new RemoteViews(mContext.getPackageName(),
-                R.layout.widget_item);
+        RemoteViews mView = new RemoteViews(mContext.getPackageName(), R.layout.item);
 
-        mView.setTextViewText(R.id.homeNameView,entities.get(i).getHomeName());
-        mView.setTextViewText(R.id.awayNameView,entities.get(i).getAvayName());
-        mView.setTextViewText(R.id.homeScoreView,entities.get(i).getHomeScore());
-        mView.setTextViewText(R.id.awayScoreView,entities.get(i).getAvayScore());
-            */
-        return null;
+        Log.d("name", entities.get(position).getmName());
+
+        mView.setTextViewText(R.id.questionTextView, entities.get(position).getmName() + " " + entities.get(position).getmSurname());
+        mView.setTextViewText(R.id.answerTextView, entities.get(position).getmTelephone1());
+
+        final Intent fillInIntent = new Intent();
+        fillInIntent.setAction("test");
+        final Bundle bundle = new Bundle();
+        bundle.putString("position", entities.get(position).getmTelephone1());
+        fillInIntent.putExtras(bundle);
+        mView.setOnClickFillInIntent(R.id.answerLayout, fillInIntent);
+
+
+        return mView;
     }
 
     @Override
@@ -60,7 +68,7 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     @Override
     public int getViewTypeCount() {
-        return 0;
+        return 1;
     }
 
     @Override

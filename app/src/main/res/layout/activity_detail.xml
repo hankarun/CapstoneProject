@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_detail" />
+    <include layout="@layout/content_detail" android:id="@+id/include" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/printFAB"
@@ -29,16 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_print_white_48dp"
-        app:layout_anchor="@id/toolbar"
+        app:layout_anchor="@id/include"
         app:layout_anchorGravity="bottom|right|end" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/shareFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="90dp"
-        android:src="@drawable/ic_share_white_48dp"
-        app:layout_anchor="@id/toolbar"
-        app:layout_anchorGravity="right|end|bottom" />
 
 </android.support.design.widget.CoordinatorLayout>
