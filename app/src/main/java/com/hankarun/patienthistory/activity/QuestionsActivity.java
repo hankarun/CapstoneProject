@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -32,6 +33,7 @@ import com.hankarun.patienthistory.fragment.FinishFragment;
 import com.hankarun.patienthistory.fragment.GroupQuestionsFragment;
 import com.hankarun.patienthistory.fragment.UserEntryFragment;
 import com.hankarun.patienthistory.helper.DataContentProvider;
+import com.hankarun.patienthistory.helper.NonSwipebleViewPager;
 import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
 import com.hankarun.patienthistory.model.Answer;
 import com.hankarun.patienthistory.model.Group;
@@ -47,7 +49,7 @@ import java.util.List;
 public class QuestionsActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
 
-    private ViewPager viewPager;
+    private NonSwipebleViewPager viewPager;
     private ArrayList<Group> mGroups;
     private int currentpage = 0;
     private FloatingActionButton left;
@@ -69,7 +71,7 @@ public class QuestionsActivity extends AppCompatActivity implements
         mGroups = new ArrayList<>();
         mPatient = new Patient();
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (NonSwipebleViewPager) findViewById(R.id.viewpager);
 
         if(savedInstanceState == null || !savedInstanceState.containsKey("key")) {
             Log.d("returned","Activity");
@@ -196,7 +198,13 @@ public class QuestionsActivity extends AppCompatActivity implements
                 viewPager.setCurrentItem(currentpage-1);
                 break;
             case R.id.right:
-                viewPager.setCurrentItem(currentpage+1);
+                if(currentpage == 0) {
+                    if (uFragment.checkInput())
+                        viewPager.setCurrentItem(currentpage + 1);
+                }else{
+                    viewPager.setCurrentItem(currentpage + 1);
+                }
+
                 break;
         }
     }
@@ -204,12 +212,11 @@ public class QuestionsActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         if(currentpage==0){
-            //TODO Çıkmak istediğini soru dialog ile sor.
-            Toast.makeText(getApplicationContext(),"Do you want to quit?",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"All progress cleared.",Toast.LENGTH_SHORT).show();
             finish();
 
         }
-        viewPager.setCurrentItem(currentpage-1);
+        viewPager.setCurrentItem(currentpage - 1);
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -272,7 +279,6 @@ public class QuestionsActivity extends AppCompatActivity implements
 
         ArrayList<ContentValues> contentValues = new ArrayList<>();
 
-        Log.d("size ", mQuList.size() + "");
         for (GroupQuestionsFragment f : mQuList) {
             ArrayList<Question> q = f.getmQuestionsList();
             Date date = new Date();
@@ -281,6 +287,7 @@ public class QuestionsActivity extends AppCompatActivity implements
                 Answer a = new Answer(question);
                 a.setmUserId(p.getmId());
                 a.setmDate(date.getTime() + "");
+                a.setmQuestionGroup(mGroups.get(question.getmGroupId()-1).getmGText());
                 contentValues.add(a.toContentValues());
 
             }

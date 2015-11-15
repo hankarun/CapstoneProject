@@ -50,9 +50,6 @@ public class AdminSecondActivity extends AppCompatActivity {
                 fragmentClass = QuestionsListFragment.class;
                 fragmentName = "questions";
                 break;
-            case 3:
-                //Open settings activity or fragment
-                break;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();

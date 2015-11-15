@@ -32,7 +32,7 @@ public class AdminActivityFragment extends Fragment {
 
         ListView menuList = (ListView) rootView.findViewById(R.id.menuListView);
 
-        String list[] = new String[]{"Hastalar","Soru Grupları","Sorular","Seçenekler"};
+        String list[] = new String[]{"Hastalar","Soru Grupları","Sorular"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,list);
         menuList.setAdapter(adapter);
@@ -79,9 +79,6 @@ public class AdminActivityFragment extends Fragment {
                 //Open questions activity or fragment
                 fragmentClass = QuestionsListFragment.class;
                 fragmentName = "questions";
-                break;
-            case 3:
-                //Open settings activity or fragment
                 break;
         }
         try {

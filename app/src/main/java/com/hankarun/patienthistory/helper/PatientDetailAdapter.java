@@ -2,6 +2,7 @@ package com.hankarun.patienthistory.helper;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,21 +30,44 @@ public class PatientDetailAdapter extends RecyclerView.Adapter<PatientDetailAdap
         return vh;
     }
 
+    public boolean isHeader(int position){
+        return mAnswerList.get(position).getmId() == -1;
+    }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Answer answer = mAnswerList.get(position);
 
-        holder.numberText.setText(position+"");
-        holder.questionText.setText(answer.getmQuestion());
-        holder.answerText.setText(answer.getmAnswer() ? "Evet" : "Hayır");
+        if(isHeader(position)){
 
-        if (answer.getmAnswer()) {
-            holder.answerText.setTextColor(mContext.getResources().getColor(android.R.color.holo_green_light));
-            holder.mLinearLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.darker_gray));
-        } else {
-            holder.answerText.setTextColor(mContext.getResources().getColor(android.R.color.holo_red_light));
-            holder.mLinearLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.white));
+            holder.questionText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 4));
+            holder.questionText.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+            holder.questionText.setText(answer.getmQuestionGroup());
+            holder.questionText.setTextColor(mContext.getResources().getColor(android.R.color.white));
+            holder.questionText.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimary));
+            holder.answerText.setVisibility(View.GONE);
+            holder.numberText.setVisibility(View.GONE);
+        }else{
+            holder.questionText.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 4));
+            holder.questionText.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            holder.questionText.setBackgroundColor(mContext.getResources().getColor(android.R.color.white));
+            holder.questionText.setTextColor(mContext.getResources().getColor(android.R.color.black));
+            //holder.numberText.setText(position+"");
+            holder.questionText.setText(answer.getmQuestion());
+            holder.answerText.setVisibility(View.VISIBLE);
+            //holder.numberText.setVisibility(View.VISIBLE);
+            holder.answerText.setText(answer.getmAnswer() ? "Evet" : "Hayır");
+
+            if (answer.getmAnswer()) {
+                holder.answerText.setTextColor(mContext.getResources().getColor(android.R.color.holo_green_light));
+                holder.mLinearLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.darker_gray));
+            } else {
+                holder.answerText.setTextColor(mContext.getResources().getColor(android.R.color.holo_red_light));
+                holder.mLinearLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.white));
+            }
+
         }
+
     }
 
     @Override

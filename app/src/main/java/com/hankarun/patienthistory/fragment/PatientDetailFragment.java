@@ -12,6 +12,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ import com.hankarun.patienthistory.model.Patient;
 import java.util.ArrayList;
 
 
-public class PatientDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class PatientDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private TextView nameTextView;
     private TextView birthTextView;
     private TextView emailTextView;
@@ -42,6 +43,9 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
     private ArrayList<Answer> mAnswerList;
     private PatientDetailAdapter adapter;
 
+    public ArrayList<Answer> getmAnswerList() {
+        return mAnswerList;
+    }
 
     public PatientDetailFragment() {
     }
@@ -67,11 +71,20 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
         Configuration config = getActivity().getResources().getConfiguration();
 
 
-        if((config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)== Configuration.SCREENLAYOUT_SIZE_XLARGE
-                && config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if ((config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE
+                && config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mRecyclerView.setHasFixedSize(true);
-            mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2,GridLayoutManager.VERTICAL,false));
-        }else{
+            GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+
+            // Create a custom SpanSizeLookup where the first item spans both columns
+            layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return adapter.isHeader(position) ? 2 : 1;
+                }
+            });
+            mRecyclerView.setLayoutManager(layoutManager);
+        } else {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         }
 
@@ -90,8 +103,8 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
         return v;
     }
 
-    public void populateList(Patient patient){
-        String twmp = patient.getmName()+" "+patient.getmSurname();
+    public void populateList(Patient patient) {
+        String twmp = patient.getmName() + " " + patient.getmSurname();
         nameTextView.setText(twmp);
         birthTextView.setText(patient.getmBirthDate());
         emailTextView.setText(patient.getmEmail());
@@ -100,13 +113,13 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
         phoneNumber2TextView.setText(patient.getmTelephone2());
         phoneNumber2TextView.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
-        String temp = patient.getmAddress()+" " + patient.getmTown() + " - " + patient.getmCity();
+        String temp = patient.getmAddress() + " " + patient.getmTown() + " - " + patient.getmCity();
         addressTextView.setText(temp);
         doctorNameTextView.setText(patient.getmDoctorName());
         doctorTelTextView.setText(patient.getmDoctorNumber());
         doctorDateTextView.setText(patient.getmDoctorDate());
         problemTextView.setText(patient.getmProblems());
-        
+
         getLoaderManager().initLoader(patient.getmId(), null, this);
     }
 
@@ -116,21 +129,31 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
                 PatientSQLiteHelper.COLUMN_ID,
                 PatientSQLiteHelper.ANSWER,
                 PatientSQLiteHelper.ANSWER_DATE,
-                PatientSQLiteHelper.ANSWER_QUESTION_ID,
+                PatientSQLiteHelper.ANSWER_QUESTION_GROUP,
                 PatientSQLiteHelper.ANSWER_DETAIL,
                 PatientSQLiteHelper.ANSWER_PATIENT_ID,
+                PatientSQLiteHelper.ANSWER_QUESTION_GROUP,
                 PatientSQLiteHelper.ANSWER_QUESTION};
         Uri uri = Uri.parse(DataContentProvider.CONTENT_URI_ANSWERS + "/" + id);
         return new CursorLoader(getActivity(),
-                uri, projection, null, null, null);    }
+                uri, projection, null, null, null);
+    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-        if (data.moveToFirst()){
-            do{
+        String group = "";
+        if (data.moveToFirst()) {
+            do {
+                if (!data.getString(data.getColumnIndex(PatientSQLiteHelper.ANSWER_QUESTION_GROUP)).equals(group)) {
+                    group = data.getString(data.getColumnIndex(PatientSQLiteHelper.ANSWER_QUESTION_GROUP));
+                    Answer temp = new Answer();
+                    temp.setmQuestionGroup(group);
+                    temp.setmId(-1);
+                    mAnswerList.add(temp);
+                }
+                Log.d("groups", data.getString(data.getColumnIndex(PatientSQLiteHelper.ANSWER_QUESTION_GROUP)));
                 mAnswerList.add(new Answer(data));
-            }while(data.moveToNext());
+            } while (data.moveToNext());
         }
         //data.close();
         adapter.notifyDataSetChanged();
@@ -141,4 +164,8 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
         mAnswerList.clear();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }

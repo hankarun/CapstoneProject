@@ -33,7 +33,7 @@ public class PatientSQLiteHelper extends SQLiteOpenHelper {
     public static final String ANSWER_PATIENT_ID = "pid";
     public static final String ANSWER_DETAIL = "adetail";
     public static final String ANSWER_DATE = "adate";
-    public static final String ANSWER_QUESTION_ID = "qid";
+    public static final String ANSWER_QUESTION_GROUP = "qgroup";
     public static final String ANSWER_QUESTION = "question";
 
 
@@ -63,7 +63,7 @@ public class PatientSQLiteHelper extends SQLiteOpenHelper {
             + ANSWER + " text, "
             + ANSWER_DETAIL + " text, "
             + ANSWER_DATE + " text, "
-            + ANSWER_QUESTION_ID + " integer, "
+            + ANSWER_QUESTION_GROUP + " text, "
             + ANSWER_QUESTION + " text"
             + ");";
 

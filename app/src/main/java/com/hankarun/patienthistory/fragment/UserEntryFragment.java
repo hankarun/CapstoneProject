@@ -2,6 +2,7 @@ package com.hankarun.patienthistory.fragment;
 
 
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.model.Patient;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -38,6 +41,11 @@ public class UserEntryFragment extends Fragment {
     private EditText docdate;
     private EditText docProblem;
 
+    private TextInputLayout name;
+    private TextInputLayout surname;
+    private TextInputLayout birtdate;
+    private TextInputLayout telephone;
+
 
     public UserEntryFragment() {
     }
@@ -56,6 +64,11 @@ public class UserEntryFragment extends Fragment {
         patient = new Patient();
         View rootView = inflater.inflate(R.layout.fragment_user_entry, container, false);
 
+
+        telephone = (TextInputLayout) rootView.findViewById(R.id.tel1Input);
+        name = (TextInputLayout) rootView.findViewById(R.id.userNameInput);
+        surname = (TextInputLayout) rootView.findViewById(R.id.surnameInput);
+        birtdate = (TextInputLayout) rootView.findViewById(R.id.bdateInput);
 
         nameTxt = (EditText) rootView.findViewById(R.id.input_name);
         surnameTxt = (EditText) rootView.findViewById(R.id.input_surname);
@@ -204,6 +217,38 @@ public class UserEntryFragment extends Fragment {
         } else {
             return getPatientFromViews();
         }
+    }
+
+    public boolean checkInput(){
+        boolean result = true;
+        if(nameTxt.getText().toString().equals("")){
+            name.setError("Lütfen adınızı girin.");
+            result = false;
+        }else{
+            name.setErrorEnabled(false);
+        }
+        if(surnameTxt.getText().toString().equals("")){
+            surname.setError("Lütfen soyadınızı girin.");
+            result = false;
+        }else{
+            surname.setErrorEnabled(false);
+        }
+        if(birtText.getText().toString().equals("")){
+            birtdate.setError("Lütfen doğum tarihinizi girin.");
+            result = false;
+        }else{
+            birtdate.setErrorEnabled(false);
+        }
+
+        Log.d("b",birtText.getText().toString());
+        if(tel1Text.getText().toString().equals("")&&tel1Text.getText().length()<10){
+            telephone.setError("Lutfen telefonunuzu kontrol edin. 10 Haneli olmalı.");
+            result = false;
+        }else{
+            telephone.setErrorEnabled(false);
+        }
+
+        return result;
     }
 
     public Patient getPatientFromViews(){
