@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.helper.listdraghelper.ItemTouchHelperAdapter;
@@ -28,17 +27,15 @@ public class ObjectListAdapter extends RecyclerView.Adapter<ObjectListAdapter.Vi
 
 
     private ArrayList<Object> mGroups;
-    private Context mContext;
     private final OnStartDragListener mDragStartListener;
     private final AdapterDataUpdateInterface mAdapterUpdate;
     private final View rootView;
 
 
     public ObjectListAdapter(Context context, ArrayList<Object> groups,
-                             OnStartDragListener dragListener, AdapterDataUpdateInterface adapterDataUpdateInterface , View view){
+                             OnStartDragListener dragListener, AdapterDataUpdateInterface adapterDataUpdateInterface, View view) {
         mAdapterUpdate = adapterDataUpdateInterface;
         mGroups = groups;
-        mContext = context;
         mDragStartListener = dragListener;
         rootView = view;
     }
@@ -46,8 +43,8 @@ public class ObjectListAdapter extends RecyclerView.Adapter<ObjectListAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_list_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;    }
+        return new ViewHolder(v);
+    }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
@@ -55,7 +52,7 @@ public class ObjectListAdapter extends RecyclerView.Adapter<ObjectListAdapter.Vi
         holder.groupItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapterUpdate.updateDataBase(UPDATE_OBJECT,mGroups.get(position));
+                mAdapterUpdate.updateDataBase(UPDATE_OBJECT, mGroups.get(position));
             }
         });
 
@@ -87,7 +84,7 @@ public class ObjectListAdapter extends RecyclerView.Adapter<ObjectListAdapter.Vi
                 Collections.swap(mGroups, i, i - 1);
             }
         }
-        mAdapterUpdate.updateDataBase(UPDATE_OBJECT,mGroups.get(toPosition));
+        mAdapterUpdate.updateDataBase(UPDATE_OBJECT, mGroups.get(toPosition));
         notifyItemMoved(fromPosition, toPosition);
     }
 
@@ -98,12 +95,12 @@ public class ObjectListAdapter extends RecyclerView.Adapter<ObjectListAdapter.Vi
         mAdapterUpdate.updateDataBase(DELETE_OBJECT, mGroups.get(position));
         notifyItemRemoved(position);
         //notifyDataSetChanged();
-        Snackbar.make(rootView, "Group silindi", Snackbar.LENGTH_LONG)
-                .setAction("Geri Al", new View.OnClickListener() {
+        Snackbar.make(rootView, R.string.group_deleted, Snackbar.LENGTH_LONG)
+                .setAction(R.string.revert_changes, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mGroups.add(position, group);
-                        mAdapterUpdate.updateDataBase(ADD_OBJECT,mGroups.get(position));
+                        mAdapterUpdate.updateDataBase(ADD_OBJECT, mGroups.get(position));
                         notifyItemInserted(position);
                         //notifyDataSetChanged();
                     }

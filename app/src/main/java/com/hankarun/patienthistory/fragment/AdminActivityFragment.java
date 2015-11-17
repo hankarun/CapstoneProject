@@ -32,7 +32,9 @@ public class AdminActivityFragment extends Fragment {
 
         ListView menuList = (ListView) rootView.findViewById(R.id.menuListView);
 
-        String list[] = new String[]{"Hastalar","Soru Grupları","Sorular"};
+        String list[] = new String[]{getString(R.string.patients),
+                getString(R.string.question_groups),
+                getString(R.string.questions)};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,list);
         menuList.setAdapter(adapter);
@@ -52,13 +54,13 @@ public class AdminActivityFragment extends Fragment {
         return rootView;
     }
 
-    public void setActivity(int position){
+    private void setActivity(int position){
         Intent myIntent = new Intent(getActivity(), AdminSecondActivity.class);
         myIntent.putExtra("fragment", position);
         getActivity().startActivity(myIntent);
     }
 
-    public void setDrawer(int position){
+    private void setDrawer(int position){
         Fragment fragment = null;
         Class fragmentClass = null;
         String fragmentName = null;

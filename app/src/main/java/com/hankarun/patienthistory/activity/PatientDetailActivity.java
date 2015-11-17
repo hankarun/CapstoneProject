@@ -1,9 +1,11 @@
 package com.hankarun.patienthistory.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
@@ -66,45 +68,17 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
 
-    private ShareActionProvider mShareActionProvider;
+    //private ShareActionProvider mShareActionProvider;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
-        // Locate MenuItem with ShareActionProvider
         MenuItem item = menu.findItem(R.id.action_share);
 
         // Fetch and store ShareActionProvider
         /*
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-
-        File vcfFile = new File(this.getExternalFilesDir(null), "generated.vcf");
-        try{
-            FileWriter fw = new FileWriter(vcfFile);
-            fw.write("BEGIN:VCARD\r\n");
-            fw.write("VERSION:3.0\r\n");
-            fw.write("N:" + patient.getmName() + ";" + patient.getmSurname() + "\r\n");
-            fw.write("FN:" + patient.getmName() + " " + patient.getmSurname() + "\r\n");
-            fw.write("ORG:" + getApplicationContext().getResources().getString(R.string.patient) + "\r\n");
-            fw.write("TITLE:" +"" + "\r\n");
-            fw.write("TEL;TYPE=WORK,VOICE:" + patient.getmTelephone2() + "\r\n");
-            fw.write("TEL;TYPE=HOME,VOICE:" + patient.getmTelephone1() + "\r\n");
-            fw.write("ADR;TYPE=WORK:;;" +  patient.getmTown() + ";" + patient.getmCity() +  "\r\n");
-            fw.write("EMAIL;TYPE=PREF,INTERNET:" + patient.getmEmail() + "\r\n");
-            fw.write("END:VCARD\r\n");
-            fw.close();
-        }catch (Exception e){
-            Log.d("vcf problem",e.getMessage());
-        }
-
-        Intent i = new Intent();
-        i.setAction(android.content.Intent.ACTION_VIEW);
-        i.setDataAndType(Uri.fromFile(vcfFile), "text/x-vcard");
-
-        mShareActionProvider.setShareIntent(i);
         */
-
         return true;
     }
 
@@ -169,23 +143,41 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
 
-        Intent printIntent = new Intent(this, PrintDialog.class);
-
-        File root = android.os.Environment.getExternalStorageDirectory();
-
-        File file = new File(root.getAbsolutePath(), "/Download/test.pdf");
+        final Intent printIntent = new Intent(this, PrintDialog.class);
+        final File root = android.os.Environment.getExternalStorageDirectory();
+        final File file = new File(root.getAbsolutePath(), "/Download/test.pdf");
 
 
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.what_do_you_want))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.show_file), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(getString(R.string.print_file), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        printIntent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                        printIntent.putExtra("title", getString(R.string.patient));
+                        startActivity(printIntent);
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
 
-        /*
-        printIntent.setDataAndType(Uri.fromFile(file), "application/pdf");
-        printIntent.putExtra("title", "Hasta");
-        startActivity(printIntent);*/
+
+
+
+
     }
+
+    private PdfWriter writer;
 
     private void createPdf() throws FileNotFoundException, DocumentException {
         //File file = new File(getApplicationContext().getFilesDir(), "test.pdf");
@@ -196,7 +188,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         OutputStream output = new FileOutputStream(file);
 
         Document document = new Document();
-        PdfWriter.getInstance(document, output);
+        writer = PdfWriter.getInstance(document, output);
         document.open();
 
         document.setPageSize(PageSize.A4);
@@ -213,22 +205,22 @@ public class PatientDetailActivity extends AppCompatActivity {
         PdfPTable table = new PdfPTable(2);
 
         PdfPCell cell;
-        cell = getCell("Kisisel Bilgiler", false);
+        cell = getCell(getString(R.string.personal_details), false);
         cell.setColspan(2);
         table.addCell(cell);
 
-        table.addCell(getCell("İsim: " + patient.getmName() + " " + patient.getmSurname(), false));
-        table.addCell(getCell("Doğum Tarihi: " + patient.getmBirthDate(), false));
-        cell = getCell("Adres: " + patient.getmAddress() + " " + patient.getmTown() + " / " + patient.getmCity(), false);
+        table.addCell(getCell(getString(R.string.name) + ": " + patient.getmName() + " " + patient.getmSurname(), false));
+        table.addCell(getCell(getString(R.string.birth_date) + ": " + patient.getmBirthDate(), false));
+        cell = getCell(getString(R.string.address)+": " + patient.getmAddress() + " " + patient.getmTown() + " / " + patient.getmCity(), false);
         cell.setColspan(2);
         table.addCell(cell);
-        table.addCell(getCell("E-Posta: " + patient.getmEmail(), false));
-        table.addCell(getCell("Ev Tel: " + patient.getmTelephone1(), false));
-        table.addCell(getCell("Is Tel: " + patient.getmTelephone2(), false));
-        table.addCell(getCell("GSM: " + patient.getmTelephone1(), false));
-        table.addCell(getCell("Surekli Tıp Doktorunuz: " + patient.getmDoctorName() + " Tel: " + patient.getmDoctorNumber(), false));
-        table.addCell(getCell("Son Muayene Tarihi: " + patient.getmDoctorDate(), false));
-        cell = getCell("Kilinige gelis sebebiniz?", false);
+        table.addCell(getCell(getString(R.string.email)+": " + patient.getmEmail(), false));
+        table.addCell(getCell(getString(R.string.mobile_phone)+": " + patient.getmTelephone1(), false));
+        table.addCell(getCell(getString(R.string.work_phone)+": " + patient.getmTelephone2(), false));
+        table.addCell(getCell(getString(R.string.mobile_phone)+": " + patient.getmTelephone1(), false));
+        table.addCell(getCell(getString(R.string.doctors_details)+": " + patient.getmDoctorName() + " - " + patient.getmDoctorNumber(), false));
+        table.addCell(getCell(getString(R.string.doctor_date) + ": " + patient.getmDoctorDate(), false));
+        cell = getCell(getString(R.string.problems)+"? ", false);
         cell.setColspan(2);
         table.addCell(cell);
         cell = getCell(patient.getmProblems(), false);
@@ -244,9 +236,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         for (Answer answer : answerArrayList) {
             if (answer.getmId() == -1) {
                 try {
+                    if (writer.getVerticalPosition(true) - table.getRowHeight(0) - table.getRowHeight(1) - table.getRowHeight(2) < document.bottom()) {
+                        document.newPage();
+                    }
                     document.add(table);
                     table = new PdfPTable(4);
-                    table.setWidthPercentage(100);
+                    table.setSpacingAfter(0);
+                    table.setSpacingBefore(0);
+                    table.setTotalWidth(document.right() - document.left());
+                    table.setLockedWidth(true);
+
                     table.setWidths(new int[]{4, 1, 4, 1});
 
                 } catch (Exception e) {
@@ -262,7 +261,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 table.addCell(cell);
             } else {
                 table.addCell(getCell(answer.getmQuestion(), true));
-                table.addCell(getCell(answer.getmAnswer() ? "Evet" : "Hayır", false));
+                table.addCell(getCell(answer.getmAnswer() ? getString(R.string.yes) : getString(R.string.no), false));
             }
         }
         return document;
@@ -272,7 +271,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         BaseFont bf = null;
         try {
             bf = BaseFont.createFont(BaseFont.TIMES_ROMAN, "Cp857", BaseFont.EMBEDDED);
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d("Font ", e.getMessage());
         }
 

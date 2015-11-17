@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -60,17 +59,8 @@ public class DataContentProvider extends ContentProvider {
         mPatientAnswerDatabase = new PatientSQLiteHelper(getContext());
 
         mQuestionDatabase = new QuesSQLiteHelper(getContext());
-        try {
-            mQuestionDatabase.onCreate();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
+        mQuestionDatabase.onCreate();
 
-        try {
-            mQuestionDatabase.openDataBase();
-        }catch(SQLException sqle){
-
-        }
         return false;
     }
 

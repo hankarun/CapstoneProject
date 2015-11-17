@@ -48,14 +48,14 @@
                 android:id="@+id/radioYes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Evet"
+                android:text="@string/yes"
                 android:layout_gravity="center_vertical" />
 
             <RadioButton
                 android:id="@+id/radioNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hayır" />
+                android:text="@string/no" />
 
         </RadioGroup>
 

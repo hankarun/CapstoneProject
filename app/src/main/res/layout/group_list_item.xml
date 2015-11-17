@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/groupReorderImage"
             android:src="@drawable/ic_reorder_green_400_24dp"
+            android:contentDescription="@string/reorder"
             android:layout_weight="0.1"
             android:layout_gravity="center"
             android:visibility="gone" />

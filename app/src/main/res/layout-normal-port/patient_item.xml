@@ -20,6 +20,7 @@
             android:id="@+id/imageView"
             android:layout_gravity="center_vertical"
             android:src="@drawable/blank_user"
+            android:contentDescription="@string/user_picture"
             android:scaleType="centerCrop" />
 
         <LinearLayout
@@ -28,13 +29,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center_vertical|top"
-            android:layout_marginLeft="15dp">
+            android:layout_marginStart="15dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/patientNameSurnameText"
-                android:text="Test"
+                android:text=""
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp" />
 
@@ -42,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/patientBirthDateText"
-                android:text="Test"
+                android:text=""
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp" />
 
@@ -50,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/patientEmailText"
-                android:text="Test"
+                android:text=""
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp" />
 
@@ -58,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/patientAddress"
-                android:text="Test"
+                android:text=""
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp" />
 
@@ -69,21 +70,21 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="0"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:gravity="center_vertical|top"
             android:visibility="invisible">
 
             <TextView android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/patientTel1Text"
-                android:text="Test"
+                android:text=""
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New Text"
+                android:text=""
                 android:id="@+id/patientTel2Text"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp" />
@@ -91,7 +92,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Doktorunun Bilgileri"
+                android:text="@string/doctors_details"
                 android:id="@+id/textView9"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp" />
@@ -100,14 +101,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/patientDoctorName"
-                android:text="Test"
+                android:text=""
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New Text"
+                android:text=""
                 android:id="@+id/patientDoctorTel"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp" />
@@ -115,7 +116,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New Text"
+                android:text=""
                 android:id="@+id/patientDoctorDate"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp" />
@@ -126,7 +127,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text=""
             android:id="@+id/patientProblem"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp" />

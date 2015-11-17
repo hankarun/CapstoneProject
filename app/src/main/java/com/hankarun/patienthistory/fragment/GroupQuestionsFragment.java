@@ -31,7 +31,6 @@ import java.util.ArrayList;
 
 public class GroupQuestionsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private Group mGroup;
-    private RecyclerView mRecyclerView;
     private ArrayList<Question> mQuestionsList;
     private QuestionAdapter adapter;
 
@@ -55,7 +54,7 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
         t.setText(mGroup.getmGText());
 
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.questionRecyclerView);
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.questionRecyclerView);
 
         Configuration config = getActivity().getResources().getConfiguration();
 
@@ -100,7 +99,7 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
         super.onSaveInstanceState(outState);
     }
 
-    public void populateList() {
+    private void populateList() {
         Bundle b = new Bundle();
         b.putString("test", "test");
         getLoaderManager().initLoader(mGroup.getmId(), b, this);
@@ -115,9 +114,8 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
                 QuesSQLiteHelper.QUESTION_TABLE_GROUPID,
                 QuesSQLiteHelper.GROUP_TABLE_TEXT};
         Uri uri = Uri.parse(DataContentProvider.CONTENT_URI_GROUPS + "/" + id);
-        CursorLoader cursorLoader = new CursorLoader(getActivity(),
+        return new CursorLoader(getActivity(),
                 uri, projection, null, null, null);
-        return cursorLoader;
     }
 
     @Override

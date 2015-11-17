@@ -32,18 +32,17 @@ public class QuesSQLiteHelper extends SQLiteOpenHelper {
     private SQLiteDatabase myDataBase;
 
 
-    Context context;
+    private Context context;
 
     public QuesSQLiteHelper(Context context) {
         super(context, DB_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
 
-    public void onCreate() throws IOException{
+    public void onCreate(){
         boolean dbExist = checkDataBase();
 
-        if(dbExist){
-        }else{
+        if(!dbExist){
             this.getReadableDatabase();
             try {
                 copyDataBase();
@@ -60,6 +59,7 @@ public class QuesSQLiteHelper extends SQLiteOpenHelper {
             String myPath = context.getFilesDir().getParentFile().getPath() + "/databases/" + DB_NAME;
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
         }catch(SQLiteException e){
+            Log.d("", e.getMessage());
         }
 
         if(checkDB != null){
@@ -86,7 +86,7 @@ public class QuesSQLiteHelper extends SQLiteOpenHelper {
         myInput.close();
     }
 
-    public void openDataBase() throws SQLException {
+    public void openDataBase(){
         String myPath = context.getFilesDir().getParentFile().getPath()+ "/databases/" + DB_NAME;
         myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
     }

@@ -1,11 +1,9 @@
 package com.hankarun.patienthistory.fragment;
 
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
@@ -14,15 +12,12 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
-import android.widget.Toast;
 
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.helper.AdapterDataUpdateInterface;
@@ -34,7 +29,6 @@ import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
 import com.hankarun.patienthistory.helper.listdraghelper.OnStartDragListener;
 import com.hankarun.patienthistory.helper.listdraghelper.SimpleItemTouchHelperCallback;
 import com.hankarun.patienthistory.model.Group;
-import com.hankarun.patienthistory.model.Question;
 
 import java.util.ArrayList;
 
@@ -98,7 +92,7 @@ public class GroupListFragment extends Fragment
         return super.onOptionsItemSelected(item);
     }
 
-    public void populateList() {
+    private void populateList() {
         getLoaderManager().initLoader(0, null, this);
     }
 

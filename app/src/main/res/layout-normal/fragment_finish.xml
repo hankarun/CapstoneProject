@@ -23,7 +23,7 @@
 
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:id="@+id/tebriklerText"
-            android:text="Tebrikler."
+            android:text="@string/congrats"
             android:layout_alignParentTop="true"
             android:gravity="center_vertical"
             android:textSize="28sp"
@@ -46,10 +46,10 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="Anketi bitirmek ister misiniz?"
+                    android:text="@string/finish_survey"
                     android:id="@+id/textView6"
                     android:textSize="22sp"
                     android:layout_marginTop="70dp"
@@ -58,7 +58,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Evet"
+                    android:text="@string/yes"
                     android:id="@+id/endButton"
                     android:layout_below="@+id/textView6"
                     android:layout_centerHorizontal="true"

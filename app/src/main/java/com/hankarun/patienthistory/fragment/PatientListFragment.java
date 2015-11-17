@@ -1,7 +1,6 @@
 package com.hankarun.patienthistory.fragment;
 
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -17,7 +16,6 @@ import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.helper.DataContentProvider;
 import com.hankarun.patienthistory.helper.PatientAdapter;
 import com.hankarun.patienthistory.helper.PatientSQLiteHelper;
-import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
 import com.hankarun.patienthistory.model.Patient;
 
 import java.util.ArrayList;
@@ -43,14 +41,14 @@ public class PatientListFragment extends Fragment implements LoaderManager.Loade
 
         mPatientList = new ArrayList<>();
 
-        adapter = new PatientAdapter(getActivity(),mPatientList);
+        adapter = new PatientAdapter(getActivity(), mPatientList);
         mRecyclerView.setAdapter(adapter);
 
         populateList();
         return rootView;
     }
 
-    public void populateList() {
+    private void populateList() {
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -70,17 +68,16 @@ public class PatientListFragment extends Fragment implements LoaderManager.Loade
                 PatientSQLiteHelper.PATIENT_DOCTOR_NAME,
                 PatientSQLiteHelper.PATIENT_DOCTOR_NUMBER,
                 PatientSQLiteHelper.PATIENT_DOCTOR_PROBLEMS};
-        CursorLoader cursorLoader = new CursorLoader(getContext(),
+        return new CursorLoader(getContext(),
                 DataContentProvider.CONTENT_URI_PATIENT, projection, null, null, null);
-        return cursorLoader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 mPatientList.add(new Patient(cursor));
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         //cursor.close();
         adapter.notifyDataSetChanged();

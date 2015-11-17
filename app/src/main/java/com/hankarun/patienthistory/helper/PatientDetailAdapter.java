@@ -15,8 +15,8 @@ import com.hankarun.patienthistory.model.Answer;
 import java.util.ArrayList;
 
 public class PatientDetailAdapter extends RecyclerView.Adapter<PatientDetailAdapter.ViewHolder> {
-    ArrayList<Answer> mAnswerList;
-    Context mContext;
+    private ArrayList<Answer> mAnswerList;
+    private Context mContext;
 
     public PatientDetailAdapter(Context contex, ArrayList<Answer> answerArrayList) {
         mAnswerList = answerArrayList;
@@ -26,11 +26,10 @@ public class PatientDetailAdapter extends RecyclerView.Adapter<PatientDetailAdap
     @Override
     public PatientDetailAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
-    public boolean isHeader(int position){
+    public boolean isHeader(int position) {
         return mAnswerList.get(position).getmId() == -1;
     }
 
@@ -38,7 +37,7 @@ public class PatientDetailAdapter extends RecyclerView.Adapter<PatientDetailAdap
     public void onBindViewHolder(ViewHolder holder, int position) {
         Answer answer = mAnswerList.get(position);
 
-        if(isHeader(position)){
+        if (isHeader(position)) {
             holder.questionText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 4));
             holder.questionText.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
             holder.questionText.setText(answer.getmQuestionGroup());
@@ -46,20 +45,20 @@ public class PatientDetailAdapter extends RecyclerView.Adapter<PatientDetailAdap
             holder.questionText.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimary));
             holder.answerText.setVisibility(View.GONE);
             holder.numberText.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.questionText.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 4));
-            holder.questionText.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            holder.questionText.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
             holder.questionText.setBackgroundColor(mContext.getResources().getColor(android.R.color.white));
             holder.questionText.setTextColor(mContext.getResources().getColor(android.R.color.black));
             //holder.numberText.setText(position+"");
             holder.questionText.setText(answer.getmQuestion());
             holder.answerText.setVisibility(View.VISIBLE);
             //holder.numberText.setVisibility(View.VISIBLE);
-            holder.answerText.setText(answer.getmAnswer() ? "Evet" : "Hayır");
+            holder.answerText.setText(answer.getmAnswer() ? mContext.getString(R.string.yes) : mContext.getString(R.string.no));
 
             if (answer.getmAnswer()) {
                 holder.answerText.setTextColor(mContext.getResources().getColor(android.R.color.holo_green_light));
-                holder.mLinearLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.darker_gray));
+                //holder.mLinearLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.darker_gray));
             } else {
                 holder.answerText.setTextColor(mContext.getResources().getColor(android.R.color.holo_red_light));
                 holder.mLinearLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.white));

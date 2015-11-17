@@ -1,6 +1,5 @@
 package com.hankarun.patienthistory.helper;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +22,14 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
         mQuestions = myDataset;
     }
 
-    public ArrayList<Question> getmQuestions() { return mQuestions;}
+    public ArrayList<Question> getmQuestions() {
+        return mQuestions;
+    }
 
     @Override
     public QuestionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_card_layout, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override
@@ -64,8 +64,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
         if (mQuestions.get(position).getmAnswer()) {
             holder.mYes.setChecked(true);
-        }
-        else {
+        } else {
             holder.mNo.setChecked(true);
         }
 

@@ -28,7 +28,7 @@ public class AdminSecondActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public void setDrawer(int position){
+    private void setDrawer(int position){
         Fragment fragment = null;
         Class fragmentClass = null;
         String fragmentName = null;

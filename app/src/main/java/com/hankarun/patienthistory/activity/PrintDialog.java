@@ -40,7 +40,7 @@ public class PrintDialog extends AppCompatActivity {
     /**
      * Intent that started the action.
      */
-    Intent cloudPrintIntent;
+    private Intent cloudPrintIntent;
 
     @JavascriptInterface
     @Override
@@ -68,7 +68,7 @@ public class PrintDialog extends AppCompatActivity {
         }
     }
 
-    final class PrintDialogJavaScriptInterface {
+    private final class PrintDialogJavaScriptInterface {
 
         @JavascriptInterface
         public String getType() {

@@ -10,7 +10,6 @@ import android.widget.Button;
 
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.activity.QuestionsActivity;
-import com.hankarun.patienthistory.model.Question;
 
 
 public class FinishFragment extends Fragment {

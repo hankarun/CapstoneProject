@@ -2,7 +2,6 @@ package com.hankarun.patienthistory.widget;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -14,7 +13,7 @@ import com.hankarun.patienthistory.model.Patient;
 import java.util.ArrayList;
 
 public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
-    Context mContext = null;
+    private Context mContext = null;
     ArrayList<Patient> entities = new ArrayList<>();
 
     public WidgetDataProvider(Context context, Intent intent) {

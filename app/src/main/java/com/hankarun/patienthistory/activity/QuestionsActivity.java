@@ -6,10 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.hankarun.patienthistory.AnaliticsApplication;
@@ -56,9 +53,7 @@ public class QuestionsActivity extends AppCompatActivity implements
     private FloatingActionButton right;
 
     private InterstitialAd mInterstitialAd;
-    private int start,stop;
-
-    public Patient mPatient;
+    private int start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +64,14 @@ public class QuestionsActivity extends AppCompatActivity implements
         //setSupportActionBar(toolbar);
 
         mGroups = new ArrayList<>();
-        mPatient = new Patient();
+        Patient mPatient = new Patient();
 
         viewPager = (NonSwipebleViewPager) findViewById(R.id.viewpager);
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey("key")) {
-            Log.d("returned","Activity");
+        if (savedInstanceState == null || !savedInstanceState.containsKey("key")) {
+            Log.d("returned", "Activity");
             loadGroups();
-        }else{
+        } else {
             mGroups = savedInstanceState.getParcelableArrayList("key");
             setup();
         }
@@ -116,19 +111,19 @@ public class QuestionsActivity extends AppCompatActivity implements
     private UserEntryFragment uFragment;
     private ArrayList<GroupQuestionsFragment> mQuList;
 
-    private void setup(){
+    private void setup() {
         uFragment = new UserEntryFragment();
         mQuList = new ArrayList<>();
         final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(uFragment, "user");
         int x = 1;
-        for(Group g:mGroups){
+        for (Group g : mGroups) {
             GroupQuestionsFragment fragment = new GroupQuestionsFragment();
             Bundle bundle = new Bundle();
-            bundle.putParcelable("group",g);
+            bundle.putParcelable("group", g);
             fragment.setArguments(bundle);
             mQuList.add(fragment);
-            adapter.addFrag(fragment, x+"");
+            adapter.addFrag(fragment, x + "");
             x = x + 1;
         }
         adapter.addFrag(new FinishFragment(), "end");
@@ -170,17 +165,16 @@ public class QuestionsActivity extends AppCompatActivity implements
                 QuesSQLiteHelper.GROUP_TABLE_ID,
                 QuesSQLiteHelper.GROUP_TABLE_TEXT,
                 QuesSQLiteHelper.GROUP_TABLE_DETAIL};
-        CursorLoader cursorLoader = new CursorLoader(this,
+        return new CursorLoader(this,
                 DataContentProvider.CONTENT_URI_GROUPS, projection, null, null, null);
-        return cursorLoader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data.moveToFirst()){
-            do{
+        if (data.moveToFirst()) {
+            do {
                 mGroups.add(new Group(data));
-            }while(data.moveToNext());
+            } while (data.moveToNext());
         }
         data.close();
         setup();
@@ -193,15 +187,15 @@ public class QuestionsActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.left:
-                viewPager.setCurrentItem(currentpage-1);
+                viewPager.setCurrentItem(currentpage - 1);
                 break;
             case R.id.right:
-                if(currentpage == 0) {
+                if (currentpage == 0) {
                     if (uFragment.checkInput())
                         viewPager.setCurrentItem(currentpage + 1);
-                }else{
+                } else {
                     viewPager.setCurrentItem(currentpage + 1);
                 }
 
@@ -211,8 +205,8 @@ public class QuestionsActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        if(currentpage==0){
-            Toast.makeText(getApplicationContext(),"All progress cleared.",Toast.LENGTH_SHORT).show();
+        if (currentpage == 0) {
+            Toast.makeText(getApplicationContext(), "All progress cleared.", Toast.LENGTH_SHORT).show();
             finish();
 
         }
@@ -222,21 +216,26 @@ public class QuestionsActivity extends AppCompatActivity implements
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
         public final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
+
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
+
         @Override
         public Fragment getItem(int position) {
             return mFragmentList.get(position);
         }
+
         @Override
         public int getCount() {
             return mFragmentList.size();
         }
+
         public void addFrag(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
+
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
@@ -255,17 +254,17 @@ public class QuestionsActivity extends AppCompatActivity implements
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.d("saved","activity");
+        Log.d("saved", "activity");
         outState.putParcelableArrayList("key", mGroups);
         super.onSaveInstanceState(outState);
     }
 
-    public Uri writePatientToDatabase(Patient patient) {
+    private Uri writePatientToDatabase(Patient patient) {
         ContentValues values = patient.toContentValues();
         return getContentResolver().insert(DataContentProvider.CONTENT_URI_PATIENT, values);
     }
 
-    public int writeAnswerToDatabase(ArrayList<ContentValues> contentValues){
+    private int writeAnswerToDatabase(ArrayList<ContentValues> contentValues) {
         ContentValues values[] = new ContentValues[contentValues.size()];
         contentValues.toArray(values);
         return getContentResolver().bulkInsert(DataContentProvider.CONTENT_URI_ANSWERS, values);
@@ -287,7 +286,7 @@ public class QuestionsActivity extends AppCompatActivity implements
                 Answer a = new Answer(question);
                 a.setmUserId(p.getmId());
                 a.setmDate(date.getTime() + "");
-                a.setmQuestionGroup(mGroups.get(question.getmGroupId()-1).getmGText());
+                a.setmQuestionGroup(mGroups.get(question.getmGroupId() - 1).getmGText());
                 contentValues.add(a.toContentValues());
 
             }
@@ -295,7 +294,7 @@ public class QuestionsActivity extends AppCompatActivity implements
         writeAnswerToDatabase(contentValues);
 
         Calendar c = Calendar.getInstance();
-        stop = c.get(Calendar.MILLISECOND);
+        int stop = c.get(Calendar.MILLISECOND);
 
         //Send completion time to the google Analytics
         AnaliticsApplication application = (AnaliticsApplication) getApplication();
@@ -304,7 +303,7 @@ public class QuestionsActivity extends AppCompatActivity implements
                 .setCategory("Question")
                 .setAction("Pass")
                 .setLabel("")
-                .setValue(stop-start);
+                .setValue(stop - start);
         mTracker.setScreenName("Question Screen");
         //mTracker.setScreenName("Image~" + name);
         //mTracker.send(new HitBuilders.ScreenViewBuilder().build());

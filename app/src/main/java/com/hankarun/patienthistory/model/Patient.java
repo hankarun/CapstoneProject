@@ -7,9 +7,6 @@ import android.os.Parcelable;
 
 import com.hankarun.patienthistory.helper.PatientSQLiteHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 public class Patient implements Parcelable{
     private int mId;
     private String mName;

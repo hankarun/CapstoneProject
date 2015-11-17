@@ -146,9 +146,8 @@ public class QuestionsListFragment extends Fragment
                 QuesSQLiteHelper.GROUP_TABLE_DETAIL,
                 QuesSQLiteHelper.QUESTION_TABLE_TEXT,
                 QuesSQLiteHelper.TABLE_QUESTIONS + "." + QuesSQLiteHelper.QUESTION_TABLE_ID + " AS QID"};
-        CursorLoader cursorLoader = new CursorLoader(getActivity(),
+        return new CursorLoader(getActivity(),
                 DataContentProvider.CONTENT_URI_GROUPS_ALL, projection, null, null, null);
-        return cursorLoader;
     }
 
     @Override
@@ -165,7 +164,7 @@ public class QuestionsListFragment extends Fragment
                     mGroups.add(group);
                     mQuestionsByGroup.add(new ArrayList<>());
                 }
-                if(data.getString(data.getColumnIndex(QuesSQLiteHelper.QUESTION_TABLE_TEXT))!=null) {
+                if (data.getString(data.getColumnIndex(QuesSQLiteHelper.QUESTION_TABLE_TEXT)) != null) {
                     Question question = new Question();
                     question.setmQuestion(data.getString(data.getColumnIndex(QuesSQLiteHelper.QUESTION_TABLE_TEXT)));
                     question.setmGroupId(group.getmId());
@@ -192,7 +191,7 @@ public class QuestionsListFragment extends Fragment
     @Override
     public void updateDataBase(int type, Object object) {
         Question question = (Question) object;
-        switch (type){
+        switch (type) {
             case ObjectListAdapter.UPDATE_OBJECT:
                 openDialog(question);
                 break;
@@ -203,16 +202,16 @@ public class QuestionsListFragment extends Fragment
     }
 
     //Show edit question dialog.
-    private void openDialog(Question question){
+    private void openDialog(Question question) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-        if(question.getmGroupId()==0)
-            question.setmGroupId(grouSpinner.getSelectedItemPosition()+1);
-        QuestionEditDialog newFragment = QuestionEditDialog.newInstance(question,mGroups);
+        if (question.getmGroupId() == 0)
+            question.setmGroupId(grouSpinner.getSelectedItemPosition() + 1);
+        QuestionEditDialog newFragment = QuestionEditDialog.newInstance(question, mGroups);
         newFragment.setListener(this);
         newFragment.show(ft, "dialog");
     }
@@ -222,7 +221,7 @@ public class QuestionsListFragment extends Fragment
     public void dialogCompleted(Object group) {
         Question question = (Question) group;
 
-        if(question.getmId()!=0) {
+        if (question.getmId() != 0) {
             Uri todoUri = Uri.parse(DataContentProvider.CONTENT_URI_QUESTIONS + "/" + question.getmId());
             getActivity().getContentResolver().update(todoUri, question.getContentValues(), null, null);
             mGroups.clear();

@@ -14,12 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.model.Patient;
-
-import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -203,10 +200,8 @@ public class UserEntryFragment extends Fragment {
                         + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
                         + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$";
 
-        CharSequence inputStr = email;
-
         Pattern pattern = Pattern.compile(regExpn, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(inputStr);
+        Matcher matcher = pattern.matcher(email);
 
         return matcher.matches();
     }
@@ -222,19 +217,19 @@ public class UserEntryFragment extends Fragment {
     public boolean checkInput(){
         boolean result = true;
         if(nameTxt.getText().toString().equals("")){
-            name.setError("Lütfen adınızı girin.");
+            name.setError(getString(R.string.error_name));
             result = false;
         }else{
             name.setErrorEnabled(false);
         }
         if(surnameTxt.getText().toString().equals("")){
-            surname.setError("Lütfen soyadınızı girin.");
+            surname.setError(getString(R.string.error_surname));
             result = false;
         }else{
             surname.setErrorEnabled(false);
         }
         if(birtText.getText().toString().equals("")){
-            birtdate.setError("Lütfen doğum tarihinizi girin.");
+            birtdate.setError(getString(R.string.error_birthdate));
             result = false;
         }else{
             birtdate.setErrorEnabled(false);
@@ -242,7 +237,7 @@ public class UserEntryFragment extends Fragment {
 
         Log.d("b",birtText.getText().toString());
         if(tel1Text.getText().toString().equals("")&&tel1Text.getText().length()<10){
-            telephone.setError("Lutfen telefonunuzu kontrol edin. 10 Haneli olmalı.");
+            telephone.setError(getString(R.string.eror_telephone));
             result = false;
         }else{
             telephone.setErrorEnabled(false);
@@ -251,7 +246,7 @@ public class UserEntryFragment extends Fragment {
         return result;
     }
 
-    public Patient getPatientFromViews(){
+    private Patient getPatientFromViews(){
         Patient patient = new Patient();
         patient.setmName(nameTxt.getText().toString());
         patient.setmSurname(surnameTxt.getText().toString());

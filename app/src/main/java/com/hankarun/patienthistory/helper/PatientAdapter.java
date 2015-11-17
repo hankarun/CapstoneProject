@@ -2,14 +2,9 @@ package com.hankarun.patienthistory.helper;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.PhoneNumberFormattingTextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +13,6 @@ import android.widget.TextView;
 
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.activity.PatientDetailActivity;
-import com.hankarun.patienthistory.fragment.PatientDetailFragment;
 import com.hankarun.patienthistory.model.Patient;
 
 import java.util.ArrayList;
@@ -37,8 +31,7 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.patient_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override

@@ -8,8 +8,6 @@ import android.os.Parcelable;
 
 import com.hankarun.patienthistory.helper.PatientSQLiteHelper;
 
-import java.util.Date;
-
 public class Answer implements Parcelable{
     private int mId;
     private int mUserId;

@@ -14,8 +14,7 @@ import com.hankarun.patienthistory.helper.PatientSQLiteHelper;
 import com.hankarun.patienthistory.model.Patient;
 
 public class WidgetService extends RemoteViewsService implements Loader.OnLoadCompleteListener<Cursor> {
-    WidgetDataProvider dataProvider;
-    CursorLoader mCursorLoader;
+    private WidgetDataProvider dataProvider;
 
     @Override
     public void onLoadComplete(Loader<Cursor> loader, Cursor data) {
@@ -50,7 +49,7 @@ public class WidgetService extends RemoteViewsService implements Loader.OnLoadCo
                 PatientSQLiteHelper.PATIENT_DOCTOR_NAME,
                 PatientSQLiteHelper.PATIENT_DOCTOR_NUMBER,
                 PatientSQLiteHelper.PATIENT_DOCTOR_PROBLEMS};
-        mCursorLoader = new CursorLoader(getApplicationContext(),
+        CursorLoader mCursorLoader = new CursorLoader(getApplicationContext(),
                 DataContentProvider.CONTENT_URI_PATIENT, projection, null, null, null);
         mCursorLoader.registerListener(0, this);
         mCursorLoader.startLoading();

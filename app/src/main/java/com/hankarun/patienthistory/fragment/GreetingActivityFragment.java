@@ -1,29 +1,15 @@
 package com.hankarun.patienthistory.fragment;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 
 import com.hankarun.patienthistory.R;
-import com.hankarun.patienthistory.activity.GreetingActivity;
 import com.hankarun.patienthistory.activity.QuestionsActivity;
-import com.hankarun.patienthistory.helper.DataContentProvider;
-import com.hankarun.patienthistory.helper.QuesSQLiteHelper;
-
-import java.io.IOException;
-import java.sql.SQLException;
 
 public class GreetingActivityFragment extends Fragment implements Button.OnClickListener {
 
