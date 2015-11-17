@@ -1,8 +1,10 @@
 package com.hankarun.patienthistory.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -125,6 +127,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+
+    final Activity mActiviy = this;
     private void print() {
         /*((PatientDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPatientDetail)).getmAnswerList();
 
@@ -136,48 +140,55 @@ public class PatientDetailActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
         */
-        try {
-            createPdf();
-        } catch (Exception e) {
-            Log.d("e", e.getMessage());
-        }
-
-
-        final Intent printIntent = new Intent(this, PrintDialog.class);
-        final File root = android.os.Environment.getExternalStorageDirectory();
-        final File file = new File(root.getAbsolutePath(), "/Download/test.pdf");
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.what_do_you_want))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.show_file), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                        startActivity(intent);
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton(getString(R.string.print_file), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        printIntent.setDataAndType(Uri.fromFile(file), "application/pdf");
-                        printIntent.putExtra("title", getString(R.string.patient));
-                        startActivity(printIntent);
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-
-
-
-
+        new LongOperation().execute("", null, null);
 
     }
 
     private PdfWriter writer;
+
+    private class LongOperation extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... params) {
+            try {
+                createPdf();
+            } catch (Exception e) {
+                Log.d("e", e.getMessage());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            final Intent printIntent = new Intent(mActiviy, PrintDialog.class);
+            final File root = android.os.Environment.getExternalStorageDirectory();
+            final File file = new File(root.getAbsolutePath(), "/Download/test.pdf");
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(mActiviy);
+            builder.setMessage(getString(R.string.what_do_you_want))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.show_file), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                            startActivity(intent);
+                            dialog.cancel();
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.print_file), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            printIntent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                            printIntent.putExtra("title", getString(R.string.patient));
+                            startActivity(printIntent);
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
 
     private void createPdf() throws FileNotFoundException, DocumentException {
         //File file = new File(getApplicationContext().getFilesDir(), "test.pdf");
@@ -211,16 +222,16 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         table.addCell(getCell(getString(R.string.name) + ": " + patient.getmName() + " " + patient.getmSurname(), false));
         table.addCell(getCell(getString(R.string.birth_date) + ": " + patient.getmBirthDate(), false));
-        cell = getCell(getString(R.string.address)+": " + patient.getmAddress() + " " + patient.getmTown() + " / " + patient.getmCity(), false);
+        cell = getCell(getString(R.string.address) + ": " + patient.getmAddress() + " " + patient.getmTown() + " / " + patient.getmCity(), false);
         cell.setColspan(2);
         table.addCell(cell);
-        table.addCell(getCell(getString(R.string.email)+": " + patient.getmEmail(), false));
-        table.addCell(getCell(getString(R.string.mobile_phone)+": " + patient.getmTelephone1(), false));
-        table.addCell(getCell(getString(R.string.work_phone)+": " + patient.getmTelephone2(), false));
-        table.addCell(getCell(getString(R.string.mobile_phone)+": " + patient.getmTelephone1(), false));
-        table.addCell(getCell(getString(R.string.doctors_details)+": " + patient.getmDoctorName() + " - " + patient.getmDoctorNumber(), false));
+        table.addCell(getCell(getString(R.string.email) + ": " + patient.getmEmail(), false));
+        table.addCell(getCell(getString(R.string.mobile_phone) + ": " + patient.getmTelephone1(), false));
+        table.addCell(getCell(getString(R.string.work_phone) + ": " + patient.getmTelephone2(), false));
+        table.addCell(getCell(getString(R.string.mobile_phone) + ": " + patient.getmTelephone1(), false));
+        table.addCell(getCell(getString(R.string.doctors_details) + ": " + patient.getmDoctorName() + " - " + patient.getmDoctorNumber(), false));
         table.addCell(getCell(getString(R.string.doctor_date) + ": " + patient.getmDoctorDate(), false));
-        cell = getCell(getString(R.string.problems)+"? ", false);
+        cell = getCell(getString(R.string.problems) + "? ", false);
         cell.setColspan(2);
         table.addCell(cell);
         cell = getCell(patient.getmProblems(), false);
