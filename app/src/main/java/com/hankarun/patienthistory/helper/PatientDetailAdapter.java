@@ -39,7 +39,6 @@ public class PatientDetailAdapter extends RecyclerView.Adapter<PatientDetailAdap
         Answer answer = mAnswerList.get(position);
 
         if(isHeader(position)){
-
             holder.questionText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 4));
             holder.questionText.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
             holder.questionText.setText(answer.getmQuestionGroup());

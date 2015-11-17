@@ -16,12 +16,19 @@ import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.fragment.PatientDetailFragment;
 import com.hankarun.patienthistory.model.Answer;
 import com.hankarun.patienthistory.model.Patient;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -163,73 +170,121 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 
         Intent printIntent = new Intent(this, PrintDialog.class);
-        //File root = android.os.Environment.getExternalStorageDirectory();
 
-        File file = new File(getApplicationContext().getFilesDir(), "test.pdf");
+        File root = android.os.Environment.getExternalStorageDirectory();
 
-        /*
+        File file = new File(root.getAbsolutePath(), "/Download/test.pdf");
+
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(file), "application/pdf");
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);*/
+        startActivity(intent);
 
+        /*
         printIntent.setDataAndType(Uri.fromFile(file), "application/pdf");
         printIntent.putExtra("title", "Hasta");
-        startActivity(printIntent);
+        startActivity(printIntent);*/
     }
 
     private void createPdf() throws FileNotFoundException, DocumentException {
-        File file = new File(getApplicationContext().getFilesDir(), "test.pdf");
+        //File file = new File(getApplicationContext().getFilesDir(), "test.pdf");
 
+        File root = android.os.Environment.getExternalStorageDirectory();
+
+        File file = new File(root.getAbsolutePath(), "/Download/test.pdf");
         OutputStream output = new FileOutputStream(file);
 
         Document document = new Document();
         PdfWriter.getInstance(document, output);
         document.open();
+
+        document.setPageSize(PageSize.A4);
+        document.setMargins(20, 20, 20, 20);
+        document.setMarginMirroringTopBottom(true);
+
         document.add(writeUser(patient));
-        //document.add(writeQuestions(
-        //        ((PatientDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPatientDetail)).getmAnswerList()
-        //));
+        document = writeQuestions(
+                ((PatientDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPatientDetail)).getmAnswerList(), document);
         document.close();
     }
 
     private PdfPTable writeUser(Patient patient) {
         PdfPTable table = new PdfPTable(2);
-        // the cell object
+
         PdfPCell cell;
-        // we add a cell with colspan 3
-        cell = new PdfPCell(new Phrase("Kisisel Bilgiler"));
+        cell = getCell("Kisisel Bilgiler", false);
         cell.setColspan(2);
-        cell.setBorder(PdfPCell.NO_BORDER);
         table.addCell(cell);
 
-        // we add the four remaining cells with addCell()
-        table.addCell("İsim: " + patient.getmName() + " " + patient.getmSurname());
-        table.addCell("Doğum Tarihi: " + patient.getmBirthDate());
+        table.addCell(getCell("İsim: " + patient.getmName() + " " + patient.getmSurname(), false));
+        table.addCell(getCell("Doğum Tarihi: " + patient.getmBirthDate(), false));
+        cell = getCell("Adres: " + patient.getmAddress() + " " + patient.getmTown() + " / " + patient.getmCity(), false);
+        cell.setColspan(2);
+        table.addCell(cell);
+        table.addCell(getCell("E-Posta: " + patient.getmEmail(), false));
+        table.addCell(getCell("Ev Tel: " + patient.getmTelephone1(), false));
+        table.addCell(getCell("Is Tel: " + patient.getmTelephone2(), false));
+        table.addCell(getCell("GSM: " + patient.getmTelephone1(), false));
+        table.addCell(getCell("Surekli Tıp Doktorunuz: " + patient.getmDoctorName() + " Tel: " + patient.getmDoctorNumber(), false));
+        table.addCell(getCell("Son Muayene Tarihi: " + patient.getmDoctorDate(), false));
+        cell = getCell("Kilinige gelis sebebiniz?", false);
+        cell.setColspan(2);
+        table.addCell(cell);
+        cell = getCell(patient.getmProblems(), false);
+        cell.setColspan(2);
+        table.addCell(cell);
 
-        cell = new PdfPCell(new Phrase("Adres: " + patient.getmAddress() + " " + patient.getmTown() + " / "+patient.getmCity()));
-        cell.setColspan(2);
-        cell.setBorder(PdfPCell.NO_BORDER);
-        table.addCell(cell);
-        table.addCell("E-Posta: " + patient.getmEmail());
-        table.addCell("Ev Tel: " + patient.getmTelephone1());
-        table.addCell("Is Tel: " + patient.getmTelephone2());
-        table.addCell("GSM: " + patient.getmTelephone1());
-
-        table.addCell("Surekli Tıp Doktorunuz: " + patient.getmDoctorName() + " Tel: " + patient.getmDoctorNumber());
-        table.addCell("Son Muayene Tarihi: " + patient.getmDoctorDate());
-        cell = new PdfPCell(new Phrase("Kilinige gelis sebebiniz?"));
-        cell.setColspan(2);
-        cell.setBorder(PdfPCell.NO_BORDER);
-        table.addCell(cell);
-        cell = new PdfPCell(new Phrase(patient.getmProblems()));
-        cell.setColspan(2);
-        cell.setBorder(PdfPCell.NO_BORDER);
-        table.addCell(cell);
         return table;
     }
 
-    private PdfPTable writeQuestions(ArrayList<Answer> answerArrayList) {
-        return null;
+    private Document writeQuestions(ArrayList<Answer> answerArrayList, Document document) {
+        PdfPTable table = new PdfPTable(1);
+        PdfPCell cell;
+        for (Answer answer : answerArrayList) {
+            if (answer.getmId() == -1) {
+                try {
+                    document.add(table);
+                    table = new PdfPTable(4);
+                    table.setWidthPercentage(100);
+                    table.setWidths(new int[]{4, 1, 4, 1});
+
+                } catch (Exception e) {
+                    Log.d("Table", e.getMessage());
+                }
+
+                cell = getCell(answer.getmQuestionGroup(), false);
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_MIDDLE);
+                cell.setColspan(4);
+
+                cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                table.addCell(cell);
+            } else {
+                table.addCell(getCell(answer.getmQuestion(), true));
+                table.addCell(getCell(answer.getmAnswer() ? "Evet" : "Hayır", false));
+            }
+        }
+        return document;
+    }
+
+    private PdfPCell getCell(String text, boolean question) {
+        BaseFont bf = null;
+        try {
+            bf = BaseFont.createFont(BaseFont.TIMES_ROMAN, "Cp857", BaseFont.EMBEDDED);
+        }catch (Exception e){
+            Log.d("Font ", e.getMessage());
+        }
+
+        //Font font = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD);
+        Font font = new Font(bf);
+        Paragraph p = new Paragraph(text, font);
+        if (question) {
+            Chunk leader = new Chunk(new DottedLineSeparator());
+            p.add(leader);
+        }
+        PdfPCell cell = new PdfPCell(p);
+        cell.setBorder(PdfPCell.NO_BORDER);
+        return cell;
     }
 }
