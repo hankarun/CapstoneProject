@@ -18,7 +18,6 @@ public class DataContentProvider extends ContentProvider {
     private QuesSQLiteHelper mQuestionDatabase;
     private PatientSQLiteHelper mPatientAnswerDatabase;
 
-
     public static final Uri CONTENT_URI_QUESTIONS =
             Uri.parse("content://"+ PROVIDER_NAME + "/questions");
     public static final Uri CONTENT_URI_GROUPS =

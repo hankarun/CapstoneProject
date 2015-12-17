@@ -36,6 +36,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
         android:layout_alignParentBottom="true"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:visibility="invisible" />
 
     <Button
@@ -44,5 +45,6 @@
         android:text="Merhaba"
         android:id="@+id/beginButton"
         android:layout_centerInParent="true"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:textSize="42sp" />
 </RelativeLayout>

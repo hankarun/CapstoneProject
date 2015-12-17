@@ -1,6 +1,7 @@
 package com.hankarun.patienthistory.activity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -207,8 +208,9 @@ public class QuestionsActivity extends AppCompatActivity implements
     public void onBackPressed() {
         if (currentpage == 0) {
             Toast.makeText(getApplicationContext(), "All progress cleared.", Toast.LENGTH_SHORT).show();
-            finish();
-
+            Intent a = new Intent(this,GreetingActivity.class);
+            a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(a);
         }
         viewPager.setCurrentItem(currentpage - 1);
     }
@@ -313,7 +315,9 @@ public class QuestionsActivity extends AppCompatActivity implements
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         } else {
-            finish();
+            Intent a = new Intent(this,GreetingActivity.class);
+            a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(a);
         }
     }
 }

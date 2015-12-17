@@ -13,7 +13,7 @@
     <string name="patient">Patient</string>
     <string name="info_text">Zamanınızın bir kısmını bize ayırarak size daha iyi hizmet verebilmemiz için kucuk bir anketi doldurabilir misiniz?</string>
     <string name="start">Basla</string>
-    <string name="greeting">Merhaba</string>
+    <string name="greeting">Hoşgeldiniz</string>
     <string name="admin">Yonetim</string>
     <string name="group_details">Grup Detayları</string>
     <string name="question_edit">Question Edit</string>
@@ -41,8 +41,8 @@
     <string name="mobile_phone">Cep Telefoun</string>
     <string name="work_phone">Is Telefonu</string>
     <string name="address">Adres</string>
-    <string name="town">Town</string>
-    <string name="city">City</string>
+    <string name="town">İlçe</string>
+    <string name="city">Şehir</string>
     <string name="doctor_name">Doctorunuzn Adı</string>
     <string name="doctor_tel">Doktorunuzun Telefon Numarası</string>
     <string name="doctor_date">Son tarihi girin</string>

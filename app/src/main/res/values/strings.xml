@@ -59,4 +59,5 @@
     <string name="error_birthdate">Please check your birth date!</string>
     <string name="error_surname">Please check your family name!</string>
     <string name="error_name">Please check your name!</string>
+    <string name="title_activity_check_user">CheckUserActivity</string>
 </resources>
