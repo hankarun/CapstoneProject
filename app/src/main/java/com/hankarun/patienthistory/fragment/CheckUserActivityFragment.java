@@ -49,6 +49,7 @@ public class CheckUserActivityFragment extends Fragment implements Animation.Ani
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), QuestionsActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -144,6 +145,7 @@ public class CheckUserActivityFragment extends Fragment implements Animation.Ani
         Intent intent = new Intent(getActivity(), QuestionsActivity.class);
         intent.putExtra("patient",p);
         startActivity(intent);
+        getActivity().finish();
     }
 
     @Override

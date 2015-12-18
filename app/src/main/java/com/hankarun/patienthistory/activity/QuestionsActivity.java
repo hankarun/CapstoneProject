@@ -281,8 +281,9 @@ public class QuestionsActivity extends AppCompatActivity implements
     //Collect data from fragments. Create user get id from uri add answers based on patient.
     public void getInfo() {
         Patient p = uFragment.getPatient();
-
-        p.setmId(Integer.parseInt(writePatientToDatabase(p).getLastPathSegment()));
+        Log.d("id ", p.getmId()+"");
+        if(p.getmId()==0)
+            p.setmId(Integer.parseInt(writePatientToDatabase(p).getLastPathSegment()));
 
         ArrayList<ContentValues> contentValues = new ArrayList<>();
 
@@ -304,12 +305,8 @@ public class QuestionsActivity extends AppCompatActivity implements
         Calendar c = Calendar.getInstance();
         int stop = c.get(Calendar.MILLISECOND);
 
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        } else {
-            Intent a = new Intent(this,GreetingActivity.class);
-            a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(a);
-        }
+        Intent a = new Intent(this,GreetingActivity.class);
+        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(a);
     }
 }

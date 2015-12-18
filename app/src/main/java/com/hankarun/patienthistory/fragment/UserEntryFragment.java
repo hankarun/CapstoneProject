@@ -266,6 +266,8 @@ public class UserEntryFragment extends Fragment {
 
     private Patient getPatientFromViews(){
         Patient patient = new Patient();
+        if(this.patient.getmId()!=0)
+            patient.setmId(this.patient.getmId());
         patient.setmName(nameTxt.getText().toString());
         patient.setmSurname(surnameTxt.getText().toString());
         patient.setmBirthDate(birtText.getText().toString());
