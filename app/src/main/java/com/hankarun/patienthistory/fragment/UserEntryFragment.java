@@ -54,11 +54,17 @@ public class UserEntryFragment extends Fragment {
         super.onResume();
     }
 
+    public static UserEntryFragment newInstance(Patient p){
+        UserEntryFragment fragment = new UserEntryFragment();
+        Bundle b = new Bundle();
+        b.putParcelable("patient",p);
+        fragment.setArguments(b);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        patient = new Patient();
         View rootView = inflater.inflate(R.layout.fragment_user_entry, container, false);
 
 
@@ -102,25 +108,37 @@ public class UserEntryFragment extends Fragment {
         if (savedInstanceState != null) {
             patient = savedInstanceState.getParcelable("patient");
 
-            nameTxt.setText(patient.getmName());
-            surnameTxt.setText(patient.getmSurname());
-            birtText.setText(patient.getmBirthDate());
-            emailText.setText(patient.getmEmail());
-            tel1Text.setText(patient.getmTelephone1());
-            tel2Text.setText(patient.getmTelephone2());
-            addressText.setText(patient.getmAddress());
-            addressCity.setText(patient.getmCity());
-            addressTown.setText(patient.getmTown());
-            doctorName.setText(patient.getmDoctorName());
-            docdate.setText(patient.getmDoctorDate());
-            docProblem.setText(patient.getmProblems());
-            doctorTel.setText(patient.getmDoctorNumber());
+            setFields();
         }
 
         docdate.addTextChangedListener(new MyTextWatcher(docdate));
         birtText.addTextChangedListener(new MyTextWatcher(birtText));
 
+        Bundle temp = getArguments();
+        if(temp!=null) {
+            patient = temp.getParcelable("patient");
+            setFields();
+        }else {
+            patient = new Patient();
+        }
+
         return rootView;
+    }
+
+    private void setFields(){
+        nameTxt.setText(patient.getmName());
+        surnameTxt.setText(patient.getmSurname());
+        birtText.setText(patient.getmBirthDate());
+        emailText.setText(patient.getmEmail());
+        tel1Text.setText(patient.getmTelephone1());
+        tel2Text.setText(patient.getmTelephone2());
+        addressText.setText(patient.getmAddress());
+        addressCity.setText(patient.getmCity());
+        addressTown.setText(patient.getmTown());
+        doctorName.setText(patient.getmDoctorName());
+        docdate.setText(patient.getmDoctorDate());
+        docProblem.setText(patient.getmProblems());
+        doctorTel.setText(patient.getmDoctorNumber());
     }
 
     public class MyTextWatcher implements TextWatcher{

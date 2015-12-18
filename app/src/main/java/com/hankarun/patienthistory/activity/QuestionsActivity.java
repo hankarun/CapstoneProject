@@ -23,9 +23,6 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.hankarun.patienthistory.AnaliticsApplication;
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.fragment.FinishFragment;
 import com.hankarun.patienthistory.fragment.GroupQuestionsFragment;
@@ -55,6 +52,7 @@ public class QuestionsActivity extends AppCompatActivity implements
 
     private InterstitialAd mInterstitialAd;
     private int start;
+    private Patient mPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +63,13 @@ public class QuestionsActivity extends AppCompatActivity implements
         //setSupportActionBar(toolbar);
 
         mGroups = new ArrayList<>();
-        Patient mPatient = new Patient();
+
+        Intent b = getIntent();
+
+        mPatient = new Patient();
+        if(b.hasExtra("patient"))
+            mPatient = b.getParcelableExtra("patient");
+
 
         viewPager = (NonSwipebleViewPager) findViewById(R.id.viewpager);
 
@@ -113,7 +117,10 @@ public class QuestionsActivity extends AppCompatActivity implements
     private ArrayList<GroupQuestionsFragment> mQuList;
 
     private void setup() {
-        uFragment = new UserEntryFragment();
+        if(mPatient.getmId()!=0)
+            uFragment = UserEntryFragment.newInstance(mPatient);
+        else
+            uFragment = new UserEntryFragment();
         mQuList = new ArrayList<>();
         final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(uFragment, "user");
@@ -256,7 +263,6 @@ public class QuestionsActivity extends AppCompatActivity implements
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.d("saved", "activity");
         outState.putParcelableArrayList("key", mGroups);
         super.onSaveInstanceState(outState);
     }
@@ -297,20 +303,6 @@ public class QuestionsActivity extends AppCompatActivity implements
 
         Calendar c = Calendar.getInstance();
         int stop = c.get(Calendar.MILLISECOND);
-
-        //Send completion time to the google Analytics
-        AnaliticsApplication application = (AnaliticsApplication) getApplication();
-        Tracker mTracker = application.getDefaultTracker();
-        HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
-                .setCategory("Question")
-                .setAction("Pass")
-                .setLabel("")
-                .setValue(stop - start);
-        mTracker.setScreenName("Question Screen");
-        //mTracker.setScreenName("Image~" + name);
-        //mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-        mTracker.send(builder.build());
-
 
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();

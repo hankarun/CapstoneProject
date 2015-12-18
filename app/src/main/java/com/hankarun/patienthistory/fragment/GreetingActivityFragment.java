@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hankarun.patienthistory.R;
+import com.hankarun.patienthistory.activity.CheckUserActivity;
 import com.hankarun.patienthistory.activity.GreetingActivity;
 import com.hankarun.patienthistory.activity.QuestionsActivity;
 
@@ -86,7 +87,7 @@ public class GreetingActivityFragment extends Fragment implements Button.OnClick
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(getActivity(), QuestionsActivity.class);
+        Intent intent = new Intent(getActivity(), CheckUserActivity.class);
         startActivity(intent);
     }
 
