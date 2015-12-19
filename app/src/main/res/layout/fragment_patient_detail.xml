@@ -9,15 +9,32 @@
     <include layout="@layout/patient_item"
         android:id="@+id/include" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Anket Tarihi:"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/include"
+        android:layout_alignParentStart="false"
+        android:layout_alignBottom="@+id/spinner"
+        android:gravity="center_vertical" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_toEndOf="@+id/textView5"
+        android:layout_below="@+id/include"
+        android:layout_alignParentEnd="true" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/answersRecyclerView"
-        android:layout_below="@+id/include"
-        android:layout_centerHorizontal="true"
         android:scrollbars="vertical"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp" />
+        android:layout_below="@+id/spinner"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

@@ -29,6 +29,9 @@ public class DataContentProvider extends ContentProvider {
     public static final Uri CONTENT_URI_ANSWERS =
             Uri.parse("content://"+ PROVIDER_NAME + "/answers");
 
+    public static final Uri CONTENT_URI_ANSWERS1 =
+            Uri.parse("content://"+ PROVIDER_NAME + "/answerss");
+
     private static final int QUESTION = 10;
     private static final int QUESTION_ID = 11;
     private static final int GROUP = 20;
@@ -37,7 +40,10 @@ public class DataContentProvider extends ContentProvider {
     private static final int PATIENTS = 30;
     private static final int PATIENT_ID = 33;
     private static final int ANSWERS = 40;
+    private static final int ANSWERSS = 41;
     private static final int ANSWERS_ID = 44;
+    private static final int ANSWERSS_ID = 45;
+
 
     private static final UriMatcher uriMatcher;
     static {
@@ -50,7 +56,9 @@ public class DataContentProvider extends ContentProvider {
         uriMatcher.addURI(PROVIDER_NAME, "patients/", PATIENTS); // Return all patients.
         uriMatcher.addURI(PROVIDER_NAME, "patients/#", PATIENT_ID); //Return patient by id
         uriMatcher.addURI(PROVIDER_NAME, "answers/", ANSWERS); //Return or put answers?
+        uriMatcher.addURI(PROVIDER_NAME, "answerss/", ANSWERSS);
         uriMatcher.addURI(PROVIDER_NAME, "answers/#", ANSWERS_ID); //ID is for patient return answers for a patient.
+        uriMatcher.addURI(PROVIDER_NAME, "answerss/#", ANSWERSS_ID);
     }
 
     @Override
@@ -106,6 +114,12 @@ public class DataContentProvider extends ContentProvider {
             case ANSWERS_ID:
                 queryBuilder.setTables(PatientSQLiteHelper.TABLE_ANSWERS);
                 queryBuilder.appendWhere(PatientSQLiteHelper.ANSWER_PATIENT_ID + "=" + uri.getLastPathSegment());
+                db = mPatientAnswerDatabase.getWritableDatabase();
+                break;
+            case ANSWERSS_ID:
+                queryBuilder.setTables(PatientSQLiteHelper.TABLE_ANSWERS);
+                queryBuilder.appendWhere(PatientSQLiteHelper.ANSWER_PATIENT_ID + "=" + uri.getLastPathSegment());
+                queryBuilder.setDistinct(true);
                 db = mPatientAnswerDatabase.getWritableDatabase();
                 break;
             default:

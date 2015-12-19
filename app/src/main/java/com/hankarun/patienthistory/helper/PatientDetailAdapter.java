@@ -15,7 +15,7 @@ import com.hankarun.patienthistory.model.Answer;
 import java.util.ArrayList;
 
 public class PatientDetailAdapter extends RecyclerView.Adapter<PatientDetailAdapter.ViewHolder> {
-    private ArrayList<Answer> mAnswerList;
+    public ArrayList<Answer> mAnswerList;
     private Context mContext;
 
     public PatientDetailAdapter(Context contex, ArrayList<Answer> answerArrayList) {
@@ -63,9 +63,7 @@ public class PatientDetailAdapter extends RecyclerView.Adapter<PatientDetailAdap
                 holder.answerText.setTextColor(mContext.getResources().getColor(android.R.color.holo_red_light));
                 holder.mLinearLayout.setBackgroundColor(mContext.getResources().getColor(android.R.color.white));
             }
-
         }
-
     }
 
     @Override

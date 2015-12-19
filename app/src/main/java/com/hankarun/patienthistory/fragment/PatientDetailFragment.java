@@ -16,6 +16,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.hankarun.patienthistory.R;
@@ -25,10 +28,13 @@ import com.hankarun.patienthistory.helper.PatientSQLiteHelper;
 import com.hankarun.patienthistory.model.Answer;
 import com.hankarun.patienthistory.model.Patient;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
-public class PatientDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class PatientDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemSelectedListener {
     private TextView nameTextView;
     private TextView birthTextView;
     private TextView emailTextView;
@@ -39,9 +45,12 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
     private TextView doctorTelTextView;
     private TextView doctorDateTextView;
     private TextView problemTextView;
+    private Spinner dateSpinner;
+    private RecyclerView mRecyclerView;
 
     private ArrayList<Answer> mAnswerList;
     private PatientDetailAdapter adapter;
+    private Patient patient;
 
     public ArrayList<Answer> getmAnswerList() {
         return mAnswerList;
@@ -66,17 +75,17 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
         doctorTelTextView = (TextView) v.findViewById(R.id.patientDoctorTel);
         doctorDateTextView = (TextView) v.findViewById(R.id.patientDoctorDate);
         problemTextView = (TextView) v.findViewById(R.id.patientProblem);
-        RecyclerView mRecyclerView = (RecyclerView) v.findViewById(R.id.answersRecyclerView);
+        dateSpinner = (Spinner) v.findViewById(R.id.spinner);
+        dateSpinner.setOnItemSelectedListener(this);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.answersRecyclerView);
 
         Configuration config = getActivity().getResources().getConfiguration();
 
 
         if ((config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE
                 && config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            mRecyclerView.setHasFixedSize(true);
             GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
 
-            // Create a custom SpanSizeLookup where the first item spans both columns
             layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
@@ -94,7 +103,7 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            Patient patient = bundle.getParcelable("patient");
+            patient = bundle.getParcelable("patient");
             if (patient != null) {
                 populateList(patient);
             }
@@ -104,6 +113,7 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
     }
 
     public void populateList(Patient patient) {
+        this.patient = patient;
         String twmp = patient.getmName() + " " + patient.getmSurname();
         nameTextView.setText(twmp);
         birthTextView.setText(patient.getmBirthDate());
@@ -120,7 +130,7 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
         doctorDateTextView.setText(patient.getmDoctorDate());
         problemTextView.setText(patient.getmProblems());
 
-        getLoaderManager().initLoader(patient.getmId(), null, this);
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -134,38 +144,82 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
                 PatientSQLiteHelper.ANSWER_PATIENT_ID,
                 PatientSQLiteHelper.ANSWER_QUESTION_GROUP,
                 PatientSQLiteHelper.ANSWER_QUESTION};
-        Uri uri = Uri.parse(DataContentProvider.CONTENT_URI_ANSWERS + "/" + id);
-        return new CursorLoader(getActivity(),
-                uri, projection, null, null, null);
+        Log.d("id ", id+"");
+        switch (id) {
+            case 0:
+                return new CursorLoader(getActivity(),
+                        Uri.parse(DataContentProvider.CONTENT_URI_ANSWERS1 + "/" + patient.getmId()), new String[] {PatientSQLiteHelper.ANSWER_DATE}, null, null,
+                        PatientSQLiteHelper.ANSWER_DATE + " DESC");
+            default:
+                Uri uri = Uri.parse(DataContentProvider.CONTENT_URI_ANSWERS + "/" + patient.getmId());
+                Log.d("date", args.getString("date"));
+                return new CursorLoader(getActivity(),
+                        uri, projection,
+                        PatientSQLiteHelper.ANSWER_DATE + " = '"+args.getString("date")+"'", null, null);
+        }
     }
 
+    List<String> longDates;
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        String group = "";
-        if (data.moveToFirst()) {
-            do {
-                if (!data.getString(data.getColumnIndex(PatientSQLiteHelper.ANSWER_QUESTION_GROUP)).equals(group)) {
-                    group = data.getString(data.getColumnIndex(PatientSQLiteHelper.ANSWER_QUESTION_GROUP));
-                    Answer temp = new Answer();
-                    temp.setmQuestionGroup(group);
-                    temp.setmId(-1);
-                    mAnswerList.add(temp);
+        switch (loader.getId()) {
+            case 0:
+                data.moveToFirst();
+                List<String> dates = new ArrayList<>();
+                longDates = new ArrayList<>();
+                do{
+                    dates.add(new SimpleDateFormat("dd/MM/yyyy HH:mm")
+                            .format(new Date(Long.parseLong(data.getString(data.getColumnIndex(PatientSQLiteHelper.ANSWER_DATE))))));
+                    longDates.add(data.getString(data.getColumnIndex(PatientSQLiteHelper.ANSWER_DATE)));
+                } while (data.moveToNext());
+
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, dates);
+                dateSpinner.setAdapter(dataAdapter);
+
+                Bundle b = new Bundle();
+                b.putString("date",longDates.get(0));
+                getLoaderManager().initLoader(1, b, this);
+                break;
+            default:
+                mAnswerList.clear();
+                String group = "";
+                if (data.moveToFirst()) {
+                    do {
+                        if (!data.getString(data.getColumnIndex(PatientSQLiteHelper.ANSWER_QUESTION_GROUP)).equals(group)) {
+                            group = data.getString(data.getColumnIndex(PatientSQLiteHelper.ANSWER_QUESTION_GROUP));
+                            Answer temp = new Answer();
+                            temp.setmQuestionGroup(group);
+                            temp.setmId(-1);
+                            mAnswerList.add(temp);
+                        }
+                        mAnswerList.add(new Answer(data));
+                    } while (data.moveToNext());
                 }
-                Log.d("groups", data.getString(data.getColumnIndex(PatientSQLiteHelper.ANSWER_QUESTION_GROUP)));
-                mAnswerList.add(new Answer(data));
-            } while (data.moveToNext());
+                adapter = new PatientDetailAdapter(getContext(), mAnswerList);
+                mRecyclerView.setAdapter(adapter);
         }
-        //data.close();
-        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        loader.reset();
         mAnswerList.clear();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Bundle b = new Bundle();
+        b.putString("date", longDates.get(position));
+        getLoaderManager().initLoader(position+1, b, this);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
