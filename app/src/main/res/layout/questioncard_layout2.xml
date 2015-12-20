@@ -28,30 +28,18 @@
             android:layout_weight="3.4"
             android:gravity="center_vertical" />
 
-        <RadioGroup
-            android:id="@+id/radioYesNo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="0.6"
-            android:gravity="center_vertical">
-
-            <RadioButton
-                android:id="@+id/radioYes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/yes"
-                android:layout_gravity="center_vertical" />
-
-            <RadioButton
-                android:id="@+id/radioNo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no" />
-
-        </RadioGroup>
-
     </LinearLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/questionDetailInput">
+        <EditText android:id="@+id/input_qDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Cevabınızı buyara yazabilirsiniz"
+            android:inputType="text" />
+    </android.support.design.widget.TextInputLayout>
 
     <View
         android:layout_width="fill_parent"

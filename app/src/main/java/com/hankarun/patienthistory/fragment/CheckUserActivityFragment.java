@@ -25,15 +25,15 @@ import com.hankarun.patienthistory.model.Patient;
 
 
 public class CheckUserActivityFragment extends Fragment implements Animation.AnimationListener, LoaderManager.LoaderCallbacks<Cursor> {
-    Button continueButton;
-    Button checkUserButton;
-    Button searchUser;
-    View divider;
-    LinearLayout phoneInput;
-    TextView tel1Input;
+    private Button continueButton;
+    private Button checkUserButton;
+    private Button searchUser;
+    private View divider;
+    private LinearLayout phoneInput;
+    private TextView tel1Input;
 
-    Animation animFadein;
-    Animation animFadeout;
+    private Animation animFadein;
+    private Animation animFadeout;
 
     public CheckUserActivityFragment() {
     }

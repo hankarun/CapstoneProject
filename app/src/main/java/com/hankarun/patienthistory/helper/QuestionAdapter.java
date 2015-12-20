@@ -28,22 +28,29 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
     @Override
     public QuestionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        //TODO change viewholder depending question type
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_card_layout, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final QuestionAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        //TODO use holder depending question type.
+        setupType1(holder,position);
+    }
 
-        /*int total = mQuestions.size();
+    @Override
+    public int getItemViewType(int position) {
+        return mQuestions.get(position).getmType();
+    }
 
-        if(position%2==0){
-            holder.mQuestionNumber.setText(position + 1 + "");
-        }
-        else{
-            holder.mQuestionNumber.setText(position + 1 + "");
-        }*/
+    @Override
+    public int getItemCount() {
+        return mQuestions.size();
+    }
 
+
+    private void setupType1(final ViewHolder holder, final int position){
         holder.mQuestionText.setText(mQuestions.get(position).getmQuestion());
 
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
@@ -81,16 +88,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
                 mQuestions.get(position).setmAnswer(false);
             }
         });
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return mQuestions.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mQuestionNumber;
         public TextView mQuestionText;
         public RadioGroup mYesNoGroup;
         public RadioButton mYes;
@@ -99,7 +99,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
         public ViewHolder(View v) {
             super(v);
-            mQuestionNumber = (TextView) v.findViewById(R.id.questionNumberText);
             mQuestionText = (TextView) v.findViewById(R.id.questionText);
             mYesNoGroup = (RadioGroup) v.findViewById(R.id.radioYesNo);
             mYes = (RadioButton) v.findViewById(R.id.radioYes);

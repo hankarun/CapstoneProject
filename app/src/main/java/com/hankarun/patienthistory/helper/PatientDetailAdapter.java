@@ -15,7 +15,7 @@ import com.hankarun.patienthistory.model.Answer;
 import java.util.ArrayList;
 
 public class PatientDetailAdapter extends RecyclerView.Adapter<PatientDetailAdapter.ViewHolder> {
-    public ArrayList<Answer> mAnswerList;
+    private ArrayList<Answer> mAnswerList;
     private Context mContext;
 
     public PatientDetailAdapter(Context contex, ArrayList<Answer> answerArrayList) {

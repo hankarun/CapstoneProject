@@ -159,7 +159,7 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
         }
     }
 
-    List<String> longDates;
+    private List<String> longDates;
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {

@@ -128,7 +128,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
 
-    final Activity mActiviy = this;
+    private final Activity mActiviy = this;
     private void print() {
         /*((PatientDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPatientDetail)).getmAnswerList();
 

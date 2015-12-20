@@ -53,6 +53,17 @@
 
     </LinearLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/questionDetailInput">
+        <EditText android:id="@+id/input_qDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Cevabınızı buyara yazabilirsiniz"
+            android:inputType="text" />
+    </android.support.design.widget.TextInputLayout>
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"

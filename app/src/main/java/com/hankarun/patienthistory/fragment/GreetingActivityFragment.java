@@ -24,16 +24,16 @@ import com.hankarun.patienthistory.activity.GreetingActivity;
 import com.hankarun.patienthistory.activity.QuestionsActivity;
 
 public class GreetingActivityFragment extends Fragment implements Button.OnClickListener, Animation.AnimationListener {
-    TextView txtMessage;
-    TextView mainMessage;
-    Button button;
-    Button begin;
+    private TextView txtMessage;
+    private TextView mainMessage;
+    private Button button;
+    private Button begin;
 
     // Animation
-    Animation animFadein;
-    Animation animFadein1;
-    Animation animFadein2;
-    Animation animFadeout;
+    private Animation animFadein;
+    private Animation animFadein1;
+    private Animation animFadein2;
+    private Animation animFadeout;
 
     public GreetingActivityFragment() {
     }

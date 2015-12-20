@@ -24,7 +24,7 @@ public class PatientSQLiteHelper extends SQLiteOpenHelper {
     public static final String PATIENT_TEL2 = "tel2";
     public static final String PATIENT_DOCTOR_NAME = "dname";
     public static final String PATIENT_DOCTOR_NUMBER = "dnumber";
-    public static final String PATIENT_DOCTOR_DATE = "ddate";
+    private static final String PATIENT_DOCTOR_DATE = "ddate";
     public static final String PATIENT_DOCTOR_PROBLEMS = "dproblems";
 
     public static final String ANSWER = "answer";

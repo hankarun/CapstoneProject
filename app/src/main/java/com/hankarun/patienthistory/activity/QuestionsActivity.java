@@ -51,7 +51,6 @@ public class QuestionsActivity extends AppCompatActivity implements
     private FloatingActionButton right;
 
     private InterstitialAd mInterstitialAd;
-    private int start;
     private Patient mPatient;
 
     @Override
@@ -102,7 +101,7 @@ public class QuestionsActivity extends AppCompatActivity implements
 
 
         Calendar c = Calendar.getInstance();
-        start = c.get(Calendar.MILLISECOND);
+        int start = c.get(Calendar.MILLISECOND);
     }
 
     private void requestNewInterstitial() {
