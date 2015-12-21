@@ -145,7 +145,6 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
                 PatientSQLiteHelper.ANSWER_QUESTION_GROUP,
                 PatientSQLiteHelper.ANSWER_QUESTION,
                 PatientSQLiteHelper.ANSWER_QUESTION_TYPE};
-        Log.d("id ", id+"");
         switch (id) {
             case 0:
                 return new CursorLoader(getActivity(),
@@ -153,7 +152,6 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
                         PatientSQLiteHelper.ANSWER_DATE + " DESC");
             default:
                 Uri uri = Uri.parse(DataContentProvider.CONTENT_URI_ANSWERS + "/" + patient.getmId());
-                Log.d("date", args.getString("date"));
                 return new CursorLoader(getActivity(),
                         uri, projection,
                         PatientSQLiteHelper.ANSWER_DATE + " = '"+args.getString("date")+"'", null, null);
