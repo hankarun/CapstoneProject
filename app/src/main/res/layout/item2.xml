@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="4"
+    android:id="@+id/answerLayout"
+    android:padding="4dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="New Text"
+            android:id="@+id/questionTextView"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.50"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="New Text"
+            android:id="@+id/questionDetailTextView"
+            android:layout_weight="0.50"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+</LinearLayout>

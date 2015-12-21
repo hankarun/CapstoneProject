@@ -13,6 +13,7 @@ public class Question implements Parcelable{
     private int mType;
     private int mGroupId;
     private boolean mAnswer;
+    private String mAnswerDetail;
 
     public Question(){
 
@@ -31,12 +32,14 @@ public class Question implements Parcelable{
     public void setmType(int type) { mType = type;}
     public void setmGroupId(int groupId) { mGroupId = groupId;}
     public void setmAnswer(boolean answer) { mAnswer = answer;}
+    public void setmAnswerDetail(String detail) { mAnswerDetail = detail;}
 
     public int getmId() { return mId;}
     public String getmQuestion() { return mQuestion;}
     public int getmType() { return mType;}
     public int getmGroupId() { return mGroupId;}
     public boolean getmAnswer() { return mAnswer;}
+    public String getmAnswerDetail() { return mAnswerDetail;}
 
     public String toString(){
         return mQuestion;
@@ -50,6 +53,7 @@ public class Question implements Parcelable{
         int te = parcel.readInt();
         mAnswer = te == 1;
         mQuestion = parcel.readString();
+        mAnswerDetail = parcel.readString();
     }
 
     public ContentValues getContentValues(){
@@ -74,6 +78,7 @@ public class Question implements Parcelable{
         dest.writeInt(mGroupId);
         dest.writeInt(mAnswer ? 1: 0);
         dest.writeString(mQuestion);
+        dest.writeString(mAnswerDetail);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

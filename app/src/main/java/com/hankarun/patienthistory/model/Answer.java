@@ -16,6 +16,7 @@ public class Answer implements Parcelable{
     private String mDetail;
     private String mDate;
     private String mQuestion;
+    private int mQuestionType;
 
     public void setmId(int id) { mId = id;}
     public void setmAnswer(Boolean answer) { mAnswer = answer;}
@@ -24,6 +25,7 @@ public class Answer implements Parcelable{
     public void setmDetail(String detail){ mDetail = detail;}
     public void setmDate(String date){ mDate = date;}
     public void setmQuestion(String question){ mQuestion = question;}
+    public void setmQuestionType(int type) { mQuestionType = type;}
 
     public int getmId(){ return mId;}
     public int getmUserId(){ return mUserId;}
@@ -32,6 +34,7 @@ public class Answer implements Parcelable{
     public String getmDetail(){ return mDetail;}
     public String getmDate(){ return mDate;}
     public String getmQuestion(){ return mQuestion;}
+    public int getmQuestionType(){ return mQuestionType;}
 
     public Answer(){
 
@@ -55,6 +58,7 @@ public class Answer implements Parcelable{
         setmDetail(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.ANSWER_DETAIL)));
         setmDate(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.ANSWER_DATE)));
         setmQuestion(cursor.getString(cursor.getColumnIndex(PatientSQLiteHelper.ANSWER_QUESTION)));
+        setmQuestionType(cursor.getInt(cursor.getColumnIndex(PatientSQLiteHelper.ANSWER_QUESTION_TYPE)));
     }
 
     public ContentValues toContentValues() {
@@ -66,6 +70,7 @@ public class Answer implements Parcelable{
         values.put(PatientSQLiteHelper.ANSWER_DATE, getmDate());
         values.put(PatientSQLiteHelper.ANSWER_PATIENT_ID, getmUserId());
         values.put(PatientSQLiteHelper.ANSWER_QUESTION, getmQuestion());
+        values.put(PatientSQLiteHelper.ANSWER_QUESTION_TYPE, getmQuestionType());
         return values;
     }
 
@@ -79,6 +84,7 @@ public class Answer implements Parcelable{
         setmDetail(parcel.readString());
         setmDate(parcel.readString());
         setmQuestion(parcel.readString());
+        setmQuestionType(parcel.readInt());
     }
 
 
@@ -96,6 +102,7 @@ public class Answer implements Parcelable{
         dest.writeString(getmDetail());
         dest.writeString(getmDate());
         dest.writeString(getmQuestion());
+        dest.writeInt(getmQuestionType());
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

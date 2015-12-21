@@ -20,13 +20,34 @@
         android:weightSum="4"
         android:orientation="horizontal">
 
-        <TextView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="New Text"
-            android:id="@+id/questionText"
+            android:layout_height="wrap_content"
             android:layout_weight="3.4"
-            android:gravity="center_vertical" />
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="New Text"
+                android:id="@+id/questionText"
+                android:gravity="center_vertical"
+                android:layout_weight="0.5" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/questionDetailInput"
+                android:layout_weight="0.5">
+                <EditText android:id="@+id/input_qDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cevabınızı buyara yazabilirsiniz"
+                    android:visibility="gone"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
         <RadioGroup
             android:id="@+id/radioYesNo"
@@ -52,17 +73,6 @@
         </RadioGroup>
 
     </LinearLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/questionDetailInput">
-        <EditText android:id="@+id/input_qDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Cevabınızı buyara yazabilirsiniz"
-            android:inputType="text" />
-    </android.support.design.widget.TextInputLayout>
 
     <View
         android:layout_width="fill_parent"

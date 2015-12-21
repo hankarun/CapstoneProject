@@ -33,8 +33,7 @@ public class PatientSQLiteHelper extends SQLiteOpenHelper {
     public static final String ANSWER_DATE = "adate";
     public static final String ANSWER_QUESTION_GROUP = "qgroup";
     public static final String ANSWER_QUESTION = "question";
-
-
+    public static final String ANSWER_QUESTION_TYPE = "qutype";
 
     private static final String DATABASE_CREATE_PATIENTS = "create table "
             + TABLE_PATIENTS + "(" + COLUMN_ID
@@ -62,8 +61,10 @@ public class PatientSQLiteHelper extends SQLiteOpenHelper {
             + ANSWER_DETAIL + " text, "
             + ANSWER_DATE + " text, "
             + ANSWER_QUESTION_GROUP + " text, "
-            + ANSWER_QUESTION + " text"
+            + ANSWER_QUESTION + " text,"
+            + ANSWER_QUESTION_TYPE + " integer"
             + ");";
+
 
     public PatientSQLiteHelper(Context context) {
         super(context, DB_NAME, null, DATABASE_VERSION);

@@ -143,7 +143,8 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
                 PatientSQLiteHelper.ANSWER_DETAIL,
                 PatientSQLiteHelper.ANSWER_PATIENT_ID,
                 PatientSQLiteHelper.ANSWER_QUESTION_GROUP,
-                PatientSQLiteHelper.ANSWER_QUESTION};
+                PatientSQLiteHelper.ANSWER_QUESTION,
+                PatientSQLiteHelper.ANSWER_QUESTION_TYPE};
         Log.d("id ", id+"");
         switch (id) {
             case 0:
@@ -190,6 +191,7 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
                             Answer temp = new Answer();
                             temp.setmQuestionGroup(group);
                             temp.setmId(-1);
+                            temp.setmQuestionType(2);
                             mAnswerList.add(temp);
                         }
                         mAnswerList.add(new Answer(data));

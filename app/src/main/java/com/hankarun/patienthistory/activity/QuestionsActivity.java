@@ -296,6 +296,8 @@ public class QuestionsActivity extends AppCompatActivity implements
                 a.setmUserId(p.getmId());
                 a.setmDate(tmie + "");
                 a.setmQuestionGroup(mGroups.get(question.getmGroupId() - 1).getmGText());
+                a.setmQuestionType(question.getmType());
+                a.setmDetail(question.getmAnswerDetail());
                 contentValues.add(a.toContentValues());
 
             }

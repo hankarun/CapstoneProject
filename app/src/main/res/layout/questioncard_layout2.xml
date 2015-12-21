@@ -13,22 +13,6 @@
     android:id="@+id/cardView"
     android:orientation="vertical"
     app:cardElevation="5dp">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:weightSum="4"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="New Text"
-            android:id="@+id/questionText"
-            android:layout_weight="3.4"
-            android:gravity="center_vertical" />
-
-    </LinearLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -37,8 +21,8 @@
         <EditText android:id="@+id/input_qDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Cevabınızı buyara yazabilirsiniz"
-            android:inputType="text" />
+            android:inputType="text"
+            android:lines="2"/>
     </android.support.design.widget.TextInputLayout>
 
     <View
