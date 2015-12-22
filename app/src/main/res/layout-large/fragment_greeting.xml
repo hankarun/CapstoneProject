@@ -10,7 +10,7 @@
         android:layout_width="500dp"
         android:layout_height="150dp"
         android:id="@+id/imageView2"
-        android:src="@drawable/icon"
+        android:src="@drawable/icon1"
         android:scaleType="fitCenter"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
