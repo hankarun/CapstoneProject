@@ -145,6 +145,7 @@ public class QuestionsListFragment extends Fragment
                 QuesSQLiteHelper.GROUP_TABLE_TEXT,
                 QuesSQLiteHelper.GROUP_TABLE_DETAIL,
                 QuesSQLiteHelper.QUESTION_TABLE_TEXT,
+                QuesSQLiteHelper.QUESTION_TABLE_TYPE,
                 QuesSQLiteHelper.TABLE_QUESTIONS + "." + QuesSQLiteHelper.QUESTION_TABLE_ID + " AS QID"};
         return new CursorLoader(getActivity(),
                 DataContentProvider.CONTENT_URI_GROUPS_ALL, projection, null, null, null);
@@ -168,6 +169,7 @@ public class QuestionsListFragment extends Fragment
                     Question question = new Question();
                     question.setmQuestion(data.getString(data.getColumnIndex(QuesSQLiteHelper.QUESTION_TABLE_TEXT)));
                     question.setmGroupId(group.getmId());
+                    question.setmType(data.getInt(data.getColumnIndex(QuesSQLiteHelper.QUESTION_TABLE_TYPE)));
                     question.setmId(Integer.parseInt(data.getString(data.getColumnIndex("QID"))));
                     mQuestionsByGroup.get(mQuestionsByGroup.size() - 1).add(question);
                 }

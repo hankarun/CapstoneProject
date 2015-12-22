@@ -21,6 +21,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/questionEditSpinner" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Soru Tipi"
+        android:id="@+id/textView20" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/questionTypeSpinner" />
+
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

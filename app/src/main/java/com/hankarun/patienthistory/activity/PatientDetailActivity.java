@@ -206,14 +206,18 @@ public class PatientDetailActivity extends AppCompatActivity {
         document.setMargins(20, 20, 20, 20);
         document.setMarginMirroringTopBottom(true);
 
-        document.add(writeUser(patient));
-        document = writeQuestions(
+        document.add(writeUser(patient,document));
+        writeQuestions(
                 ((PatientDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPatientDetail)).getmAnswerList(), document);
         document.close();
     }
 
-    private PdfPTable writeUser(Patient patient) {
+    private PdfPTable writeUser(Patient patient, Document document) {
         PdfPTable table = new PdfPTable(2);
+        table.setSpacingAfter(0);
+        table.setSpacingBefore(0);
+        table.setTotalWidth(document.right() - document.left());
+        table.setLockedWidth(true);
 
         PdfPCell cell;
         cell = getCell(getString(R.string.personal_details), false);
@@ -241,12 +245,13 @@ public class PatientDetailActivity extends AppCompatActivity {
         return table;
     }
 
-    private Document writeQuestions(ArrayList<Answer> answerArrayList, Document document) {
+    private void writeQuestions(ArrayList<Answer> answerArrayList, Document document) {
         PdfPTable table = new PdfPTable(1);
         PdfPCell cell;
         for (Answer answer : answerArrayList) {
             if (answer.getmId() == -1) {
                 try {
+
                     if (writer.getVerticalPosition(true) - table.getRowHeight(0) - table.getRowHeight(1) - table.getRowHeight(2) < document.bottom()) {
                         document.newPage();
                     }
@@ -275,7 +280,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                 table.addCell(getCell(answer.getmAnswer() ? getString(R.string.yes) : getString(R.string.no), false));
             }
         }
-        return document;
     }
 
     private PdfPCell getCell(String text, boolean question) {

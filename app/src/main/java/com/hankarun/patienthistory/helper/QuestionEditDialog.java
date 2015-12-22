@@ -3,6 +3,7 @@ package com.hankarun.patienthistory.helper;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,14 @@ import com.hankarun.patienthistory.model.Group;
 import com.hankarun.patienthistory.model.Question;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuestionEditDialog extends DialogFragment implements View.OnClickListener{
     private ArrayList<Group> mGroups;
     private Question mQuestion;
     private TextView mQuestionTextView;
     private Spinner mGroupsSpinner;
+    private Spinner mQuestionTypeSpinner;
     private DialogInterface mDialogInterface;
 
     public static QuestionEditDialog newInstance(Question question,ArrayList<Group> groups) {
@@ -40,6 +43,10 @@ public class QuestionEditDialog extends DialogFragment implements View.OnClickLi
         mDialogInterface = dialogInterface;
     }
 
+    private final String[] mGroupNames = {
+                                            "Evet - Hayır ve Kullanıcı Girişli Soru Tipi",
+                                            "Evet - Hayır Soru Tipi",
+                                            "Sadece Kullanıcı Girişli Soru Tipi",};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,8 +73,15 @@ public class QuestionEditDialog extends DialogFragment implements View.OnClickLi
 
         mGroupsSpinner.setAdapter(adapter);
 
+        mGroupsSpinner.setSelection(mQuestion.getmGroupId() - 1);
 
-        mGroupsSpinner.setSelection(mQuestion.getmGroupId()-1);
+        mQuestionTypeSpinner = (Spinner) rootView.findViewById(R.id.questionTypeSpinner);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, mGroupNames);
+        mQuestionTypeSpinner.setAdapter(dataAdapter);
+
+        Log.d("type ", mQuestion.getmType()+"");
+        mQuestionTypeSpinner.setSelection(mQuestion.getmType()-1);
+
 
         mSaveButton.setOnClickListener(this);
         mCancelButton.setOnClickListener(this);
@@ -80,7 +94,8 @@ public class QuestionEditDialog extends DialogFragment implements View.OnClickLi
         switch (v.getId()){
             case R.id.saveButton:
                 mQuestion.setmQuestion(mQuestionTextView.getText().toString());
-                mQuestion.setmGroupId(mGroupsSpinner.getSelectedItemPosition()+1);
+                mQuestion.setmGroupId(mGroupsSpinner.getSelectedItemPosition() + 1);
+                mQuestion.setmType(mQuestionTypeSpinner.getSelectedItemPosition()+1);
                 mDialogInterface.dialogCompleted(mQuestion);
                 dismiss();
                 break;
