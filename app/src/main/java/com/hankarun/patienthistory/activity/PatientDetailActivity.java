@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -204,7 +203,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         document.setPageSize(PageSize.A4);
         document.setMargins(20, 20, 20, 20);
-        document.setMarginMirroringTopBottom(true);
+        //document.setMarginMirroringTopBottom(true);
 
         document.add(writeUser(patient,document));
         writeQuestions(
@@ -212,34 +211,48 @@ public class PatientDetailActivity extends AppCompatActivity {
         document.close();
     }
 
-    private PdfPTable writeUser(Patient patient, Document document) {
-        PdfPTable table = new PdfPTable(2);
+    private PdfPTable writeUser(Patient patient, Document document) throws DocumentException {
+        PdfPTable table = new PdfPTable(4);
         table.setSpacingAfter(0);
         table.setSpacingBefore(0);
         table.setTotalWidth(document.right() - document.left());
         table.setLockedWidth(true);
+        table.setWidths(new int[]{1, 1, 1, 1});
+
 
         PdfPCell cell;
         cell = getCell(getString(R.string.personal_details), false);
-        cell.setColspan(2);
+        cell.setColspan(4);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setHorizontalAlignment(Element.ALIGN_MIDDLE);
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
         table.addCell(cell);
 
-        table.addCell(getCell(getString(R.string.name) + ": " + patient.getmName() + " " + patient.getmSurname(), false));
-        table.addCell(getCell(getString(R.string.birth_date) + ": " + patient.getmBirthDate(), false));
-        cell = getCell(getString(R.string.address) + ": " + patient.getmAddress() + " " + patient.getmTown() + " / " + patient.getmCity(), false);
-        cell.setColspan(2);
-        table.addCell(cell);
-        table.addCell(getCell(getString(R.string.email) + ": " + patient.getmEmail(), false));
-        table.addCell(getCell(getString(R.string.mobile_phone) + ": " + patient.getmTelephone1(), false));
-        table.addCell(getCell(getString(R.string.work_phone) + ": " + patient.getmTelephone2(), false));
-        table.addCell(getCell(getString(R.string.mobile_phone) + ": " + patient.getmTelephone1(), false));
-        table.addCell(getCell(getString(R.string.doctors_details) + ": " + patient.getmDoctorName() + " - " + patient.getmDoctorNumber(), false));
-        table.addCell(getCell(getString(R.string.doctor_date) + ": " + patient.getmDoctorDate(), false));
-        cell = getCell(getString(R.string.problems) + "? ", false);
-        cell.setColspan(2);
-        table.addCell(cell);
+        table.addCell(getCell(getString(R.string.name), false));
+        table.addCell(getCell( ": " + patient.getmName() + " " + patient.getmSurname(),false));
+        table.addCell(getCell(getString(R.string.birth_date), false));
+        table.addCell(getCell( ": " + patient.getmBirthDate(),false));
+        table.addCell(getCell(getString(R.string.address), false));
+        table.addCell(getCell(": " + patient.getmAddress(),false));
+        table.addCell(getCell(patient.getmTown() + " / " + patient.getmCity(),false));
+        table.addCell(getCell(" ",false));
+        table.addCell(getCell(getString(R.string.mobile_phone), false));
+        table.addCell(getCell(": " + patient.getmTelephone1(),false));
+        table.addCell(getCell(getString(R.string.work_phone), false));
+        table.addCell(getCell(": " + patient.getmTelephone2(),false));
+        table.addCell(getCell(getString(R.string.email), false));
+        table.addCell(getCell(": " + patient.getmEmail(),false));
+        table.addCell(getCell(" ",false));
+        table.addCell(getCell(" ",false));
+
+        table.addCell(getCell(getString(R.string.doctors_details), false));
+        table.addCell(getCell(": " + patient.getmDoctorName(), false));
+        table.addCell(getCell(" - " + patient.getmDoctorNumber(), false));
+        table.addCell(getCell(" - " + patient.getmDoctorDate(), false));
+
+        table.addCell(getCell(getString(R.string.problems) + ": ", false));
         cell = getCell(patient.getmProblems(), false);
-        cell.setColspan(2);
+        cell.setColspan(3);
         table.addCell(cell);
 
         return table;
@@ -247,39 +260,81 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     private void writeQuestions(ArrayList<Answer> answerArrayList, Document document) {
         PdfPTable table = new PdfPTable(1);
-        PdfPCell cell;
         for (Answer answer : answerArrayList) {
             if (answer.getmId() == -1) {
                 try {
-
                     if (writer.getVerticalPosition(true) - table.getRowHeight(0) - table.getRowHeight(1) - table.getRowHeight(2) < document.bottom()) {
                         document.newPage();
                     }
+                    table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+
+                    table.completeRow();
                     document.add(table);
-                    table = new PdfPTable(4);
-                    table.setSpacingAfter(0);
-                    table.setSpacingBefore(0);
-                    table.setTotalWidth(document.right() - document.left());
-                    table.setLockedWidth(true);
-
-                    table.setWidths(new int[]{4, 1, 4, 1});
-
+                    table = newTable(document);
                 } catch (Exception e) {
                     Log.d("Table", e.getMessage());
                 }
-
-                cell = getCell(answer.getmQuestionGroup(), false);
-                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                cell.setHorizontalAlignment(Element.ALIGN_MIDDLE);
-                cell.setColspan(4);
-
-                cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                table.addCell(cell);
+                addHeader(table,answer);
             } else {
-                table.addCell(getCell(answer.getmQuestion(), true));
-                table.addCell(getCell(answer.getmAnswer() ? getString(R.string.yes) : getString(R.string.no), false));
+                switch (answer.getmQuestionType()){
+                    case 1:
+                        addType3Cell(table,answer);
+                        Log.d("check", answer.getmQuestion());
+                        break;
+                    case 2:
+                        addType1Cell(table,answer);
+                        Log.d("check", answer.getmQuestion());
+
+                        break;
+                    case 3:
+                        addType2Cell(table,answer);
+                        Log.d("check", answer.getmQuestion());
+                        break;
+                }
             }
         }
+        try {
+            document.add(table);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private PdfPTable newTable(Document document) throws DocumentException {
+        PdfPTable table = new PdfPTable(4);
+        table.setSpacingAfter(0);
+        table.setSpacingBefore(0);
+        table.setTotalWidth(document.right() - document.left());
+        table.setLockedWidth(true);
+        table.setWidths(new int[]{4, 1, 4, 1});
+        return table;
+    }
+
+    private void addHeader(PdfPTable table, Answer answer){
+        table.setSpacingBefore(6f);
+        PdfPCell cell = getCell(answer.getmQuestionGroup(), false);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setHorizontalAlignment(Element.ALIGN_MIDDLE);
+        cell.setColspan(4);
+
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        table.addCell(cell);
+    }
+
+    private void addType3Cell(PdfPTable table, Answer answer){
+        table.addCell(getCell(answer.getmQuestion() + "\n" + answer.getmDetail(), false));
+        table.addCell(getCell(answer.getmAnswer() ? getString(R.string.yes) : getString(R.string.no), false));
+    }
+
+    private void addType2Cell(PdfPTable table, Answer answer){
+        PdfPCell cell = getCell(answer.getmQuestion() + ": " + answer.getmDetail(), false);
+        cell.setColspan(2);
+        table.addCell(cell);
+    }
+
+    private void addType1Cell(PdfPTable table, Answer answer){
+        table.addCell(getCell(answer.getmQuestion(), true));
+        table.addCell(getCell(answer.getmAnswer() ? getString(R.string.yes) : getString(R.string.no), false));
     }
 
     private PdfPCell getCell(String text, boolean question) {
@@ -292,6 +347,8 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         //Font font = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD);
         Font font = new Font(bf);
+        if(text.equals("null") || text.equals(""))
+            text = "-";
         Paragraph p = new Paragraph(text, font);
         if (question) {
             Chunk leader = new Chunk(new DottedLineSeparator());

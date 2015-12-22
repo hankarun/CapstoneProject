@@ -54,6 +54,7 @@
         <activity
             android:name=".activity.AdminActivity"
             android:label="@string/title_activity_admin"
+            android:screenOrientation="landscape"
             android:parentActivityName=".activity.GreetingActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
