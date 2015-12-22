@@ -29,6 +29,10 @@
             android:authorities="com.hankarun.patienthistory"
             android:exported="false" />
 
+        <service
+            android:name=".PrintService"
+            android:exported="false"/>
+
         <activity
             android:name=".activity.GreetingActivity"
             android:label="@string/app_name"

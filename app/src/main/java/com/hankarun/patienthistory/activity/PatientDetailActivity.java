@@ -161,7 +161,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         protected void onPostExecute(Void v) {
             final Intent printIntent = new Intent(mActiviy, PrintDialog.class);
             final File root = android.os.Environment.getExternalStorageDirectory();
-            final File file = new File(root.getAbsolutePath(), "/Download/test.pdf");
+            final File file = new File(root.getAbsolutePath(), "/Download/temp.pdf");
 
 
             AlertDialog.Builder builder = new AlertDialog.Builder(mActiviy);
@@ -190,11 +190,10 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     private void createPdf() throws FileNotFoundException, DocumentException {
-        //File file = new File(getApplicationContext().getFilesDir(), "test.pdf");
 
         File root = android.os.Environment.getExternalStorageDirectory();
 
-        File file = new File(root.getAbsolutePath(), "/Download/test.pdf");
+        File file = new File(root.getAbsolutePath(), "/Download/temp.pdf");
         OutputStream output = new FileOutputStream(file);
 
         Document document = new Document();
