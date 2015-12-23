@@ -28,6 +28,7 @@ import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -38,6 +39,7 @@ public class PrintService extends IntentService {
 
     public static String USER_ID = "user_id";
     public static String SURVEY_DATE = "survey_date";
+    public static String PRINT_AFTER = "print_automatic";
 
     public PrintService(String name) {
         super(name);
@@ -73,7 +75,7 @@ public class PrintService extends IntentService {
         sendBroadcast(broadcastIntent);
     }
 
-    private void retriveUser(int id){
+    private void retriveUser(int id) {
         String[] projection = {
                 PatientSQLiteHelper.COLUMN_ID,
                 PatientSQLiteHelper.PATIENT_NAME,
@@ -96,7 +98,7 @@ public class PrintService extends IntentService {
         mPatient = new Patient(userCursor);
     }
 
-    private void retriveSurvey(String date){
+    private void retriveSurvey(String date) {
         String[] projection1 = {
                 PatientSQLiteHelper.COLUMN_ID,
                 PatientSQLiteHelper.ANSWER,
@@ -295,4 +297,70 @@ public class PrintService extends IntentService {
         cell.setBorder(PdfPCell.NO_BORDER);
         return cell;
     }
+
+    /*
+    private void printAuto() {
+        try {
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+
+            String user = "user@gmail.com";
+            String pass = "password";
+            String source = "Cloud%20Printing%20Test";
+
+            HttpGet authGet = new HttpGet(
+                    "https://www.google.com/accounts/ClientLogin?accountType=HOSTED_OR_GOOGLE&Email="
+                            + user
+                            + "&Passwd="
+                            + pass
+                            + "&service=cloudprint&source=" + source);
+
+            HttpResponse httpResponse;
+
+            httpResponse = httpclient.execute(authGet);
+
+            String authResponse = EntityUtils
+                    .toString(httpResponse.getEntity());
+            String authKey = authResponse.substring(authResponse
+                    .indexOf("Auth=") + 5);
+            authKey = authKey.replace("\n", "");
+
+            MyLog.d(TAG, "Auth key: " + authKey);
+
+            HttpPost printPost = new HttpPost(
+                    "https://www.google.com/cloudprint/submit?output=json");
+            printPost.setHeader("Authorization", "GoogleLogin auth=" + authKey);
+            printPost.setHeader("X-CloudPrint-Proxy", source);
+
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("printerid", "ID"));
+            nameValuePairs.add(new BasicNameValuePair("title", "TEST"));
+            nameValuePairs.add(new BasicNameValuePair("capabilities", "{capabilities=[]}"));
+            nameValuePairs.add(new BasicNameValuePair("content", "123"));
+            nameValuePairs.add(new BasicNameValuePair("contentType", "text/plain"));
+
+            File file = new File("file.pdf");
+            FileBody fb = new FileBody(file);
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+            builder.addTextBody("printerid", "ID");
+            builder.addTextBody("title", "TEST2");
+            builder.addTextBody("capabilities", "{capabilities=[]}");
+            builder.addTextBody("contentType", "application/pdf");
+            builder.addPart("content", fb);
+            printPost.setEntity(builder.build());
+
+
+            printPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            HttpResponse printResponse = httpclient.execute(printPost);
+            String lol = EntityUtils.toString(printResponse.getEntity());
+
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    */
+
 }

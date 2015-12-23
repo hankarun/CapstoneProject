@@ -8,7 +8,7 @@
 
     <ImageView
         android:layout_width="500dp"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:id="@+id/imageView2"
         android:src="@drawable/icon1"
         android:scaleType="fitCenter"

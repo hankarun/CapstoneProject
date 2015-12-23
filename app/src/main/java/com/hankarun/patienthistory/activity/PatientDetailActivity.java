@@ -45,7 +45,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         IntentFilter filter = new IntentFilter(ResponseReceiver.ACTION_RESP);
         filter.addCategory(Intent.CATEGORY_DEFAULT);
-        receiver = new ResponseReceiver();
+        ResponseReceiver receiver = new ResponseReceiver();
         registerReceiver(receiver, filter);
 
         FloatingActionButton print = (FloatingActionButton) findViewById(R.id.printFAB);
@@ -140,7 +140,6 @@ public class PatientDetailActivity extends AppCompatActivity {
         //new LongOperation().execute("", null, null);
 
     }
-    private ResponseReceiver receiver;
 
 
     public class ResponseReceiver extends BroadcastReceiver {

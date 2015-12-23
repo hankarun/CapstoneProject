@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.hankarun.patienthistory.PrintService;
 import com.hankarun.patienthistory.R;
 import com.hankarun.patienthistory.fragment.FinishFragment;
 import com.hankarun.patienthistory.fragment.GroupQuestionsFragment;
@@ -304,74 +305,14 @@ public class QuestionsActivity extends AppCompatActivity implements
         }
         writeAnswerToDatabase(contentValues);
 
+        Intent msgIntent = new Intent(this, PrintService.class);
+        msgIntent.putExtra(PrintService.USER_ID, p.getmId());
+        msgIntent.putExtra(PrintService.SURVEY_DATE, tmie);
+        msgIntent.putExtra(PrintService.PRINT_AFTER, true);
+        startService(msgIntent);
+
         Intent a = new Intent(this,GreetingActivity.class);
         a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(a);
     }
-
-    /*
-    @Override
-protected Void doInBackground(Void... params) {
-
-    try {
-        DefaultHttpClient httpclient = new DefaultHttpClient();
-
-        String user = "user@gmail.com";
-        String pass = "password";
-        String source = "Cloud%20Printing%20Test";
-
-        HttpGet authGet = new HttpGet(
-                "https://www.google.com/accounts/ClientLogin?accountType=HOSTED_OR_GOOGLE&Email="
-                        + user
-                        + "&Passwd="
-                        + pass
-                        + "&service=cloudprint&source=" + source);
-
-        HttpResponse httpResponse;
-
-        httpResponse = httpclient.execute(authGet);
-
-        String authResponse = EntityUtils
-                .toString(httpResponse.getEntity());
-        String authKey = authResponse.substring(authResponse
-                .indexOf("Auth=") + 5);
-        authKey = authKey.replace("\n", "");
-
-        MyLog.d(TAG, "Auth key: " + authKey);
-
-        HttpPost printPost = new HttpPost(
-                "https://www.google.com/cloudprint/submit?output=json");
-        printPost.setHeader("Authorization", "GoogleLogin auth=" + authKey);
-        printPost.setHeader("X-CloudPrint-Proxy", source);
-
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-        nameValuePairs.add(new BasicNameValuePair("printerid", "ID"));
-        nameValuePairs.add(new BasicNameValuePair("title", "TEST"));
-        nameValuePairs.add(new BasicNameValuePair("capabilities", "{capabilities=[]}"));
-        nameValuePairs.add(new BasicNameValuePair("content", "123"));
-        nameValuePairs.add(new BasicNameValuePair("contentType", "text/plain"));
-        printPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-        HttpResponse printResponse = httpclient.execute(printPost);
-        String lol = EntityUtils.toString(printResponse.getEntity());
-
-    } catch (ClientProtocolException e) {
-        e.printStackTrace();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-    return null;
-}
-
-File file = new File("file.pdf");
-FileBody fb = new FileBody(file);
-MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-builder.addTextBody("printerid", "ID");
-builder.addTextBody("title", "TEST2");
-builder.addTextBody("capabilities", "{capabilities=[]}");
-builder.addTextBody("contentType", "application/pdf");
-builder.addPart("content", fb);
-printPost.setEntity(builder.build());
-     */
 }
