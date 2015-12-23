@@ -45,7 +45,7 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
     private TextView doctorTelTextView;
     private TextView doctorDateTextView;
     private TextView problemTextView;
-    private Spinner dateSpinner;
+    public Spinner dateSpinner;
     private RecyclerView mRecyclerView;
 
     private ArrayList<Answer> mAnswerList;
@@ -158,7 +158,7 @@ public class PatientDetailFragment extends Fragment implements LoaderManager.Loa
         }
     }
 
-    private List<String> longDates;
+    public List<String> longDates;
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {

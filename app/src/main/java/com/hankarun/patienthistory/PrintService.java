@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
+import com.hankarun.patienthistory.activity.PatientDetailActivity;
 import com.hankarun.patienthistory.helper.DataContentProvider;
 import com.hankarun.patienthistory.helper.PatientSQLiteHelper;
 import com.hankarun.patienthistory.model.Answer;
@@ -35,14 +36,21 @@ public class PrintService extends IntentService {
     private ArrayList<Answer> mAnswerList;
     private Patient mPatient;
 
+    public static String USER_ID = "user_id";
+    public static String SURVEY_DATE = "survey_date";
+
     public PrintService(String name) {
         super(name);
     }
 
+    public PrintService() {
+        super("printservice");
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
-        int id = intent.getIntExtra("user_id", -1);
-        String date = intent.getStringExtra("survey_date");
+        int id = intent.getIntExtra(USER_ID, -1);
+        String date = intent.getStringExtra(SURVEY_DATE);
 
         if (id != -1) {
 
@@ -58,10 +66,14 @@ public class PrintService extends IntentService {
                 e.printStackTrace();
             }
         }
+
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction(PatientDetailActivity.ResponseReceiver.ACTION_RESP);
+        broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+        sendBroadcast(broadcastIntent);
     }
 
     private void retriveUser(int id){
-        //TODO retrive user
         String[] projection = {
                 PatientSQLiteHelper.COLUMN_ID,
                 PatientSQLiteHelper.PATIENT_NAME,
@@ -80,11 +92,11 @@ public class PrintService extends IntentService {
         Cursor userCursor = getContentResolver().query(DataContentProvider.CONTENT_URI_PATIENT, projection,
                 PatientSQLiteHelper.COLUMN_ID + " = '" + id + "'", null, null);
 
+        userCursor.moveToFirst();
         mPatient = new Patient(userCursor);
     }
 
     private void retriveSurvey(String date){
-        //TODO retrive user answers
         String[] projection1 = {
                 PatientSQLiteHelper.COLUMN_ID,
                 PatientSQLiteHelper.ANSWER,
