@@ -53,6 +53,8 @@ public class GroupQuestionsFragment extends Fragment implements LoaderManager.Lo
         TextView t = (TextView) rootView.findViewById(R.id.userTextview);
         t.setText(mGroup.getmGText());
 
+        TextView a = (TextView) rootView.findViewById(R.id.textView21);
+        a.setText(mGroup.getmGDetail());
 
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.questionRecyclerView);
 

@@ -35,8 +35,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         Intent e = getIntent();
         patient = e.getParcelableExtra("patient");
+
+        getSupportActionBar().setTitle(patient.getmName() + " " + patient.getmSurname());
 
         ((PatientDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPatientDetail)).populateList(patient);
 
