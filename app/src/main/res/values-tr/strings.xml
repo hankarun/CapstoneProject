@@ -60,4 +60,10 @@
     <string name="error_birthdate">Lütfen doğum tarihinizi girin.</string>
     <string name="error_surname">Lütfen soyadınızı girin.</string>
     <string name="error_name">Lütfen adınızı girin.</string>
+    <string name="hi">Başlamak için dokunun</string>
+    <string name="previusVisit">Daha Önce Burada Muayene Oldum</string>
+    <string name="newVisit">Burada İlk Defa Muayene Oluyorum</string>
+    <string name="enterPhoneNumber">Lütfen Kayıt Esnasında Girdiğiniz Telefon Numaranızı Girin</string>
+    <string name="Ok">Tamam</string>
+    <string name="enterDetails">Lütfen seçiminiz yapın.</string>
 </resources>

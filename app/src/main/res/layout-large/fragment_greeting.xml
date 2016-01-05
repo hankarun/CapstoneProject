@@ -51,7 +51,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Merhaba"
+        android:text="@string/hi"
         android:id="@+id/beginButton"
         android:layout_centerInParent="true"
         style="@style/Widget.AppCompat.Button.Borderless"

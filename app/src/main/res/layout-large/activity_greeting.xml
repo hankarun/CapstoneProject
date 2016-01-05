@@ -27,5 +27,15 @@
 
     <include layout="@layout/content_greeting" />
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView11"
+        android:layout_margin="24dp"
+        android:src="@xml/flag_source"
+        android:scaleType="fitXY"
+        android:layout_gravity="bottom|end"
+        android:contentDescription="flag" />
+
 
 </android.support.design.widget.CoordinatorLayout>

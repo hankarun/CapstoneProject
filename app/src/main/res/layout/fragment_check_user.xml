@@ -20,7 +20,7 @@
     <Button
         android:layout_width="150dp"
         android:layout_height="180dp"
-        android:text="Daha Önce Burada Muayene Oldum"
+        android:text="@string/previusVisit"
         android:id="@+id/button"
         android:layout_alignEnd="@+id/divider"
         android:layout_centerVertical="true"
@@ -29,7 +29,7 @@
     <Button
         android:layout_width="150dp"
         android:layout_height="180dp"
-        android:text="Burada İlk Defa Muayene Oluyorum"
+        android:text="@string/newVisit"
         android:id="@+id/button2"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/divider"
@@ -54,7 +54,7 @@
             <EditText android:id="@+id/input_tel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Lütfen Kayıt Esnasında Girdiğiniz Telefon Numaranızı Girin"
+                android:hint="@string/enterPhoneNumber"
                 android:inputType="phone"
                  />
         </android.support.design.widget.TextInputLayout>
@@ -62,7 +62,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tamam"
+            android:text="@string/Ok"
             android:id="@+id/button3"
             android:layout_weight="1"
             android:layout_gravity="center_vertical" />

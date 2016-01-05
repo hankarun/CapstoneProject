@@ -50,7 +50,7 @@ public class GreetingActivityFragment extends Fragment implements Button.OnClick
         begin = (Button) rootView.findViewById(R.id.beginButton);
 
         animFadein = AnimationUtils.loadAnimation(getContext(),
-                R.anim.fade_in_move);
+                R.anim.fade_in);
 
         animFadein1 = AnimationUtils.loadAnimation(getContext(),
                 R.anim.fade_in);

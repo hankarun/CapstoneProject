@@ -60,4 +60,10 @@
     <string name="error_surname">Please check your family name!</string>
     <string name="error_name">Please check your name!</string>
     <string name="title_activity_check_user">CheckUserActivity</string>
+    <string name="hi">Touch to Start</string>
+    <string name="previusVisit">I alredy filled the survey.</string>
+    <string name="newVisit">This is my first time filling survey.</string>
+    <string name="enterPhoneNumber">Enter your phone number, please.</string>
+    <string name="Ok">Ok</string>
+    <string name="enterDetails">Enter your details.</string>
 </resources>
